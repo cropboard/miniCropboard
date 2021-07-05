@@ -1,4 +1,4 @@
 
-const requestLogger: Function = (message: string) => console.log(`[CropBoard:Server ⚡🚀 ] -> Log -> ${message}`);
+const requestLogger: Function = (message: string) => console.log(`[CropBoard:Server ⚡🚀 ] -> Log | ${message}`);
 
-export default requestLogger;
+export { requestLogger };
