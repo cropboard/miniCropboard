@@ -42,6 +42,8 @@ type Query {
 
 type Mutation {
     createUser(name: String!, email: String!, password: String!, registrationDate: String!, location: String!): User
+    createFarm(title: String!, owner: String!, location: String!, fertilizer: String!, inputSeeds: String!, plant: String!, category: String!): Farm
+    updateFarm(title: String, location: String, fertilizer: String, inputSeeds: String, plant: String, category: String): Farm
 }
 
 `;
