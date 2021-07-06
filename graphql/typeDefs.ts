@@ -12,6 +12,8 @@ fertilizerQuantity in a physical volume quantity
 cost in an Int in the currency of the farm location
 */
 const typeDefs = gql`
+scalar Weather
+
 type User {
     name: String!
     email: String!
@@ -29,20 +31,12 @@ type Farm {
     category: String!
 }
 
-type Weather {
-    speed: String!
-    pressure: String!
-    humidity: Int!
-    uv: Int!
-    temperature: number
-}
-
 type Crop {
     name: String!
     category: String!
     fertilizerQuantity: Int!
     water: Int!
-    cost: String!
+    cost: Int!
     timeStamp: String!
     weather: Weather
 }
@@ -56,7 +50,7 @@ type Mutation {
     createFarm(title: String!, owner: String!, location: String!, fertilizer: String!, inputSeeds: String!, plant: String!, category: String!): Farm
     updateFarm(title: String, location: String, fertilizer: String, inputSeeds: String, plant: String, category: String): Farm
 
-    createCrop(name: String!, category: String!, fertilizerQuantity: String!, water: Int!, cost: Int!, timeStamp: String!, weather: Weather!)
+    createCrop(name: String!, category: String!, fertilizerQuantity: String!, water: Int!, cost: Int!, timeStamp: String!, weather: Weather!): Crop
 }
 
 `;
