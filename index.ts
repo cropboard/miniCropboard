@@ -1,25 +1,10 @@
 
-const { ApolloServer, gql } = require("apollo-server");
-
-const typeDefs = gql`
-    type User {
-        name: String
-        id: Int
-    }
-
-    type Farm {
-        title: String
-        user: User
-    }
-
-    type Query {
-        farms: [Farm],
-        users: [User]
-    }
-`
+import { ApolloServer, gql } from "apollo-server";
+import { requestLogger } from "./utils/logger";
+import { Farm, User } from "./types";
 
 // dataset
-let users = [
+let users: Array<User> = [
     {
         name: "Dane",
         id: 1
@@ -34,7 +19,7 @@ let users = [
     }
 ]
 
-let farms = [
+let farms: Array<Farm> = [
     {
         title: "Sample1",
         user: 2
@@ -49,13 +34,41 @@ let farms = [
     }
 ]
 
+
+const typeDefs = gql`
+    type User {
+        name: String!
+        id: ID!
+        farm: Farm
+    }
+
+    type Farm {
+        title: String!
+        user: User
+    }
+
+    type Query {
+        users: [User]
+        User: User
+        farms: [Farm]
+    }
+`
+
 const resolvers = {
     Query: {
-        farms: () => farms,
-        users: () => users
+        users: () => users,
+        farms: () => farms
     }
 }
 
-const server = new ApolloServer({typeDefs, resolvers});
+
+const server = new ApolloServer({
+    typeDefs, 
+    resolvers, 
+    playground: {
+        cdnUrl: "http://localhost:8000"
+    }, 
+    logger: requestLogger
+});
 
 server.listen().then(({url}) => console.log(url));

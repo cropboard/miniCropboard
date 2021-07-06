@@ -14,7 +14,7 @@ const requestLogger: Logger = {
     debug: (msg: string) => logHandler(msg),
     info: (msg: string) => logHandler(msg),
     warn: (msg: string) => logHandler(msg),
-    error: (msg: string) => logHandler(msg)
+    error: (msg: string) => logHandler(msg),
 }
 
 export { requestLogger };

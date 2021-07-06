@@ -1,0 +1,5 @@
+
+declare interface User {
+    name: string
+    id: number
+}
