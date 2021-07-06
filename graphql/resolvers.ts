@@ -1,4 +1,5 @@
 
+import { setTimeout } from "timers";
 import { User, Farm, Crop } from "../database/index";
 
 // import custom scalar
@@ -11,12 +12,20 @@ necessary to maintain the GraphQL service
 const resolvers = {
     Weather: weatherScalar,
     Query: {
-        user: (parent: any, args: any) => {
-            const user = User.findById(args.id, (error: any, foundUser: any) => {
+        user: async (parent: any, args: any) => {
+            let userData = undefined;
+            let unval; // use to await assignment of the fetched data -> will get assigned no value [undefined]
+            const user = await User.findById(args.id, (error: any, foundUser: any) => {
                 if (error) return Error(error);
                 console.log(foundUser);
+                userData = foundUser;
                 return foundUser;
             });
+            unval = await user;
+            return userData;
+        },
+        farm: (parent: any, args: any) => {
+            console.log(parent)
         }
     },
     Mutation: {
