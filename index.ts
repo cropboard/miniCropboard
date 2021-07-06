@@ -4,6 +4,7 @@ import { requestLogger } from "./utils/logger";
 import { typeDefs } from "./graphql/typeDefs";
 import { resolvers } from "./graphql/resolvers";
 
+
 /* 
 Instance the server with type definitions
 and resolvers
