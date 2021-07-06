@@ -19,4 +19,4 @@ const CBUserSchema = new Schema<CBUser>({
 
 const User = model("User", CBUserSchema);
 
-export default User;
+export { User };
