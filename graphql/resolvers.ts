@@ -1,12 +1,15 @@
 
 import { User, Farm, Crop } from "../database/index";
 
+// import custom scalar
+import { weatherScalar } from "../scalars/weatheraScalar";
 /* 
 Here we handle all of the database queries
 necessary to maintain the GraphQL service
 */
 
 const resolvers = {
+    Weather: weatherScalar,
     Query: {
         user: (parent: any, args: any) => {
             const user = User.findById(args.id, (error: any, foundUser: any) => {
