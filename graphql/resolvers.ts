@@ -91,6 +91,46 @@ const resolvers = {
                     category: "NO"
                 }
             }
+        },
+        updateFarm: (parent: any, args: any) => {
+            let farmId: string = args.id;
+            let oldFarm: any = {};
+            let hasFailed: boolean = false;
+
+            Farm.findById(farmId, (error: any, farm_: any) => {
+                if (error) throw new Error(error);
+
+                oldFarm = farm_;
+            });
+
+            console.log(oldFarm);
+
+            Farm.findByIdAndUpdate(farmId, {
+                title: args.title ? args.title : oldFarm.title ,
+                location: args.location ? args.location : args.location,
+                fertilizer: args.fertilizer ? args.fertilizer : oldFarm.fertilizer,
+                inputSeeds: args.inputSeeds ? args.inputSeeds : oldFarm.inputSeeds,
+                plant: args.plant ? args.plant : oldFarm.plant,
+                category: args.category ? args.category : oldFarm.category
+            }, (error: any, updatedFarm: any) => {
+                if (error) {
+                    hasFailed = true;
+                    return Error(error);
+                }
+
+                return updatedFarm;
+            });
+
+            if (!hasFailed) {
+                return {
+                    title: args.title,
+                    location: args.location,
+                    fertilizer: args.fertilizer,
+                    inputSeeds: args.inputSeeds,
+                    plant: args.plant,
+                    category: args.category
+                }
+            }
         }
     }
 }
