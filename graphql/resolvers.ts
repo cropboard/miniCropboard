@@ -1,5 +1,5 @@
 
-import { User } from "../database/index";
+import { User, Farm } from "../database/index";
 
 /* 
 Here we handle all of the database queries
@@ -32,6 +32,7 @@ const resolvers = {
                     isError = true;
                     return Error(error);
                 };
+
                 // console.log(newuser);
                 return newuser;
             });
@@ -48,6 +49,48 @@ const resolvers = {
                 location: "NO"
                }
            }
+        },
+
+        createFarm: (parent: any, args: any) => {
+            let isError: boolean = false;
+            const newFarm = Farm.create({
+                title: args.title,
+                owner: args.owner,
+                location: args.location,
+                fertilizer: args.fertilizer,
+                inputSeeds: args.inputSeeds,
+                plant: args.plant,
+                category: args.category
+            }, (error: any, newfarm: any) => {
+                if (error) {
+                    isError = true;
+                    return Error(error);
+                }
+
+                return newfarm;
+            });
+
+            if (!isError) {
+                return {
+                    title: args.title,
+                    owner: args.owner,
+                    location: args.location,
+                    fertilizer: args.fertilizer,
+                    inputSeeds: args.inputSeeds,
+                    plant: args.plant,
+                    category: args.category
+                }
+            } else {
+                return {
+                    title: "NO",
+                    owner: "NO",
+                    location: "NO",
+                    fertilizer: "NO",
+                    inputSeeds: "NO",
+                    plant: "NO",
+                    category: "NO"
+                }
+            }
         }
     }
 }
