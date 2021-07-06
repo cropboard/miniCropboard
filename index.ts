@@ -36,28 +36,35 @@ let farms: Array<Farm> = [
 
 
 const typeDefs = gql`
-    type User {
-        name: String!
-        id: ID!
-        farm: Farm
-    }
 
     type Farm {
         title: String!
         user: User
     }
 
+    type User {
+        name: String!
+        id: ID!
+        farms: [Farm]
+    }
+
     type Query {
         users: [User]
-        User: User
         farms: [Farm]
+        user(id: ID): User
     }
 `
 
 const resolvers = {
     Query: {
         users: () => users,
-        farms: () => farms
+        farms: () => farms,
+        user: (parent: any, args: any) => users.find(user => user.id === args.id)
+    },
+    Farm: {
+        user: (parent: Farm, args: any) => {
+            return users.find(user => user.id === parent.user)
+        }
     }
 }
 
