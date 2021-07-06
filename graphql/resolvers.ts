@@ -1,5 +1,5 @@
 
-import { User, Farm } from "../database/index";
+import { User, Farm, Crop } from "../database/index";
 
 /* 
 Here we handle all of the database queries
@@ -129,6 +129,36 @@ const resolvers = {
                     inputSeeds: args.inputSeeds,
                     plant: args.plant,
                     category: args.category
+                }
+            }
+        },
+        createCrop: (parent: any, args: any) => {
+            let isError: boolean = false;
+            let newCrop = Crop.create({
+                name: args.name,
+                category: args.category,
+                fertilizerQuantity: args.fertilizerQuantity,
+                water: args.water, 
+                cost: args.cost,
+                timeStamp: args.timeStamp,
+                weather: args.weather
+            }, (error: any, newcrop: any) => {
+                if (error) {
+                    isError = true;
+                    console.warn(error);
+                }
+                return newcrop;
+            });
+
+            if (!isError) {
+                return {
+                    name: args.name,
+                    category: args.category,
+                    fertilizerQuantity: args.fertilizerQuantity,
+                    water: args.water, 
+                    cost: args.cost,
+                    timeStamp: args.timeStamp,
+                    weather: args.weather
                 }
             }
         }
