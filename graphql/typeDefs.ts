@@ -8,6 +8,7 @@ type User {
     name: String!
     email: String!
     location: String!
+    _id: ID!
 }
 
 type Farm {
@@ -36,7 +37,11 @@ type Crop {
 }
 
 type Query {
-    user: User
+    user(id: ID!): User
+}
+
+type Mutation {
+    createUser(name: String!, email: String!, password: String!, registrationDate: String!, location: String!): User
 }
 
 `;
