@@ -11,7 +11,7 @@ interface HeaderAvatarProps {
 const HeaderAvatar: FunctionComponent<HeaderAvatarProps> = ({ profile, name }): JSX.Element => {
     return (
         <div>
-            <div>
+            <div className={styles.profile}>
                 <img src={profile} alt={name} />
             </div>
         </div>
