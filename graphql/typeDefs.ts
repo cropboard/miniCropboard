@@ -19,6 +19,7 @@ type User {
     email: String!
     location: String!
     _id: ID!
+    farms: [Farm]
 }
 
 type Farm {
@@ -29,6 +30,7 @@ type Farm {
     inputSeeds: String!
     plant: String!
     category: String!
+    crops: [Crop]
 }
 
 type Crop {
@@ -43,6 +45,8 @@ type Crop {
 
 type Query {
     user(id: ID!): User
+    farm(id: ID!): Farm
+    crop(id: ID!): Crop
 }
 
 type Mutation {

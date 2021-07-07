@@ -1,5 +1,4 @@
 
-import { setTimeout } from "timers";
 import { User, Farm, Crop } from "../database/index";
 
 // import custom scalar
@@ -109,6 +108,7 @@ const resolvers = {
             let oldFarm: any = {};
             let hasFailed: boolean = false;
 
+            // fetch old farm data
             Farm.findById(farmId, (error: any, farm_: any) => {
                 if (error) throw new Error(error);
 
@@ -173,6 +173,31 @@ const resolvers = {
                     weather: args.weather
                 }
             }
+        }
+    },
+    User: {
+        farms: async (parent: any, args: any) => {
+            // fetch all farms where the id equal the id of the parent
+            let isError: boolean = false; // chcecker for errors
+            let farms;
+            let unval; // waiter
+            let farmFetch = await Farm.find({owner: parent._id}, (error: any, farms_: any) => {
+                // handling fail safe
+                if (error) {
+                    isError = true;
+                    return Error(error);
+                }
+
+                farms = farms_; // assign the farms to the fetched data
+            });
+            unval = await farmFetch;
+
+            if (!isError) {
+                return farms;
+            }
+
+            return "An error occured";
+
         }
     }
 }

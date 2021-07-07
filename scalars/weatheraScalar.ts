@@ -1,5 +1,5 @@
 
-import { GraphQLScalarType, Kind, parseValue } from "graphql";
+import { GraphQLScalarType, Kind } from "graphql";
 
 const weatherScalar = new GraphQLScalarType({
     name: "Weather",
