@@ -55,7 +55,7 @@ type Mutation {
     createFarm(title: String!, owner: String!, location: String!, fertilizer: String!, inputSeeds: String!, plant: String!, category: String!): Farm
     updateFarm(title: String, location: String, fertilizer: String, inputSeeds: String, plant: String, category: String): Farm
 
-    createCrop(name: String!, category: String!, fertilizerQuantity: String!, water: Int!, cost: Int!, timeStamp: String!, weather: Weather!, farm: String!): Crop
+    createCrop(name: String!, category: String!, fertilizerQuantity: Int!, water: Int!, cost: Int!, timeStamp: String!, weather: Weather!, farm: String!): Crop
 }
 
 `;
