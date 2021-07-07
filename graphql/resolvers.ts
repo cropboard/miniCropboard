@@ -16,15 +16,12 @@ const resolvers = {
             let unval; // use to await assignment of the fetched data -> will get assigned no value [undefined]
             const user = await User.findById(args.id, (error: any, foundUser: any) => {
                 if (error) return Error(error);
-                console.log(foundUser);
+                // console.log(foundUser);
                 userData = foundUser;
                 return foundUser;
             });
             unval = await user;
             return userData;
-        },
-        farm: (parent: any, args: any) => {
-            console.log(parent)
         }
     },
     Mutation: {
