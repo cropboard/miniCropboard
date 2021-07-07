@@ -4,7 +4,9 @@
   "description": "The official client for the mini cropboard app",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "next dev",
+    "start": "next start"
   },
   "keywords": [
     "client",
