@@ -25,7 +25,8 @@ interface CBCrop extends Document {
     fertilizer: string
     water: string
     cost: string
-    timeStamp: string
+    timeStamp: string,
+    farm: String
 }
 
 const CropSchema = new Schema<CBCrop>({
@@ -35,7 +36,8 @@ const CropSchema = new Schema<CBCrop>({
     fertilizer: String,
     water: String,
     cost: String,
-    timeStamp: String
+    timeStamp: String,
+    farm: String
 });
 
 const Crop = model("Crop", CropSchema);

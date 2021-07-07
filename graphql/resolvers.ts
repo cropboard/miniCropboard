@@ -175,6 +175,8 @@ const resolvers = {
             }
         }
     },
+
+    // for fetching farms withing a user scope
     User: {
         farms: async (parent: any, args: any) => {
             // fetch all farms where the id equal the id of the parent
@@ -199,6 +201,37 @@ const resolvers = {
             return "An error occured";
 
         }
+    },
+
+    // fetching crop within a farm scope
+    Farm: {
+        crops: async (parent: any, args: any) => {
+        // error checker
+        let isError = false;
+        let crops;
+        let unval;
+        // console.log(parent)
+        let cropsFetch = await Crop.find({ farm: parent._id }, (error: any, crops_: any) => {
+            if (error) {
+                isError = true;
+                return Error(error);
+            }
+
+            // assign the fetched crops to the array of crops
+            crops = crops_;
+        });
+
+        // wait for the assignment of crops to the array of crops
+        unval = await cropsFetch;
+
+        // check is there was an error
+        if (!isError) {
+            return crops
+        }
+
+        return "Could not find anything";
+
+    }
     }
 }
 
