@@ -153,7 +153,8 @@ const resolvers = {
                 water: args.water, 
                 cost: args.cost,
                 timeStamp: args.timeStamp,
-                weather: args.weather
+                weather: args.weather,
+                farm: args.farm
             }, (error: any, newcrop: any) => {
                 if (error) {
                     isError = true;
@@ -170,7 +171,8 @@ const resolvers = {
                     water: args.water, 
                     cost: args.cost,
                     timeStamp: args.timeStamp,
-                    weather: args.weather
+                    weather: args.weather,
+                    farm: args.farm
                 }
             }
         }
