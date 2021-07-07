@@ -1,0 +1,12 @@
+.logo {
+  font-family: "Fira Code";
+  color: white;
+  background-color: rgb(87, 255, 87);
+  max-width: 20px;
+  max-height: 20px;
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+}
