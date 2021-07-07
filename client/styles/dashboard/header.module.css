@@ -4,3 +4,18 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.profile img {
+  max-width: 30px;
+  max-height: 30px;
+  border-radius: 50%;
+}
+
+.profile {
+  max-width: 31px;
+  border: solid 3px rgb(0, 245, 204);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
