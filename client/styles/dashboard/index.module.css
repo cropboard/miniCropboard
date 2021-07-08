@@ -1,0 +1,44 @@
+.mainDashboardPage {
+  height: 100vh;
+}
+
+.mainDashboardContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mainControlSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  margin-left: 1em;
+}
+
+.mainControlSectionElementContainer {
+  background-color: rgba(245, 245, 245, 0.562);
+  padding: 0.5em;
+  max-height: 250px;
+  border-radius: 6px;
+}
+
+.noFarmShower {
+  margin-top: 1em;
+  margin-right: 1em;
+  background-color: whitesmoke;
+  border-radius: 6px;
+  width: 80vw;
+  height: 100vh;
+  padding-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+}
+.noFarmShower img {
+  min-width: 50px;
+  max-width: 50px;
+}
