@@ -7,8 +7,10 @@ import ControlButton from "./ControlButton";
 const DashboardMaincontrols: FunctionComponent = (): JSX.Element => {
     return (
         <aside>
-            <CreateFarmButton />
+            <CreateFarmButton action={alert} />
             <ControlButton name="Analytics" iconSource="/dashboard/chart.svg" action={alert} />
+            <ControlButton name="Tasks" iconSource="/dashboard/task.svg" action={alert} />
+            <ControlButton name="History" iconSource="/dashboard/clock-outline.svg" action={alert} />
         </aside>
     )
 }
