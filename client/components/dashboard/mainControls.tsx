@@ -8,6 +8,7 @@ const DashboardMaincontrols: FunctionComponent = (): JSX.Element => {
     return (
         <aside>
             <CreateFarmButton />
+            <ControlButton name="Analytics" iconSource="/dashboard/chart.svg" action={alert} />
         </aside>
     )
 }
