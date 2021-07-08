@@ -1,14 +1,14 @@
 import React, { FunctionComponent } from "react";
 
-
+import styles from "../../styles/dashboard/components.module.css";
 
 const CreateFarmButton: FunctionComponent = (): JSX.Element => {
     return (
-        <div>
-            <h2>
+        <div className={styles.createFarmButton}>
+            <p>
                 New Farm
-            </h2>
-            <img src="/dashboard/plus-outline.svg" alt="" />
+            </p>
+            <img src="/dashboard/plus-outline.png" alt="" />
         </div>
     )
 }
