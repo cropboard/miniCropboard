@@ -2,16 +2,16 @@ import React, { FunctionComponent } from "react";
 
 // import custom components
 import DashboardHeader from "../../components/dashboard/Header";
-import CreateFarmButton from "../../components/dashboard/createFarmButton";
+import DashboardMaincontrols from "../../components/dashboard/mainControls";
 
 const DashboardIndex: FunctionComponent = (): JSX.Element => {
     return (
         <div style={{ height: "100vh" }}>
             <DashboardHeader />
             <div>
-                <aside>
-                    <CreateFarmButton />
-                </aside>
+                <section>
+                    <DashboardMaincontrols />
+                </section>
             </div>
         </div>
     )
