@@ -2,9 +2,13 @@ import React, { FunctionComponent } from "react";
 
 import styles from "../../styles/dashboard/components.module.css";
 
-const CreateFarmButton: FunctionComponent = (): JSX.Element => {
+interface createFarmButtonProps {
+    action: any
+}
+
+const CreateFarmButton: FunctionComponent<createFarmButtonProps> = ({ action }): JSX.Element => {
     return (
-        <div className={styles.createFarmButton}>
+        <div onClick={() => action()} className={styles.createFarmButton}>
             <p>
                 New Farm
             </p>
