@@ -1,0 +1,35 @@
+.registrationFormContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.registrationForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 3px 2px whitesmoke;
+  max-width: 300px;
+  padding: 2em;
+  border-radius: 6px;
+}
+
+.registrationForm input {
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+  border: solid 1px black;
+  border-radius: 6px;
+}
+
+.registrationForm input:focus {
+  outline: none;
+}
+
+.registrationForm button {
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+  border: solid transparent;
+  width: 100%;
+  border-radius: 6px;
+  background-color: rgb(118, 252, 118);
+}

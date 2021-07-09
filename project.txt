@@ -1,0 +1,55 @@
+MiniCropBoard 
+
+This project aims at providing basic functionality for the cropboard project
+Its main goal as from what i think is to collect some data from farmers that can be used in the main project.
+This way, i will have a better view of what farmers want, the issues they usually face and be able 
+to create a small mind model of what they encounter and also what the main issue (or atleast a rough sketch of what the main issue is)
+in their agricultural and or farming activity.
+
+What will this app do
+
+It will basically collect the following data
+
+- Fertilizer usage (applied)
+- Quantity of seeds input (in a physical quantity like tonnes)
+- We will, in the background, track the location of the farmer
+- We will provide weather data (daily and future forecasts)
+- Water usage
+- Expenditures in inputs
+- The amount got back in the month
+- We calculate the revenue of the farmer depending on the initial expenditures that month
+- We automatically calculate the farmer's crop yield and productivity for them
+- When a farmer enters the fertilizer type he is using for a month, we save it so he can always have an option to select it 
+in the future
+- We get the farmer's sales if possible
+- We collect the location of the farm(s) of the farmer
+
+We keep track of the weather conditions to continue tailoring what is going on.
+
+We help the farmer in having an analytical overview of what is going on in his farm by presenting graphs and charts.
+
+In the background, we make use of the farmer's IP address to be able to know his location but still we let him enter
+this information at registration.
+
+On every login or everytime the farmer opens the app, we get his geological coordinates.
+
+We build a machine learning model to be able to identify sick and healthy plants and deploy it in the app to help the farmers.
+We request the farmers to upload more pictures of their plants and data they get while we collect it to build a model.
+Or when farmers try to identify their sick or healthy plants, we take the picture they input, clean it and use it
+to improve on the model
+
+This is not going to be easy to build for sure but it is all i got for now. Also the app has to be entirely free to use 
+so that farmers can easily have access to it and use it without worrying about paying a fee.
+
+# If a product is free, you are the product
+
+That is right, here the farmer will provide be the data we will be collecting. But it is for the good right ?!
+We will let the farmers who register know that anyways. 
+Running the 'small' app will let us continually get better at it.
+
+
+## Okay weather data is really complicated sometimes... What data do we want exactly ?
+
+temperature: Int
+day: TimeStamp
+
