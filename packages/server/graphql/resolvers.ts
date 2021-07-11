@@ -27,11 +27,12 @@ const resolvers = {
     Mutation: {
         createUser: (parent: any, args: any) => {
             let isError: boolean = false;
+            let registerDate: string = new Date().toString();
             const newUser = User.create({
                 name: args.name,
                 email: args.email,
                 password: args.password,
-                registrationDate: args.registraionDate,
+                registrationDate: registerDate,
                 location: args.location
             }, (error: any, newuser) => {
                 // handle your fail safes bro ;)
