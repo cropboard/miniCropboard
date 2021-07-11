@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 
 // import styles 
 import styles from "../../styles/auth/auth.module.css";
@@ -8,6 +8,15 @@ import AuthPagesHeader from "../../components/auth/Header";
 import Logo from "../../components/logo";
 
 const RegisterPage: FunctionComponent = (): JSX.Element => {
+
+    // states for the registration input fields
+    const [name, setName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [location, setLocation] = useState<string>("");
+
+
     return (
         <div>
             <AuthPagesHeader context="Registration" />
