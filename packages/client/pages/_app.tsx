@@ -16,4 +16,5 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }): JSX.Element
     )
 }
 
+export { client };
 export default App;

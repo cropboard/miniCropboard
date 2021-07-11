@@ -2,6 +2,19 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 
 // import styles 
 import styles from "../../styles/auth/auth.module.css";
+import { useMutation, gql } from "@apollo/client";
+import { client } from "../_app";
+
+// register user mutation
+const registerUserMutation = gql`
+    mutation CreateUser($userName: String!, $userEmail: String!, $userPassword: String!, $userLocation: String!) {
+        createUser(name: $userName, email: $userEmail, password: $userPassword, location: $userLocation) {
+            name,
+            email
+        }
+    }
+`;
+
 
 // import custom components
 import AuthPagesHeader from "../../components/auth/Header";
