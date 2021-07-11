@@ -43,14 +43,18 @@ const RegisterPage: FunctionComponent = (): JSX.Element => {
 
     function registerUser(event) {
         event.preventDefault();
-        createUser({
-            variables: {
-                userName: name,
-                userEmail: email,
-                userPassword: confirmPassword,
-                userLocation: location
-            }
-        });
+        if (chechIsSamePassowrd()) {
+            createUser({
+                variables: {
+                    userName: name,
+                    userEmail: email,
+                    userPassword: confirmPassword,
+                    userLocation: location
+                }
+            });
+        } else {
+            alert("Passwords don't match");
+        }
     }
 
     return (
