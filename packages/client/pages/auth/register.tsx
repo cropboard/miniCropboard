@@ -16,6 +16,10 @@ const RegisterPage: FunctionComponent = (): JSX.Element => {
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [location, setLocation] = useState<string>("");
 
+    // function to handle text input field changes
+    function handleTextFieldChange(event, handler: Function): void {
+        handler(event.target.value);
+    }
 
     return (
         <div>
@@ -26,11 +30,11 @@ const RegisterPage: FunctionComponent = (): JSX.Element => {
                     <span>
                         <Logo />
                     </span>
-                    <input type="text" placeholder="Name" />
-                    <input type="text" placeholder="Email" />
-                    <input type="text" placeholder="Password" />
-                    <input type="text" placeholder="Confirm Password" />
-                    <input type="text" placeholder="Location" />
+                    <input value={name} onChange={event => handleTextFieldChange(event, setName)} type="text" placeholder="Name" />
+                    <input value={email} onChange={event => handleTextFieldChange(event, setEmail)} type="text" placeholder="Email" />
+                    <input value={password} onChange={event => handleTextFieldChange(event, setPassword)} type="password" placeholder="Password" />
+                    <input value={confirmPassword} onChange={event => handleTextFieldChange(event, setConfirmPassword)} type="password" placeholder="Confirm Password" />
+                    <input value={location} onChange={event => handleTextFieldChange(event, setLocation)} type="text" placeholder="Location" />
                     <button>
                         Register
                     </button>
