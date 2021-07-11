@@ -38,12 +38,27 @@ const RegisterPage: FunctionComponent = (): JSX.Element => {
         return confirmPassword === password;
     }
 
+    // create user mutation execution
+    const [createUser, { data }] = useMutation(registerUserMutation);
+
+    function registerUser(event) {
+        event.preventDefault();
+        createUser({
+            variables: {
+                userName: name,
+                userEmail: email,
+                userPassword: confirmPassword,
+                userLocation: location
+            }
+        });
+    }
+
     return (
         <div>
             <AuthPagesHeader context="Registration" />
 
             <section className={styles.registrationFormContainer}>
-                <form className={styles.registrationForm}>
+                <form onSubmit={event => registerUser(event)} className={styles.registrationForm}>
                     <span>
                         <Logo />
                     </span>
