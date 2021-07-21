@@ -1,12 +1,20 @@
 
 import { User, Farm, Crop } from "../database/index";
 
+import * as jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+
 // import custom scalar
 import { weatherScalar } from "../scalars/weatheraScalar";
 /* 
 Here we handle all of the database queries
 necessary to maintain the GraphQL service
 */
+
+// configure environment variables
+dotenv.config();
+
+const SECRET_KEY: string = process.env.SECRET;
 
 const resolvers = {
     Weather: weatherScalar,
@@ -25,16 +33,17 @@ const resolvers = {
         }
     },
     Mutation: {
-        createUser: (parent: any, args: any) => {
+        createUser: async (parent: any, args: any) => {
             let isError: boolean = false;
             let registerDate: string = new Date().toString();
-            const newUser = User.create({
+            let userId;
+            const newUser = await User.create({
                 name: args.name,
                 email: args.email,
                 password: args.password,
                 registrationDate: registerDate,
                 location: args.location
-            }, (error: any, newuser) => {
+            }, async (error: any, newuser) => {
                 // handle your fail safes bro ;)
 
                 if (error) {
@@ -42,10 +51,13 @@ const resolvers = {
                     return Error(error);
                 };
 
+                userId = await newuser._id;
+
                 // console.log(newuser);
                 return newuser;
             });
            if (!isError) {
+               const user = jwt.sign({userID: userId, name: args.name}, SECRET_KEY);
                return { // return the info of the newly created user
                 name: args.name,
                 email: args.email,
