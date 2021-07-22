@@ -4,7 +4,9 @@
   "description": "The official server for the mini version of cropboard",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc",
+    "run:dev": "ts-node index.ts"
   },
   "keywords": [
     "cropboard",
