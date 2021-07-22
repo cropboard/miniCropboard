@@ -14,7 +14,7 @@ necessary to maintain the GraphQL service
 // configure environment variables
 dotenv.config();
 
-const SECRET_KEY: string = process.env.SECRET;
+const SECRET_KEY: any = process.env.SECRET;
 
 const resolvers = {
     Weather: weatherScalar,
@@ -30,7 +30,8 @@ const resolvers = {
             });
             unval = await user;
             return userData;
-        }
+        },
+        hello: () => "World"
     },
     Mutation: {
         createUser: async (parent: any, args: any) => {

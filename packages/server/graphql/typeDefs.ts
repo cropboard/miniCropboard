@@ -1,4 +1,4 @@
-import { gql } from "apollo-server";
+import { gql } from "apollo-server-express";
 
 /* 
 All of the models in the database will default to a 
@@ -48,6 +48,7 @@ type Query {
     user(id: ID!): User
     farm(id: ID!): Farm
     crop(id: ID!): Crop
+    hello: String
 }
 
 type Mutation {
