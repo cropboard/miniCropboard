@@ -2,19 +2,6 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 
 // import styles 
 import styles from "../../styles/auth/auth.module.css";
-import { useMutation, gql } from "@apollo/client";
-import { client } from "../_app";
-
-// register user mutation
-const registerUserMutation = gql`
-    mutation CreateUser($userName: String!, $userEmail: String!, $userPassword: String!, $userLocation: String!) {
-        createUser(name: $userName, email: $userEmail, password: $userPassword, location: $userLocation) {
-            name,
-            email
-        }
-    }
-`;
-
 
 // import custom components
 import AuthPagesHeader from "../../components/auth/Header";
@@ -38,31 +25,12 @@ const RegisterPage: FunctionComponent = (): JSX.Element => {
         return confirmPassword === password;
     }
 
-    // create user mutation execution
-    const [createUser, { data }] = useMutation(registerUserMutation);
-
-    function registerUser(event) {
-        event.preventDefault();
-        if (chechIsSamePassowrd()) {
-            createUser({
-                variables: {
-                    userName: name,
-                    userEmail: email,
-                    userPassword: confirmPassword,
-                    userLocation: location
-                }
-            });
-        } else {
-            alert("Passwords don't match");
-        }
-    }
-
     return (
         <div>
             <AuthPagesHeader context="Registration" />
 
             <section className={styles.registrationFormContainer}>
-                <form onSubmit={event => registerUser(event)} className={styles.registrationForm}>
+                <form >
                     <span>
                         <Logo />
                     </span>
