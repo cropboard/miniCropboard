@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "tsc && sh v.sh",
+    "build": "tsc && sh v.sh 'yarn install --modules-folder ./cbserverdist/'",
     "run:dev": "ts-node index.ts"
   },
   "keywords": [
