@@ -27,3 +27,5 @@ const server = new ApolloServer({
 server.start().then(() => server.applyMiddleware({app}));
 
 app.listen({port: 4000}, () => console.log("Working... 4000"));
+
+module.exports = app;
