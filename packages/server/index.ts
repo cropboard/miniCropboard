@@ -7,7 +7,7 @@ import { resolvers } from "./graphql/resolvers";
 
 // import express
 import express, { Application, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 // import user model for authentication operations
 import { User } from "./database";
@@ -113,6 +113,38 @@ app.post("/login", (req: Request, res: Response) => {
     });
 
     // logged in bro  
+});
+
+// this route is to check if the user is authenticated on the client side when he/she opens the 
+// dashboard. This is to prevent a flash of unauthenticated content or view of the dashbord
+
+app.post("/isauthenticated", (req: Request, res: Response) => {
+    const { token } = req.body;
+
+    // we verify if the token is valid.
+    // we just need to know if it is still valid issuer and non-expired
+    // then we check if the email exist in the database
+    let tokenData: JwtPayload;
+    try {
+        tokenData = validateToken(token);
+
+        User.findOne({email: tokenData.email}, (error: any, user: any) => {
+        if (error) {
+            res.json({
+                message: "The user does no exist"
+            });
+        } 
+        res.json({
+                message: "Authenticated"
+        });
+    });
+    } catch(err) {
+        res.json({
+            message: "Not Authenticated"
+        });
+    }
+    // console.log(typeof tokenData.email);
+    // res.send("Some error occurred on the server");
 });
 
 /* End of authentication routes */

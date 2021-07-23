@@ -11,7 +11,7 @@ interface userData {
 }
 
 function createToken({email, id}: userData): string {
-    let token: string = jwt.sign({email: email, id: id}, SECRET_KEY as string, { expiresIn: "30d", issuer: "miniCropboard" });
+    let token: string = jwt.sign({email: email, id: id}, SECRET_KEY as string, { expiresIn: "10", issuer: "miniCropboard" });
     return token;
 }
 
@@ -21,9 +21,9 @@ function validateToken(token: string): any {
         return result;
     } catch (error: any) {
         if (error.name === "TokenExpiredError") {
-            return {"message": "TokenExpired"}
+            throw Error("TokenExpired")
         } else {
-            return {"message": "TokenInvalid"}
+            throw Error("TokenInvalid")
         }
     }
 }
