@@ -11,7 +11,7 @@ interface userData {
 }
 
 function createToken({email, id}: userData): string {
-    let token: string = jwt.sign({email: email, id: id}, SECRET_KEY as string, { expiresIn: "10", issuer: "miniCropboard" });
+    let token: string = jwt.sign({email: email, id: id}, SECRET_KEY as string, { expiresIn: "30d", issuer: "miniCropboard" });
     return token;
 }
 
