@@ -1,10 +1,9 @@
 
 import { User, Farm, Crop } from "../database/index";
-
 import * as dotenv from "dotenv";
 
 // import custom scalar
-import { weatherScalar } from "../scalars/weatheraScalar";
+import { weatherScalar } from "../scalars/weatherScalar";
 /* 
 Here we handle all of the database queries
 necessary to maintain the GraphQL service
