@@ -7,6 +7,8 @@ import { resolvers } from "./graphql/resolvers";
 
 // import express
 import express, { Application } from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 //instance app
 const app: Application = express();
@@ -19,7 +21,7 @@ and resolvers
 const server = new ApolloServer({
     typeDefs, 
     resolvers, 
-    logger: requestLogger
+    logger: requestLogger,
 });
 
 // server.listen().then(({url}) => console.log(url));
