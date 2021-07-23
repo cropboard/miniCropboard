@@ -27,3 +27,15 @@ function validateToken(token: string): any {
         }
     }
 }
+
+/* // testing both functions
+let token = createToken({email: "josias@josiasw.dev", id: "12345"});
+
+console.log(token);
+
+let decoded = validateToken(token);
+
+console.log(decoded);
+ */
+
+export { createToken, validateToken };
