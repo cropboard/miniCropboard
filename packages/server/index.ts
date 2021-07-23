@@ -21,6 +21,9 @@ import { createToken, validateToken } from "./utils/tokenmanager";
 //instance app
 const app: Application = express();
 
+// make use of express json
+app.use(expres.json());
+
 /* Very specific operations -> Authentication handled in REST API */
 app.post("/signup", (req: Request, res: Response) => {
     // get information from user request
