@@ -54,7 +54,7 @@ app.post("/signup", (req: Request, res: Response) => {
 
         // generate a token for the user
         let newUserToken: string = createToken({email: user.email, id: user._id});
-        console.table({name: user.name, email: user.email, id: user._id.toString(), password: user.password, location: user.location, registrationDate: user.registrationDate});
+        // console.table({name: user.name, email: user.email, id: user._id.toString(), password: user.password, location: user.location, registrationDate: user.registrationDate});
         res.send({
             "Message": "Created Successfully",
             "Token": newUserToken
