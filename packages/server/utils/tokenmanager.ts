@@ -15,3 +15,15 @@ function createToken({email, id}: userData): string {
     return token;
 }
 
+function validateToken(token: string): any {
+    try {
+        let result: string | JwtPayload = jwt.verify(token, SECRET_KEY as string, {issuer: "miniCropboard"});
+        return result;
+    } catch (error: any) {
+        if (error.name === "TokenExpiredError") {
+            return {"message": "TokenExpired"}
+        } else {
+            return {"message": "TokenInvalid"}
+        }
+    }
+}
