@@ -1,12 +1,18 @@
 
 import { User, Farm, Crop } from "../database/index";
+import * as dotenv from "dotenv";
 
 // import custom scalar
-import { weatherScalar } from "../scalars/weatheraScalar";
+import { weatherScalar } from "../scalars/weatherScalar";
 /* 
 Here we handle all of the database queries
 necessary to maintain the GraphQL service
 */
+
+// configure environment variables
+dotenv.config();
+
+const SECRET_KEY: any = process.env.SECRET_KEY;
 
 const resolvers = {
     Weather: weatherScalar,
@@ -22,44 +28,10 @@ const resolvers = {
             });
             unval = await user;
             return userData;
-        }
+        },
+        hello: () => "World"
     },
     Mutation: {
-        createUser: (parent: any, args: any) => {
-            let isError: boolean = false;
-            let registerDate: string = new Date().toString();
-            const newUser = User.create({
-                name: args.name,
-                email: args.email,
-                password: args.password,
-                registrationDate: registerDate,
-                location: args.location
-            }, (error: any, newuser) => {
-                // handle your fail safes bro ;)
-
-                if (error) {
-                    isError = true;
-                    return Error(error);
-                };
-
-                // console.log(newuser);
-                return newuser;
-            });
-           if (!isError) {
-               return { // return the info of the newly created user
-                name: args.name,
-                email: args.email,
-                location: args.location
-               }
-           } else {
-               return { // return the info of the newly created user
-                name: "NO",
-                email: "NO",
-                location: "NO"
-               }
-           }
-        },
-
         createFarm: (parent: any, args: any) => {
             let isError: boolean = false;
             const newFarm = Farm.create({
