@@ -22,12 +22,12 @@ import { createToken, validateToken } from "./utils/tokenmanager";
 const app: Application = express();
 
 // make use of express json
-app.use(expres.json());
+app.use(express.json());
 
 /* Very specific operations -> Authentication handled in REST API */
 app.post("/signup", (req: Request, res: Response) => {
     // get information from user request
-    console.log(req.body);
+    // console.log(req.body);
     const { name, email, location, password } = req.body;
 
     // user registration date
@@ -54,7 +54,7 @@ app.post("/signup", (req: Request, res: Response) => {
 
         // generate a token for the user
         let newUserToken: string = createToken({email: user.email, id: user._id});
-        console.table(user);
+        console.table({name: user.name, email: user.email, id: user._id.toString(), password: user.password, location: user.location, registrationDate: user.registrationDate});
         res.send({
             "Message": "Created Successfully",
             "Token": newUserToken
