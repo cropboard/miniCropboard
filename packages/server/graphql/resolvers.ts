@@ -1,7 +1,6 @@
 
 import { User, Farm, Crop } from "../database/index";
 
-import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 
 // import custom scalar
@@ -14,7 +13,7 @@ necessary to maintain the GraphQL service
 // configure environment variables
 dotenv.config();
 
-const SECRET_KEY: any = process.env.SECRET;
+const SECRET_KEY: any = process.env.SECRET_KEY;
 
 const resolvers = {
     Weather: weatherScalar,
