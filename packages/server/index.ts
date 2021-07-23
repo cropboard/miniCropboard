@@ -71,6 +71,48 @@ app.post("/login", (req: Request, res: Response) => {
     // get information submitted
     const { email, password } = req.body;
 
+    User.findOne({email: email}, (error: any, user: any) => {
+        // handle error
+        // console.log(error);
+        if (error) {
+            // return an error if no account matches the entered email
+            res.json({
+                message: "Could not find an account with that email"
+            });
+            return
+        }
+
+        // the above error handler seems not to handle errors the way i expect
+        // Maybe wrapping what is below in a try-catch block might help
+        // the assumption is that the catch means the email entered was incorrect here
+
+        try {
+            	// if there are no errors, do this ->
+            if (isPassword(password, user.password)) {
+            // if the password entered by the user is a valid one
+            // create a new token to issue
+            let newToken: string = createToken({email: user.email, id: user._id});
+
+            res.json({
+                "message": "Login Successful",
+                "token": newToken
+            });
+
+        } else {
+            // incorrect password if no match
+            res.json({
+                message: "Incorrect Password"
+            });
+        }
+        } catch (err0r) {
+            res.json({
+                message: "Incorrect email"
+            })
+        }
+
+    });
+
+    // logged in bro  
 });
 
 /* End of authentication routes */
