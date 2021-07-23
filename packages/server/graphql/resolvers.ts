@@ -34,45 +34,6 @@ const resolvers = {
         hello: () => "World"
     },
     Mutation: {
-        createUser: async (parent: any, args: any) => {
-            let isError: boolean = false;
-            let registerDate: string = new Date().toString();
-            let userId;
-            const newUser = await User.create({
-                name: args.name,
-                email: args.email,
-                password: args.password,
-                registrationDate: registerDate,
-                location: args.location
-            }, async (error: any, newuser) => {
-                // handle your fail safes bro ;)
-
-                if (error) {
-                    isError = true;
-                    return Error(error);
-                };
-
-                userId = await newuser._id;
-
-                // console.log(newuser);
-                return newuser;
-            });
-           if (!isError) {
-               const user = jwt.sign({userID: userId, name: args.name}, SECRET_KEY);
-               return { // return the info of the newly created user
-                name: args.name,
-                email: args.email,
-                location: args.location
-               }
-           } else {
-               return { // return the info of the newly created user
-                name: "NO",
-                email: "NO",
-                location: "NO"
-               }
-           }
-        },
-
         createFarm: (parent: any, args: any) => {
             let isError: boolean = false;
             const newFarm = Farm.create({
