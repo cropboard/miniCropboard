@@ -45,14 +45,12 @@ type Crop {
 }
 
 type Query {
-    user(id: ID!): User
-    farm(id: ID!): Farm
-    crop(id: ID!): Crop
+    user: User
     hello: String
 }
 
 type Mutation {
-    createFarm(title: String!, owner: String!, location: String!, fertilizer: String!, inputSeeds: String!, plant: String!, category: String!): Farm
+    createFarm(title: String!, location: String!, fertilizer: String!, inputSeeds: String!, plant: String!, category: String!): Farm
     updateFarm(title: String, location: String, fertilizer: String, inputSeeds: String, plant: String, category: String): Farm
 
     createCrop(name: String!, category: String!, fertilizerQuantity: Int!, water: Int!, cost: Int!, timeStamp: String!, weather: Weather!, farm: String!): Crop

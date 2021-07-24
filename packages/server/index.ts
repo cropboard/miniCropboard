@@ -156,6 +156,22 @@ const server = new ApolloServer({
     typeDefs, 
     resolvers, 
     logger: requestLogger,
+    context: ({req}) => {
+
+        // get the request headers
+        const requestHeaders: any = req.headers;
+
+        // get the authentication JWT
+        const authToken: string = (requestHeaders.authorization).split(" ")[1];
+
+        // validate the token to get user data
+        try {
+            const userData: any = validateToken(authToken);
+            return userData;
+        } catch (error: any) {
+            return {"message": "AuthError"};
+        }
+    }
 });
 
 // server.listen().then(({url}) => console.log(url));
