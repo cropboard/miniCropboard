@@ -48,7 +48,12 @@ const resolvers = {
         }
     },
     Mutation: {
-        createFarm: (parent: any, args: any, context: any) => {
+        createFarm: async (parent: any, args: any, context: any) => {
+
+            // contain farm data
+            let farmData: any;
+
+            // handle error case
             if (context.message === "AuthError") {
                 return {
                     title: "AuthError",
@@ -57,12 +62,16 @@ const resolvers = {
                     fertilizer: "AuthError",
                     inputSeeds: "AuthError",
                     plant: "AuthError",
-                    category:"AuthError"
+                    category:"AuthError",
+                    id: "AuthError"
                 }
             }
 
+            // error bool container
             let isError: boolean = false;
-            const newFarm = Farm.create({
+
+            // create new farm
+            const newFarm_ = Farm.create({
                 title: args.title,
                 owner: context.id,
                 location: args.location,
@@ -76,20 +85,11 @@ const resolvers = {
                     return Error(error);
                 }
 
+                farmData = newfarm;
                 return newfarm;
             });
 
-            if (!isError) {
-                return {
-                    title: args.title,
-                    owner: context.id,
-                    location: args.location,
-                    fertilizer: args.fertilizer,
-                    inputSeeds: args.inputSeeds,
-                    plant: args.plant,
-                    category: args.category
-                }
-            } else {
+            if (isError) {
                 return {
                     title: "NO",
                     owner: "NO",
@@ -100,6 +100,19 @@ const resolvers = {
                     category: "NO"
                 }
             }
+
+            // this executes if no error occurs
+            let unval = await newFarm_;
+            return {
+                title: args.title,
+                owner: context.id,
+                location: args.location,
+                fertilizer: args.fertilizer,
+                inputSeeds: args.inputSeeds,
+                plant: args.plant,
+                category: args.category
+            }
+        
         },
         updateFarm: (parent: any, args: any) => {
             let farmId: string = args.id;
@@ -144,13 +157,14 @@ const resolvers = {
         },
         createCrop: (parent: any, args: any) => {
             let isError: boolean = false;
+            let timeStamp: string = new Date().toString();
             let newCrop = Crop.create({
                 name: args.name,
                 category: args.category,
                 fertilizerQuantity: args.fertilizerQuantity,
                 water: args.water, 
                 cost: args.cost,
-                timeStamp: args.timeStamp,
+                timeStamp: timeStamp,
                 weather: args.weather,
                 farm: args.farm
             }, (error: any, newcrop: any) => {
@@ -168,7 +182,7 @@ const resolvers = {
                     fertilizerQuantity: args.fertilizerQuantity,
                     water: args.water, 
                     cost: args.cost,
-                    timeStamp: args.timeStamp,
+                    timeStamp: timeStamp,
                     weather: args.weather,
                     farm: args.farm
                 }
@@ -180,6 +194,7 @@ const resolvers = {
     User: {
         farms: async (parent: any, args: any) => {
             // fetch all farms where the id equal the id of the parent
+            console.log(parent);
             let isError: boolean = false; // chcecker for errors
             let farms;
             let unval; // waiter
