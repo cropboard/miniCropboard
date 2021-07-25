@@ -108,8 +108,9 @@ app.post("/login", (req: Request, res: Response) => {
             let newToken: string = createToken({email: user.email, id: user._id});
 
             res.json({
-                "message": "Login Successful",
-                "token": newToken
+                message: "Login Successful",
+                token: newToken,
+                name: user.name
             });
 
         } else {
