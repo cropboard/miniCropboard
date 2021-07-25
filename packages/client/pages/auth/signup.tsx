@@ -7,6 +7,10 @@ import styles from "../../styles/auth/auth.module.css";
 import AuthPagesHeader from "../../components/auth/Header";
 import Logo from "../../components/logo";
 
+// import util
+import { signupHandler } from "../../utils/fetcher";
+
+const SERVER_: string = "http://localhost:4000";
 
 const SignUpPage: FunctionComponent = (): JSX.Element => {
 
@@ -17,6 +21,9 @@ const SignUpPage: FunctionComponent = (): JSX.Element => {
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [location, setLocation] = useState<string>("");
 
+    // is he finally registered
+    const [isRegistered, setIsRegistered] = useState<boolean>();
+
     // function to handle text input field changes
     function handleTextFieldChange(event, handler: Function): void {
         handler(event.target.value);
@@ -26,12 +33,31 @@ const SignUpPage: FunctionComponent = (): JSX.Element => {
         return confirmPassword === password;
     }
 
+    // registration handler
+    async function registerUser(event: any): Promise<void> {
+        event.preventDefault();
+
+        // registration status
+        let registrationStatus: any = await signupHandler(SERVER_, name, confirmPassword, email, location);
+
+        // handle not registered status
+        if (!registrationStatus) {
+            setIsRegistered(false);
+        }
+
+        // set auth token
+        // console.log(`Registration status : ${JSON.stringify(registrationStatus)}`);
+        localStorage.setItem("user", registrationStatus.token);
+        localStorage.setItem("userName", registrationStatus.name);
+
+    }
+
     return (
         <div>
             <AuthPagesHeader context="Registration" />
 
             <section className={styles.registrationFormContainer}>
-                <form className={styles.registrationForm}>
+                <form className={styles.registrationForm} onSubmit={event => registerUser(event)}>
                     <span>
                         <Logo />
                     </span>
