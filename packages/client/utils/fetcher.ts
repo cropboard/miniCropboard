@@ -38,6 +38,32 @@ async function signupHandler(server: string, name: string, password: string, ema
     return {state: "Created", token: registrationResponse.Token, name: registrationResponse.name}
 }
 
+async function loginHandler(server: string, email: string, password: string): Promise<any> {
+
+    // headers
+    const requestHeaders: HeadersInit = {
+        "Content-Type": "application/json",
+    };
+
+    // data necessary to register new user
+    let userData: object = {
+        email: email,
+        password: password,
+    };
+
+    // fetch results
+    let fetchResult = await fetch(`${SERVER_URI || server}/signup`, {
+        method: "POST",
+        headers: requestHeaders,
+        body: JSON.stringify(userData)
+    });
+
+    // the data got back from server -> expecting success
+    let registrationResponse: any = await fetchResult.json();
+
+    console.log(registrationResponse);
+}
+
 
 // function to send GraphQL requests
 // query has to be JSON stringified if JSON object
@@ -141,4 +167,4 @@ async function createCrop(
 }
 
 
-export { signupHandler };
+export { signupHandler, loginHandler, createFarm, createCrop, updateFarm };
