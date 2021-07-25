@@ -1,3 +1,4 @@
+/* NotAuthCard stuffs */
 .notAuthCardContainer {
   display: flex;
   justify-content: center;
@@ -37,3 +38,30 @@
   min-width: 120px;
   max-width: 120px;
 }
+
+/* NotAuthCard stuffs end */
+
+/* Modal Stuff */
+.modalSkeleton {
+  position: relative;
+  z-index: 20;
+  top: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  box-shadow: 0 0 3px 2px whitesmoke;
+}
+
+.modalSkeletonClosed {
+  position: relative;
+  z-index: 20;
+  top: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  box-shadow: 0 0 3px 2px whitesmoke;
+  display: none;
+}
+/* Modal Stuff end */
