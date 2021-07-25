@@ -7,7 +7,10 @@ import { resolvers } from "./graphql/resolvers";
 
 // import express
 import express, { Application, Request, Response } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import { JwtPayload } from "jsonwebtoken";
+
+// import request logger
+const morgan = require("morgan");
 
 // import user model for authentication operations
 import { User } from "./database";
@@ -23,6 +26,9 @@ const app: Application = express();
 
 // make use of express json
 app.use(express.json());
+
+// make use of request logger for express
+app.use(morgan());
 
 /* Very specific operations -> Authentication handled in REST API */
 app.post("/signup", (req: Request, res: Response) => {
