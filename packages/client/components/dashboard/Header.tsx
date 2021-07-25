@@ -17,9 +17,11 @@ interface DashboardHeaderProps {
 
 const DashboardHeader: FunctionComponent<DashboardHeaderProps> = ({ name }): JSX.Element => {
     if (!name) {
-        <header className={styles.header}>
-            <Logo /> {/* Cropboard logo */}
-        </header>
+        return (
+            <header className={styles.header}>
+                <Logo /> {/* Cropboard logo */}
+            </header>
+        )
     }
 
     return (
