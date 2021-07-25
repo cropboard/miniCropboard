@@ -5,6 +5,7 @@ import DashboardHeader from "../../components/dashboard/Header";
 import DashboardMaincontrols from "../../components/dashboard/mainControls";
 
 import NoFarms from "../../components/dashboard/NoFarms";
+import NotAuthCard from "../../components/dashboard/notAuthCard";
 
 // import main dashboard styles
 import styles from "../../styles/dashboard/index.module.css";
@@ -43,9 +44,7 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
         return (
             <div>
                 <DashboardHeader />
-                <div>
-                    <h2>You are not Authenticated</h2>
-                </div>
+                <NotAuthCard />
             </div>
         )
     }
