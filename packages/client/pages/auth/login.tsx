@@ -10,9 +10,15 @@ import Logo from "../../components/logo";
 // import login handler
 import { loginHandler } from "../../utils/fetcher";
 
+// import next router for routing after auth
+import { NextRouter, useRouter } from "next/router";
+
 const SERVER_: string = "http://localhost:4000";
 
 const LoginPage: FunctionComponent = (): JSX.Element => {
+
+    // init router
+    const router: NextRouter = useRouter();
 
     // states for the registration input fields
     const [email, setEmail] = useState<string>("");
@@ -40,6 +46,9 @@ const LoginPage: FunctionComponent = (): JSX.Element => {
         // console.log(loginStatus);
         localStorage.setItem("user", loginStatus.token);
         localStorage.setItem("userName", loginStatus.name);
+
+        // redirect user to dashboard
+        router.replace("/dashboard");
 
     }
 

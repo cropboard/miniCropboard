@@ -10,9 +10,15 @@ import Logo from "../../components/logo";
 // import util
 import { signupHandler } from "../../utils/fetcher";
 
+// import next router for routing after auth
+import { NextRouter, useRouter } from "next/router";
+
 const SERVER_: string = "http://localhost:4000";
 
 const SignUpPage: FunctionComponent = (): JSX.Element => {
+
+    // init router
+    const router: NextRouter = useRouter();
 
     // states for the registration input fields
     const [name, setName] = useState<string>("");
@@ -49,6 +55,9 @@ const SignUpPage: FunctionComponent = (): JSX.Element => {
         // console.log(`Registration status : ${JSON.stringify(registrationStatus)}`);
         localStorage.setItem("user", registrationStatus.token);
         localStorage.setItem("userName", registrationStatus.name);
+
+        // redirect user to dashboard
+        router.replace("/dashboard");
 
     }
 
