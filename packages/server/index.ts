@@ -12,6 +12,9 @@ import { JwtPayload } from "jsonwebtoken";
 // import request logger
 const morgan = require("morgan");
 
+// import CORS solver ;)
+import cors from "cors";
+
 // import user model for authentication operations
 import { User } from "./database";
 
@@ -29,6 +32,9 @@ app.use(express.json());
 
 // make use of request logger for express
 app.use(morgan());
+
+// make use of CORS issue solver
+app.use(cors());
 
 /* Very specific operations -> Authentication handled in REST API */
 app.post("/signup", (req: Request, res: Response) => {
@@ -54,16 +60,18 @@ app.post("/signup", (req: Request, res: Response) => {
 
     newUser.save((error: Error, user: any) => {
         if (error) {
-            res.send({"Message": "Could not create user"});
+            res.send({"Message": "NotCreated"});
             return;
         }
 
         // generate a token for the user
         let newUserToken: string = createToken({email: user.email, id: user._id});
         // console.table({name: user.name, email: user.email, id: user._id.toString(), password: user.password, location: user.location, registrationDate: user.registrationDate});
-        res.send({
-            "Message": "Created Successfully",
-            "Token": newUserToken
+        res.json({
+            Message: "Created",
+            Token: newUserToken,
+            name: name,
+            email: email
         });
 
     });
