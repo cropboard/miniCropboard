@@ -102,7 +102,14 @@ async function createFarm(
 
 }
 
-async function updateFarm(authToken: string, title: string, location: string, fertilizer: string, inputSeeds: string, plant: string, category: string): Promise<void> {
+async function updateFarm(
+    authToken: string, 
+    title: string, 
+    location: string, 
+    fertilizer: string, 
+    inputSeeds: string, 
+    plant: string, 
+    category: string): Promise<void> {
     const updateFarmMutation: string = `
         updateFarm(title: ${title}, location: ${location}, fertilizer: ${fertilizer}, inputSeeds: ${inputSeeds}, plant: ${plant}, category: ${category}) {
             title,
