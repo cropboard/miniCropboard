@@ -102,4 +102,24 @@ async function createFarm(
 
 }
 
+async function createCrop(
+    authToken: string, 
+    name: string, 
+    category: string, 
+    fertilizerQuantity: number, 
+    water: number, 
+    cost: number, 
+    weather: object, 
+    farm: string): Promise<void> {
+    const createCropMutation: string = `
+        createCrop(name: ${name}, category: ${category}, fertilizerQuantity: ${fertilizerQuantity}, water: ${water}, cost: ${cost}, weather: ${JSON.stringify(weather)}, farm: ${farm}) {
+            name,
+            fertilizerQuantity
+        }
+    `;
+
+    const query = await sendGraphQLRequest(authToken, "mutation", createCropMutation);
+}
+
+
 export { signupHandler };
