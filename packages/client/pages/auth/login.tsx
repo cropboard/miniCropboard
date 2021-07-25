@@ -7,22 +7,40 @@ import styles from "../../styles/auth/auth.module.css";
 import AuthPagesHeader from "../../components/auth/Header";
 import Logo from "../../components/logo";
 
+// import login handler
+import { loginHandler } from "../../utils/fetcher";
+
+const SERVER_: string = "http://localhost:4000";
+
 const LoginPage: FunctionComponent = (): JSX.Element => {
 
     // states for the registration input fields
-    const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [confirmPassword, setConfirmPassword] = useState<string>("");
-    const [location, setLocation] = useState<string>("");
 
     // function to handle text input field changes
     function handleTextFieldChange(event, handler: Function): void {
         handler(event.target.value);
     }
 
-    function chechIsSamePassowrd(): boolean {
-        return confirmPassword === password;
+    async function loginUser(event: any): Promise<void> {
+
+        // prevent browser reload
+        event.preventDefault();
+
+        // login statuse
+        const loginStatus: any = await loginHandler(SERVER_, email, password);
+
+        if (loginStatus.state === "LoginError") {
+            // handle this with a model
+            alert("LoginError");
+            return
+        }
+
+        // console.log(loginStatus);
+        localStorage.setItem("user", loginStatus.token);
+        localStorage.setItem("userName", loginStatus.name);
+
     }
 
     return (
@@ -30,7 +48,7 @@ const LoginPage: FunctionComponent = (): JSX.Element => {
             <AuthPagesHeader context="Login" />
 
             <section className={styles.registrationFormContainer}>
-                <form className={styles.registrationForm}>
+                <form className={styles.registrationForm} onSubmit={event => loginUser(event)}>
                     <span>
                         <Logo />
                     </span>
