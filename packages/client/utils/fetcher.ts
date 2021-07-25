@@ -4,12 +4,12 @@
 // server uri
 const SERVER_URI: string = process.env.CB_SERVER_URI;
 
-// headers
-const requestHeaders: HeadersInit = {
-    "Content-Type": "application/json"
-};
-
 async function signupHandler(server: string, name: string, password: string, email: string, location: string): Promise<any> {
+
+    // headers
+    const requestHeaders: HeadersInit = {
+        "Content-Type": "application/json",
+    };
 
     // data necessary to register new user
     let userData: object = {
@@ -36,6 +36,47 @@ async function signupHandler(server: string, name: string, password: string, ema
     }
 
     return {state: "Created", token: registrationResponse.Token, name: registrationResponse.name}
+}
+
+
+// function to send GraphQL requests
+// query has to be JSON stringified
+// action can either be query or mutation
+async function sendGraphQLRequest(authToken: string, action: string, query: string): Promise<any> {
+    // request headers for GraphQL request
+    const requestHeaders: HeadersInit = {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${authToken}`
+    };
+
+    const graphqlActionQuery: string = `query { ${query} }`;
+    const graphqlActionMutation: string = `mutation { ${query} }`;
+
+    if (action === "query") {
+        const queryResponse = await fetch(`${SERVER_URI}/graphql`, {
+            method: "POST",
+            headers: requestHeaders,
+            body: graphqlActionQuery
+        });
+
+        const queryData = await queryResponse.json();
+
+        return queryData;
+    } else if (action === "mutation") {
+        const queryResponse = await fetch(`${SERVER_URI}/graphql`, {
+            method: "POST",
+            headers: requestHeaders,
+            body: graphqlActionMutation
+        });
+
+        const queryData = await queryResponse.json();
+
+        return queryData;
+    } else {
+        return Error("UnknownAction");
+    }
+
+    
 }
 
 export { signupHandler };
