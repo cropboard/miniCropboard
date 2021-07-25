@@ -8,9 +8,9 @@ const DashboardMaincontrols: FunctionComponent = (): JSX.Element => {
     return (
         <aside>
             <CreateFarmButton action={eval("console.log('yo')")} />
-            <ControlButton name="Analytics" iconSource="/dashboard/chart.svg" action={eval("console.log('yo')")} />
-            <ControlButton name="Tasks" iconSource="/dashboard/task.svg" action={eval("console.log('yo')")} />
-            <ControlButton name="History" iconSource="/dashboard/clock-outline.svg" action={eval("console.log('yo')")} />
+            <ControlButton name="Analytics" iconSource="/dashboard/chart.svg" action={() => undefined} />
+            <ControlButton name="Tasks" iconSource="/dashboard/task.svg" action={() => undefined} />
+            <ControlButton name="History" iconSource="/dashboard/clock-outline.svg" action={() => undefined} />
         </aside>
     )
 }
