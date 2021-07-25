@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent, useState } from "react";
 
 // import styles 
 import styles from "../../styles/auth/auth.module.css";
@@ -7,7 +7,7 @@ import styles from "../../styles/auth/auth.module.css";
 import AuthPagesHeader from "../../components/auth/Header";
 import Logo from "../../components/logo";
 
-const RegisterPage: FunctionComponent = (): JSX.Element => {
+const LoginPage: FunctionComponent = (): JSX.Element => {
 
     // states for the registration input fields
     const [name, setName] = useState<string>("");
@@ -27,21 +27,17 @@ const RegisterPage: FunctionComponent = (): JSX.Element => {
 
     return (
         <div>
-            <AuthPagesHeader context="Registration" />
+            <AuthPagesHeader context="Login" />
 
             <section className={styles.registrationFormContainer}>
-                <form >
+                <form className={styles.registrationForm}>
                     <span>
                         <Logo />
                     </span>
-                    <input value={name} onChange={event => handleTextFieldChange(event, setName)} type="text" placeholder="Name" />
                     <input value={email} onChange={event => handleTextFieldChange(event, setEmail)} type="text" placeholder="Email" />
                     <input value={password} onChange={event => handleTextFieldChange(event, setPassword)} type="password" placeholder="Password" />
-                    <input value={confirmPassword} onChange={event => handleTextFieldChange(event, setConfirmPassword)} type="password" placeholder="Confirm Password" />
-                    {chechIsSamePassowrd() ? <p style={{ color: "rgb(118, 252, 118)", fontFamily: "sans-serif" }}>Passwords Match</p> : <p style={{ color: "rgb(255 59 59)", fontFamily: "sans-serif" }}> Passwords do not match </p>}
-                    <input value={location} onChange={event => handleTextFieldChange(event, setLocation)} type="text" placeholder="Location" />
                     <button>
-                        Register
+                        Login
                     </button>
                 </form>
             </section>
@@ -49,4 +45,4 @@ const RegisterPage: FunctionComponent = (): JSX.Element => {
     )
 }
 
-export default RegisterPage;
+export default LoginPage;
