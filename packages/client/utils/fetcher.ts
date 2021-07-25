@@ -52,7 +52,7 @@ async function loginHandler(server: string, email: string, password: string): Pr
     };
 
     // fetch results
-    let fetchResult = await fetch(`${SERVER_URI || server}/signup`, {
+    let fetchResult = await fetch(`${SERVER_URI || server}/login`, {
         method: "POST",
         headers: requestHeaders,
         body: JSON.stringify(userData)
@@ -61,7 +61,12 @@ async function loginHandler(server: string, email: string, password: string): Pr
     // the data got back from server -> expecting success
     let registrationResponse: any = await fetchResult.json();
 
-    console.log(registrationResponse);
+    if (registrationResponse.message === "Incorrect Password" || registrationResponse.message === "Incorrect email") {
+        return { state: "LoginError" }
+    }
+
+    return registrationResponse;
+    
 }
 
 
