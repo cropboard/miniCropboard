@@ -3,7 +3,7 @@ import React, { FunctionComponent } from "react";
 import styles from "../../styles/dashboard/components.module.css";
 
 interface createFarmButtonProps {
-    action: any
+    action?: Function
 }
 
 const CreateFarmButton: FunctionComponent<createFarmButtonProps> = ({ action }): JSX.Element => {

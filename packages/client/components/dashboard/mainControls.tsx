@@ -4,13 +4,22 @@ import React, { FunctionComponent } from "react";
 import CreateFarmButton from "./createFarmButton";
 import ControlButton from "./ControlButton";
 
-const DashboardMaincontrols: FunctionComponent = (): JSX.Element => {
+
+interface DashboardMaincontrolsProps {
+    createFarmAction?: Function
+    analyticsAction?: Function
+    tasksAction?: Function
+    historyAction?: Function
+}
+
+const DashboardMaincontrols: FunctionComponent<DashboardMaincontrolsProps> = ({ createFarmAction, analyticsAction, tasksAction, historyAction }): JSX.Element => {
+
     return (
         <aside>
-            <CreateFarmButton action={eval("console.log('yo')")} />
-            <ControlButton name="Analytics" iconSource="/dashboard/chart.svg" action={eval("console.log('yo')")} />
-            <ControlButton name="Tasks" iconSource="/dashboard/task.svg" action={eval("console.log('yo')")} />
-            <ControlButton name="History" iconSource="/dashboard/clock-outline.svg" action={eval("console.log('yo')")} />
+            <CreateFarmButton action={() => createFarmAction()} />
+            <ControlButton name="Analytics" iconSource="/dashboard/chart.svg" action={() => analyticsAction()} />
+            <ControlButton name="Tasks" iconSource="/dashboard/task.svg" action={() => tasksAction()} />
+            <ControlButton name="History" iconSource="/dashboard/clock-outline.svg" action={() => historyAction()} />
         </aside>
     )
 }

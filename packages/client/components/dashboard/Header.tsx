@@ -8,15 +8,26 @@ import Logo from "../logo";
 // import avatar component
 import HeaderAvatar from "./HeaderAvatar";
 
-
 // import styles
 import styles from "../../styles/dashboard/header.module.css";
 
-const DashboardHeader: FunctionComponent = (): JSX.Element => {
+interface DashboardHeaderProps {
+    name?: string
+}
+
+const DashboardHeader: FunctionComponent<DashboardHeaderProps> = ({ name }): JSX.Element => {
+    if (!name) {
+        return (
+            <header className={styles.header}>
+                <Logo /> {/* Cropboard logo */}
+            </header>
+        )
+    }
+
     return (
         <header className={styles.header}>
             <Logo /> {/* Cropboard logo */}
-            <HeaderAvatar profile="/josias.jpg" name="Josias" />
+            <HeaderAvatar profile="/josias.jpg" name={name} />
         </header>
     )
 }
