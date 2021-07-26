@@ -1,22 +1,27 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 
 // import mainControl components
 import CreateFarmButton from "./createFarmButton";
 import ControlButton from "./ControlButton";
 
-// use modal
-import Modal from "../modal";
 
-co
+interface DashboardMaincontrolsProps {
+    createFarmAction?: Function
+    analyticsAction?: Function
+    tasksAction?: Function
+    historyAction?: Function
+}
 
-return (
-    <aside>
-        <CreateFarmButton action={function () { setModalOpen(!(modalOpen)) }} />
-        <ControlButton name="Analytics" iconSource="/dashboard/chart.svg" action={() => undefined} />
-        <ControlButton name="Tasks" iconSource="/dashboard/task.svg" action={() => undefined} />
-        <ControlButton name="History" iconSource="/dashboard/clock-outline.svg" action={() => undefined} />
-    </aside>
-)
+const DashboardMaincontrols: FunctionComponent<DashboardMaincontrolsProps> = ({ createFarmAction, analyticsAction, tasksAction, historyAction }): JSX.Element => {
+
+    return (
+        <aside>
+            <CreateFarmButton action={() => createFarmAction()} />
+            <ControlButton name="Analytics" iconSource="/dashboard/chart.svg" action={() => analyticsAction()} />
+            <ControlButton name="Tasks" iconSource="/dashboard/task.svg" action={() => tasksAction()} />
+            <ControlButton name="History" iconSource="/dashboard/clock-outline.svg" action={() => historyAction()} />
+        </aside>
+    )
 }
 
 export default DashboardMaincontrols;
