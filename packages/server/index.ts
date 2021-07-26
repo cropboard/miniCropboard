@@ -13,7 +13,7 @@ import { JwtPayload } from "jsonwebtoken";
 const morgan = require("morgan");
 
 // import CORS solver ;)
-import cors from "cors";
+// import cors from "cors";
 
 // import user model for authentication operations
 import { User } from "./database";
@@ -31,10 +31,15 @@ const app: Application = express();
 app.use(express.json());
 
 // make use of request logger for express
-app.use(morgan());
+app.use(morgan("tiny"));
 
 // make use of CORS issue solver
-app.use(cors());
+// app.use(cors());
+
+// use my cors middleware
+import { corsMiddleware } from "./utils/corsMiddleware";
+
+app.use(corsMiddleware);
 
 /* Very specific operations -> Authentication handled in REST API */
 app.post("/signup", (req: Request, res: Response) => {
