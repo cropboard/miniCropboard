@@ -197,7 +197,7 @@ async function createCrop(
 }
 
 async function fetchFarms(authToken: string): Promise<any> {
-    const queryFarms: string = `{user {name,farms {title,location,plant,fertilizer,category, id}}}`;
+    const queryFarms: string = `{user {name,farms {title,location,plant,fertilizer,category}}}`;
 
 
     let queryFarmsResult: any = await sendGraphQLRequest(authToken, "query", queryFarms);
