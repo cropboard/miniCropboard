@@ -1,7 +1,7 @@
 
 import React, { FunctionComponent } from "react";
 
-
+import styles from "../../styles/dashboard/components.module.css";
 
 interface FarmCardProps {
     title: string
@@ -13,7 +13,7 @@ interface FarmCardProps {
 
 const FarmCard: FunctionComponent<FarmCardProps> = ({ title, location, fertilizer, plant, category }): JSX.Element => {
     return (
-        <div>
+        <div className={styles.farmCard}>
             <h2> {title} </h2>
             <div>
                 <p> {plant} </p>
