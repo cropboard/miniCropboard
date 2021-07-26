@@ -115,11 +115,11 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
                 <div className={styles.FarmsShowSomething}>
                     {farms === [] ?
-                        <div className={styles.FarmsShower}>
+                        <div className={styles.FarmsShowerNoFarms}>
                             <NoFarms createFarmAction={() => setFarmCreateOpen(!farmCreateOpen)} />
                         </div>
                         :
-                        <div className={styles.FarmsShower}>
+                        <div className={styles.FarmsShowerFarms}>
                             {farms.map(({ title, location, category, fertilizer, plant, id }) => {
                                 return (
                                     <FarmCard
