@@ -84,8 +84,25 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
             <div>
                 <div className={styles_.modalContainer}>
                     <Modal modalState={farmCreateOpen} closeHandler={() => setFarmCreateOpen(!farmCreateOpen)}>
-                        <h1>My cool modal</h1>
-                        <h2>Do you like it too ?</h2>
+                        <form className={styles.formStyle} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                            {/* title */}
+                            <input type="text" name="title" id="title" placeholder="Title of farm" />
+                            {/* plant */}
+                            <input type="text" name="plant" id="plant" placeholder="Name of plant e.g Tomato" />
+                            {/* category */}
+                            <input type="text" name="category" id="category" placeholder="Type of plant e.g fruit, legume..." />
+                            {/* inputSeeds */}
+                            <input type="text" name="inputSeeds" id="inputSeeds" placeholder="Quantity of seeds in kg or tonnes" />
+                            {/* fertilizer */}
+                            <input type="text" name="fertilizer" id="fertilizer" placeholder="Type of fertilizer e.g NPK" />
+                            {/* location */}
+                            <input type="text" name="location" id="location" placeholder="Location of farm" />
+
+                            {/* Submit */}
+                            <button>
+                                Creat Farm
+                            </button>
+                        </form>
                     </Modal>
                 </div>
             </div>

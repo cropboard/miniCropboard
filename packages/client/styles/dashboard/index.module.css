@@ -1,5 +1,6 @@
 .mainDashboardPage {
-  height: 100vh;
+  max-height: 95vh;
+  overflow: hidden;
 }
 
 .mainDashboardContainer {
@@ -41,4 +42,34 @@
 .noFarmShower img {
   min-width: 50px;
   max-width: 50px;
+}
+
+.formStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 3px 2px whitesmoke;
+  max-width: 300px;
+  padding: 2em;
+  border-radius: 6px;
+}
+
+.formStyle input {
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+  border: solid 1px black;
+  border-radius: 6px;
+}
+
+.formStyle input:focus {
+  outline: none;
+}
+
+.formStyle button {
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+  border: solid transparent;
+  width: 100%;
+  border-radius: 6px;
+  background-color: rgb(118, 252, 118);
 }

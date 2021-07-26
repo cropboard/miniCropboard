@@ -68,7 +68,7 @@
   }
 
   to {
-    top: -40vh;
+    top: -60vh;
     opacity: 1;
   }
 }
@@ -94,7 +94,7 @@
   }
 
   to {
-    top: -30vh;
+    top: -20vh;
     opacity: 0;
     display: none;
   }
@@ -112,6 +112,7 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  margin-bottom: 1em;
 }
 
 .modalContainer span button {
