@@ -81,7 +81,7 @@ async function sendGraphQLRequest(authToken: string, action: string, query: stri
     };
 
     const graphqlActionQuery: object = {
-        query: `query { ${action} }`
+        query: `query ${action}`
     };
     const graphqlActionMutation: object = {
         query: `mutation ${variablesPlaceholder} { ${query} }`,
@@ -194,6 +194,31 @@ async function createCrop(
     const query = await sendGraphQLRequest(authToken, "mutation", createCropMutation, createCropMutationVariablesPlaceholder, createCropMutationVariables);
 
     return query;
+}
+
+async function fetchFarms(authToken: string): Promise<any> {
+    const queryFarms: string = `
+    {
+        user {
+            name,
+            farms: {
+                title,
+                location,
+                plant,
+                fertilizer,
+                category
+            }
+        }
+    }
+    `;
+
+    let queryFarmsResult = await sendGraphQLRequest(authToken, "query", queryFarms);
+
+    if (queryFarmsResult.data.user.farms === []) {
+        return [];
+    } else {
+        return queryFarmsResult.data.user.farms;
+    }
 }
 
 
