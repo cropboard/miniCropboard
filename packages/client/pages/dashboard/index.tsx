@@ -13,12 +13,24 @@ import styles_ from "../../styles/misc.module.css";
 // use modal
 import Modal from "../../components/modal";
 
+// farmCard component
+import FarmCard from "../../components/dashboard/FarmCard";
+
 // import creatFarm handler
-import { createFarm } from "../../utils/fetcher";
+import { createFarm, fetchFarms } from "../../utils/fetcher";
 
 interface userInfo {
     userName: string
     user: string // user jwt
+}
+
+interface Farm {
+    title: string
+    location: string
+    fertilizer: string
+    plant: string
+    category: string
+    id: string
 }
 
 const DashboardIndex: FunctionComponent = (): JSX.Element => {
@@ -41,6 +53,9 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
     const [fertilizer, setFertilizer] = useState<string>("");
     const [location, setLocation] = useState<string>("");
 
+    // farms state
+    const [farms, setFarms] = useState<Array<Farm>>([]);
+
     // handle input value change
     function textFieldChangehandler(event: any, handler: Function): void {
         handler(event.target.value);
@@ -56,10 +71,11 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
         }
     }
 
-    /* End Create Farn */
+    /* End Create Farm */
+
 
     // we want to check this before the component mounts
-    useEffect(() => {
+    useEffect(async () => {
         // get jwt and name from localStorage
         let name: string = localStorage.getItem("userName") ?? undefined;
         let token: string = localStorage.getItem("user") ?? undefined;
@@ -71,9 +87,15 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
         } else {
             setUserInfo({ userName: name, user: token });
             setIsAuthenticated(true);
+
+            // fetch if authenticated
+            let fetchedFarms: Promise<any> = await fetchFarms(token);
+            setFarms(fetchedFarms);
+            console.log(farms);
         }
 
     }, [isAuthenticated]);
+
 
     if (!isAuthenticated) {
         return (
@@ -91,10 +113,26 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
             <div className={styles.mainDashboardContainer}>
 
-                <div className={styles.NoFarmsShowSomething}>
-                    <div className={styles.noFarmShower}>
-                        <NoFarms createFarmAction={() => setFarmCreateOpen(!farmCreateOpen)} />
-                    </div>
+                <div className={styles.FarmsShowSomething}>
+                    {farms === [] ?
+                        <div className={styles.FarmsShower}>
+                            <NoFarms createFarmAction={() => setFarmCreateOpen(!farmCreateOpen)} />
+                        </div>
+                        :
+                        <div className={styles.FarmsShower}>
+                            {farms.map(({ title, location, category, fertilizer, plant, id }) => {
+                                return (
+                                    <FarmCard
+                                        key={id}
+                                        title={title}
+                                        location={location}
+                                        category={category}
+                                        fertilizer={fertilizer}
+                                        plant={plant}
+                                    />
+                                )
+                            })}
+                        </div>}
                 </div>
 
             </div>
