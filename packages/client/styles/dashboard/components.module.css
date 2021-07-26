@@ -44,3 +44,24 @@
 .controlButton:hover {
   background-color: rgba(43, 255, 0, 0.308);
 }
+
+.farmCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  background-color: white;
+  width: 20%;
+  height: 40%;
+  font-size: 80%;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 4px;
+  border: solid 1.5px transparent;
+  box-shadow: 0 0 3px 2px #b2b2b214;
+  font-family: sans-serif;
+}
+
+.farmCard:hover {
+  border: solid 1.5px rgb(61, 202, 61);
+}
