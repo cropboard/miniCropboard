@@ -45,23 +45,63 @@
 .modalSkeleton {
   position: relative;
   z-index: 20;
-  top: 20vh;
   display: flex;
   justify-content: center;
   align-items: center;
   max-width: 300px;
   box-shadow: 0 0 3px 2px whitesmoke;
+  background-color: white;
+  padding: 1em;
+  border-radius: 5px;
+  left: 20px;
+  transition: all 0.2s ease-in-out;
+  animation-name: go-up;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes go-up {
+  from {
+    top: -30vh;
+    opacity: 0;
+  }
+
+  to {
+    top: -40vh;
+    opacity: 1;
+  }
 }
 
 .modalSkeletonClosed {
   position: relative;
   z-index: 20;
-  top: 20vh;
   display: flex;
   justify-content: center;
   align-items: center;
   max-width: 300px;
   box-shadow: 0 0 3px 2px whitesmoke;
-  display: none;
+  transition: all 0.2s ease-in-out;
+  animation-name: go-down;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes go-down {
+  from {
+    top: -40vh;
+    opacity: 1;
+  }
+
+  to {
+    top: -30vh;
+    opacity: 0;
+    display: none;
+  }
+}
+
+.modalContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /* Modal Stuff end */
