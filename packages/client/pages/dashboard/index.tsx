@@ -30,7 +30,6 @@ interface Farm {
     fertilizer: string
     plant: string
     category: string
-    id: string
 }
 
 const DashboardIndex: FunctionComponent = (): JSX.Element => {
@@ -120,10 +119,10 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                         </div>
                         :
                         <div className={styles.FarmsShowerFarms}>
-                            {farms.map(({ title, location, category, fertilizer, plant, id }) => {
+                            {farms.map(({ title, location, category, fertilizer, plant }) => {
                                 return (
                                     <FarmCard
-                                        key={id}
+                                        key={title}
                                         title={title}
                                         location={location}
                                         category={category}
