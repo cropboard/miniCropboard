@@ -38,10 +38,19 @@
   border-radius: 6px;
   width: 80vw;
   height: 100vh;
-  padding-bottom: 30px;
-  max-height: 80vh;
+  padding-bottom: 80px;
+  max-height: 70vh;
   display: grid;
+  grid-gap: 0.5em;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  overflow: scroll;
 }
+
+.FarmsShowerFarms::-webkit-scrollbar {
+  display: none;
+}
+
 .noFarmShower img {
   min-width: 50px;
   max-width: 50px;

@@ -51,8 +51,10 @@
   justify-content: space-evenly;
   align-items: flex-start;
   background-color: white;
-  width: 20%;
-  height: 40%;
+  min-width: 13em;
+  min-height: 14em;
+  max-width: 13em;
+  max-height: 14em;
   font-size: 80%;
   padding: 1em;
   margin: 1em;
@@ -60,6 +62,31 @@
   border: solid 1.5px transparent;
   box-shadow: 0 0 3px 2px #b2b2b214;
   font-family: sans-serif;
+}
+
+.farmCard .location {
+  background-color: rgba(214, 214, 214, 0.699);
+  padding: 0.2em;
+  border-radius: 4px;
+}
+
+.farmCard .varWidth {
+  width: 90%;
+}
+
+.farmCard .varWidth .fertilizer {
+  border-left: solid 2px rgb(61, 202, 61);
+}
+
+.farmCard .plant__type {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.farmCard .plant__type p {
+  border-bottom: solid 2px rgb(61, 202, 61);
 }
 
 .farmCard:hover {
@@ -71,8 +98,10 @@
   justify-content: center;
   align-items: center;
   background-color: white;
-  width: 20%;
-  height: 40%;
+  min-width: 13em;
+  min-height: 14em;
+  max-width: 13em;
+  max-height: 14em;
   font-size: 80%;
   padding: 1em;
   margin: 1em;
@@ -82,6 +111,23 @@
   font-family: sans-serif;
 }
 
+.newFarmCard div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .newFarmCard:hover {
   border: solid 1.5px rgb(61, 202, 61);
+}
+
+.newFarmCard img {
+  min-width: 25px !important;
+  max-width: 25px !important;
+  background-color: rgb(61, 202, 61);
+  border-radius: 50%;
+  padding: 0.4em;
+  box-shadow: 0 0 5px 5px rgba(43, 255, 0, 0.185);
+  margin-left: 5px;
 }
