@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 
 // import custom components
 import DashboardHeader from "../../components/dashboard/Header";
-import DashboardMaincontrols from "../../components/dashboard/mainControls";
+import CreateFarmButton from "../../components/dashboard/createFarmButton";
 
 import NoFarms from "../../components/dashboard/NoFarms";
 import NotAuthCard from "../../components/dashboard/notAuthCard";
@@ -58,30 +58,21 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
     return (
         <div className={styles.mainDashboardPage}>
-            <DashboardHeader name={userInfo.userName} />
-            <div className={styles.mainDashboardContainer}>
-                <section className={styles.mainControlSection}>
-                    <div className={styles.mainControlSectionElementContainer}>
-                        <DashboardMaincontrols
-                            createFarmAction={() => setFarmCreateOpen(!farmCreateOpen)}
-                            analyticsAction={() => undefined}
-                            tasksAction={() => undefined}
-                            historyAction={() => undefined}
-                        />
-                    </div>
-                </section>
-                <section className={styles.mainControlSection}>
-                    <div className={styles.noFarmShower}>
-                        <NoFarms />
-                    </div>
-                </section>
-                <section className={styles.mainControlSection}>
 
-                </section>
+            <DashboardHeader name={userInfo.userName} />
+
+            <div className={styles.mainDashboardContainer}>
+
+                <div className={styles.NoFarmsShowSomething}>
+                    <div className={styles.noFarmShower}>
+                        <NoFarms createFarmAction={() => setFarmCreateOpen(!farmCreateOpen)} />
+                    </div>
+                </div>
+
             </div>
 
             {/* Modals Container */}
-            <div>
+            <div className={styles.modalsContainer}>
                 <div className={styles_.modalContainer}>
                     <Modal modalState={farmCreateOpen} closeHandler={() => setFarmCreateOpen(!farmCreateOpen)}>
                         <form className={styles.formStyle} style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>

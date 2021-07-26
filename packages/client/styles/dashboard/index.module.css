@@ -6,24 +6,16 @@
 .mainDashboardContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.mainControlSection {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 70vh;
-  margin-left: 1em;
 }
 
-.mainControlSectionElementContainer {
-  background-color: rgba(245, 245, 245, 0.562);
-  padding: 0.5em;
-  max-height: 250px;
-  border-radius: 6px;
+.NoFarmsShowSomething {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 80vh;
 }
 
 .noFarmShower {
@@ -42,6 +34,11 @@
 .noFarmShower img {
   min-width: 50px;
   max-width: 50px;
+}
+
+.modalsContainer {
+  position: relative;
+  top: -10vh;
 }
 
 .formStyle {
