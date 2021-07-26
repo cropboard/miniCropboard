@@ -46,7 +46,8 @@
   position: relative;
   z-index: 20;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   max-width: 300px;
   box-shadow: 0 0 3px 2px whitesmoke;
@@ -103,5 +104,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.modalContainer span {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.modalContainer span button {
+  border: solid transparent;
+  background-color: rgb(118, 252, 118);
+  color: white;
+  border-radius: 5px;
 }
 /* Modal Stuff end */

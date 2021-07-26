@@ -83,7 +83,7 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
             {/* Modals Container */}
             <div>
                 <div className={styles_.modalContainer}>
-                    <Modal modalState={farmCreateOpen}>
+                    <Modal modalState={farmCreateOpen} closeHandler={() => setFarmCreateOpen(!farmCreateOpen)}>
                         <h1>My cool modal</h1>
                         <h2>Do you like it too ?</h2>
                     </Modal>
