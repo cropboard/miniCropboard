@@ -9,6 +9,10 @@ import NotAuthCard from "../../components/dashboard/notAuthCard";
 
 // import main dashboard styles
 import styles from "../../styles/dashboard/index.module.css";
+import styles_ from "../../styles/misc.module.css";
+
+// use modal
+import Modal from "../../components/modal";
 
 interface userInfo {
     userName: string
@@ -22,6 +26,9 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
     // are you authenticated ?
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+    // modals states
+    const [farmCreateOpen, setFarmCreateOpen] = useState<boolean>(false);
 
     // we want to check this before the component mounts
     useEffect(() => {
@@ -49,14 +56,18 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
         )
     }
 
-
     return (
         <div className={styles.mainDashboardPage}>
             <DashboardHeader name={userInfo.userName} />
             <div className={styles.mainDashboardContainer}>
                 <section className={styles.mainControlSection}>
                     <div className={styles.mainControlSectionElementContainer}>
-                        <DashboardMaincontrols />
+                        <DashboardMaincontrols
+                            createFarmAction={() => setFarmCreateOpen(!farmCreateOpen)}
+                            analyticsAction={() => undefined}
+                            tasksAction={() => undefined}
+                            historyAction={() => undefined}
+                        />
                     </div>
                 </section>
                 <section className={styles.mainControlSection}>
@@ -68,6 +79,17 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
                 </section>
             </div>
+
+            {/* Modals Container */}
+            <div>
+                <div className={styles_.modalContainer}>
+                    <Modal modalState={farmCreateOpen}>
+                        <h1>My cool modal</h1>
+                        <h2>Do you like it too ?</h2>
+                    </Modal>
+                </div>
+            </div>
+            {/* Modals Container end */}
         </div>
     )
 }
