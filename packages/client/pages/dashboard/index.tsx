@@ -15,6 +15,7 @@ import Modal from "../../components/modal";
 
 // farmCard component
 import FarmCard from "../../components/dashboard/FarmCard";
+import NewFarmCard from "../../components/dashboard/NewFarmCard";
 
 // import creatFarm handler
 import { createFarm, fetchFarms } from "../../utils/fetcher";
@@ -30,6 +31,7 @@ interface Farm {
     fertilizer: string
     plant: string
     category: string
+    id: string
 }
 
 const DashboardIndex: FunctionComponent = (): JSX.Element => {
@@ -119,18 +121,20 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                         </div>
                         :
                         <div className={styles.FarmsShowerFarms}>
-                            {farms.map(({ title, location, category, fertilizer, plant }) => {
+                            {farms.map(({ title, location, category, fertilizer, plant, id }) => {
                                 return (
                                     <FarmCard
-                                        key={title}
+                                        key={id}
                                         title={title}
                                         location={location}
                                         category={category}
                                         fertilizer={fertilizer}
                                         plant={plant}
+                                        id={id}
                                     />
                                 )
                             })}
+                            <NewFarmCard action={() => setFarmCreateOpen(!farmCreateOpen)} />
                         </div>}
                 </div>
 
@@ -156,7 +160,7 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
                             {/* Submit */}
                             <button>
-                                Creat Farm
+                                Create Farm
                             </button>
                         </form>
                     </Modal>
