@@ -12,18 +12,22 @@ const Modal: FunctionComponent<ModalProps> = ({ children, modalState }): JSX.Ele
 
     if (!modalState) {
         return (
-            <div className={styles.modalSkeletonClosed}>
-                <div>
-                    {children}
+            <div >
+                <div className={styles.modalSkeletonClosed}>
+                    <div>
+                        {/* {children} */}
+                    </div>
                 </div>
             </div>
         )
     }
 
     return (
-        <div className={styles.modalSkeleton}>
-            <div>
-                {children}
+        <div className={styles.modalContainer}>
+            <div className={styles.modalSkeleton}>
+                <div>
+                    {children}
+                </div>
             </div>
         </div>
     )
