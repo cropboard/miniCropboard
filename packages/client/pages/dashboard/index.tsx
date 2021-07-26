@@ -47,7 +47,7 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
     }
 
     async function submitCreateFarmForm(event: any): Promise<void> {
-        event.preventDefault();
+        // event.preventDefault();
         if (title !== "" && plant !== "" && category !== "" && inputSeeds !== "" && fertilizer !== "" && location !== "") {
             let results = await createFarm(userInfo.user, title, fertilizer, location, inputSeeds, plant, category);
             return console.log(results);
