@@ -49,11 +49,9 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
     // states for createFarm modal
     const [title, setTitle] = useState<string>("");
-    const [plant, setPlant] = useState<string>("");
-    const [category, setCategory] = useState<string>("");
-    const [inputSeeds, setInputSeeds] = useState<string>("");
-    const [fertilizer, setFertilizer] = useState<string>("");
     const [location, setLocation] = useState<string>("");
+    const [category, setCategory] = useState<string>("");
+    const [kind, setKind] = useState<string>("");
 
     // farms state
     const [farms, setFarms] = useState<Array<Farm>>([]);
@@ -65,8 +63,8 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
     async function submitCreateFarmForm(event: any): Promise<void> {
         // event.preventDefault();
-        if (title !== "" && plant !== "" && category !== "" && inputSeeds !== "" && fertilizer !== "" && location !== "") {
-            let results = await createFarm(userInfo.user, title, fertilizer, location, inputSeeds, plant, category);
+        if (title !== "" && kind !== "" && category !== "" && location !== "") {
+            let results = await createFarm(userInfo.user, title, location, category, kind);
             return console.log(results);
         } else {
             alert("Some fields are empty");
@@ -157,15 +155,17 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                         : typeof farms === "object"
                             ?
                             < div className={styles.FarmsShowerFarms}>
-                                {farms.map(({ title, location, category, kind, id }) => {
+                                {farms.map(({ title, location, category, kind, id }, farm: any) => {
+                                    // console.log(farm)
                                     return (
                                         <FarmCard
-                                            key={id}
+                                            key={farm}
                                             title={title}
                                             location={location}
                                             category={category}
                                             kind={kind}
                                             id={id}
+                                            index={farm}
                                         />
                                     )
                                 })}
@@ -187,14 +187,10 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                         <form onSubmit={event => submitCreateFarmForm(event)} className={styles.formStyle}>
                             {/* title */}
                             <input value={title} onChange={event => textFieldChangehandler(event, setTitle)} type="text" name="title" id="title" placeholder="Title of farm" />
-                            {/* plant */}
-                            <input value={plant} onChange={event => textFieldChangehandler(event, setPlant)} type="text" name="plant" id="plant" placeholder="Name of plant e.g Tomato" />
+                            {/* kind */}
+                            <input value={kind} onChange={event => textFieldChangehandler(event, setKind)} type="text" name="kind" id="kind" placeholder="fruit ? legume ? cereal ?" />
                             {/* category */}
-                            <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Type of plant e.g fruit, legume..." />
-                            {/* inputSeeds */}
-                            <input value={inputSeeds} onChange={event => textFieldChangehandler(event, setInputSeeds)} type="text" name="inputSeeds" id="inputSeeds" placeholder="Quantity of seeds in kg or tonnes" />
-                            {/* fertilizer */}
-                            <input value={fertilizer} onChange={event => textFieldChangehandler(event, setFertilizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Type of fertilizer e.g NPK" />
+                            <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Cash or food  ?" />
                             {/* location */}
                             <input value={location} onChange={event => textFieldChangehandler(event, setLocation)} type="text" name="location" id="location" placeholder="Location of farm" />
 
