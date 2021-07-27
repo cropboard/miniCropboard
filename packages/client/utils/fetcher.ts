@@ -69,6 +69,25 @@ async function loginHandler(server: string, email: string, password: string): Pr
     
 }
 
+async function checkIsAuthenticated(authToken: string) {
+
+    // headers
+    const requestHeaders: HeadersInit = {
+        "Content-Type": "application/json",
+    };
+
+    // fetch result
+    let isAuthResult = await fetch(`${SERVER_URI}/isauthenticated`, {
+        method: "POST",
+        headers: requestHeaders,
+        body: JSON.stringify({token: authToken})
+    });
+
+    let isAuthResponse = await isAuthResult.json();
+
+    return isAuthResponse;
+}
+
 
 // function to send GraphQL requests
 // query has to be JSON stringified if JSON object
@@ -119,22 +138,18 @@ async function sendGraphQLRequest(authToken: string, action: string, query: stri
 // this is a mutation query
 async function createFarm(
     authToken: string,
-    title: string, 
-    fertilizer: string, 
+    title: string,  
     location: string, 
-    inputSeeds: string, 
-    plant: string, 
-    category: string): Promise<any> {
+    category: string,
+    kind: string, ): Promise<any> {
 
     // the constructed graphql query with vars
-    const createFarmMutationVariablesPlaceholder: string = "($title: String!, $location: String!, $fertilizer: String!, $inputSeeds: String!, $plant: String!, $category: String!)";
-    const createFarmMutation: string = "createFarm(title: $title, fertilizer: $fertilizer, location: $location, inputSeeds: $inputSeeds, plant: $plant, category: $category) {title,fertilizer}";
+    const createFarmMutationVariablesPlaceholder: string = "($title: String!, $location: String!, $category: String!, $kind: String!)";
+    const createFarmMutation: string = "createFarm(title: $title, category: $category, location: $location, kind: $kind) {title,location}";
     const createFarmMutationVariables: object = {
-        title: title,
-        fertilizer,
+        title,
+        kind,
         location,
-        inputSeeds,
-        plant,
         category
     };
 
@@ -173,21 +188,15 @@ async function createCrop(
     authToken: string, 
     name: string, 
     category: string, 
-    fertilizerQuantity: number, 
-    water: number, 
-    cost: number, 
-    weather: object, 
+    fertilizer: string, 
     farm: string): Promise<void> {
 
-    const createCropMutationVariablesPlaceholder: string = "($name: String!, $category: String!, $fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $weather: Weather!, $farm: String!)";
-    const createCropMutation: string = `createCrop(name: $name, category: $category, fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, weather: $weather, farm: $farm) {name,fertilizerQuantity}`;
+    const createCropMutationVariablesPlaceholder: string = "($name: String!, $category: String!, $fertilizer: String! $farm: String!)";
+    const createCropMutation: string = `createCrop(name: $name, category: $category, fertilizer: $fertilizer, farm: $farm) {name,fertilizer}`;
     const createCropMutationVariables: object = {
         name,
         category,
-        fertilizerQuantity,
-        water,
-        cost,
-        weather: JSON.stringify(weather),
+        fertilizer,
         farm
     };
 
@@ -197,7 +206,7 @@ async function createCrop(
 }
 
 async function fetchFarms(authToken: string): Promise<any> {
-    const queryFarms: string = `{user {name,farms {title,location,plant,fertilizer,category, id}}}`;
+    const queryFarms: string = `{user {name,farms { title, location, category, kind, id }}}`;
 
 
     let queryFarmsResult: any = await sendGraphQLRequest(authToken, "query", queryFarms);
@@ -209,5 +218,18 @@ async function fetchFarms(authToken: string): Promise<any> {
     }
 }
 
+async function fetchCrops(authToken: string, farmIndex: number): Promise<any> {
+    const queryCrops: string = `{user { name, farms { title, location, category, kind, crops { name, category, fertilizer } }}}`;
 
-export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms };
+    let queryCropsResult: any = await sendGraphQLRequest(authToken, "query", queryCrops);
+
+    if (queryCropsResult?.data?.user?.farms === []) {
+        return [];
+    } else if (queryCropsResult?.data?.user?.farms[farmIndex]?.crops === []) {
+        return [];
+    } else {
+        return queryCropsResult?.data?.user?.farms[farmIndex]?.crops !== null ? queryCropsResult?.data?.user?.farms[farmIndex]?.crops : [];
+    }
+}
+
+export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops };

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "tsc && sh v.sh 'yarn install --modules-folder ./cbserverdist/'",
+    "build": "tsc",
     "run:dev": "ts-node index.ts"
   },
   "keywords": [
@@ -17,7 +17,6 @@
   "author": "Josias Aurel",
   "license": "ISC",
   "devDependencies": {
-    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.4",
     "@types/mongoose": "^5.11.97",
@@ -30,7 +29,6 @@
     "apollo-server-express": "^3.0.2",
     "apollo-server-lambda": "^2.25.2",
     "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "graphql": "^15.5.0",

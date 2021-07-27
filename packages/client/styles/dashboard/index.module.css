@@ -10,12 +10,23 @@
   align-items: center;
 }
 
+.dashboardLabel__context {
+  font-family: sans-serif;
+  position: relative;
+  top: -4.5vh;
+  left: 10vw;
+  max-width: 80px;
+  border-bottom: solid 2px rgb(61, 202, 61);
+}
+
 .FarmsShowSomething {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   height: 80vh;
+  position: relative;
+  top: -10vh;
 }
 
 .FarmsShowerNoFarms {
@@ -44,7 +55,7 @@
   grid-gap: 0.5em;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 .FarmsShowerFarms::-webkit-scrollbar {
@@ -89,4 +100,14 @@
   width: 100%;
   border-radius: 6px;
   background-color: rgb(118, 252, 118);
+}
+
+@media screen and (max-width: 400px) {
+  .FarmsShowerFarms {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    overflow-y: scroll;
+  }
 }

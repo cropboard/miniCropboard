@@ -12,9 +12,6 @@ import { JwtPayload } from "jsonwebtoken";
 // import request logger
 const morgan = require("morgan");
 
-// import CORS solver ;)
-// import cors from "cors";
-
 // import user model for authentication operations
 import { User } from "./database";
 
@@ -32,9 +29,6 @@ app.use(express.json());
 
 // make use of request logger for express
 app.use(morgan("tiny"));
-
-// make use of CORS issue solver
-// app.use(cors());
 
 // use my cors middleware
 import { corsMiddleware } from "./utils/corsMiddleware";
@@ -160,7 +154,7 @@ app.post("/isauthenticated", (req: Request, res: Response) => {
     });
     } catch(err) {
         res.json({
-            message: "Not Authenticated"
+            message: "NotAuthenticated"
         });
     }
     // console.log(typeof tokenData.email);

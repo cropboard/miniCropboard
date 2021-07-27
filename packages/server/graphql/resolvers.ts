@@ -1,5 +1,5 @@
 
-import { User, Farm, Crop } from "../database/index";
+import { User, Farm, Crop, CropData } from "../database/index";
 import * as dotenv from "dotenv";
 
 // import custom scalar
@@ -53,17 +53,19 @@ const resolvers = {
             // contain farm data
             let farmData: any;
 
+            // timeStamp
+            const timeStamp: string = new Date().toString();
+
             // handle error case
             if (context.message === "AuthError") {
                 return {
                     title: "AuthError",
                     owner:"AuthError",
                     location: "AuthError",
-                    fertilizer: "AuthError",
-                    inputSeeds: "AuthError",
-                    plant: "AuthError",
-                    category:"AuthError",
-                    id: "AuthError"
+                    category: "AuthError",
+                    kind: "AuthError",
+                    id: "AuthError",
+                    timeStamp: timeStamp
                 }
             }
 
@@ -75,10 +77,9 @@ const resolvers = {
                 title: args.title,
                 owner: context.id,
                 location: args.location,
-                fertilizer: args.fertilizer,
-                inputSeeds: args.inputSeeds,
-                plant: args.plant,
-                category: args.category
+                category: args.category,
+                kind: args.kind,
+                timeStamp: timeStamp
             }, (error: any, newfarm: any) => {
                 if (error) {
                     isError = true;
@@ -94,10 +95,9 @@ const resolvers = {
                     title: "NO",
                     owner: "NO",
                     location: "NO",
-                    fertilizer: "NO",
-                    inputSeeds: "NO",
-                    plant: "NO",
-                    category: "NO"
+                    category: "NO",
+                    kind: "NO",
+                    timeStamp: "NO"
                 }
             }
 
@@ -107,53 +107,58 @@ const resolvers = {
                 title: args.title,
                 owner: context.id,
                 location: args.location,
-                fertilizer: args.fertilizer,
-                inputSeeds: args.inputSeeds,
-                plant: args.plant,
-                category: args.category
+                category: args.category,
+                kind: args.kind,
+                timeStamp: timeStamp
             }
         
         },
-        updateFarm: (parent: any, args: any) => {
+        updateFarm: async (parent: any, args: any) => {
             let farmId: string = args.id;
-            let oldFarm: any = {};
+            let oldFarm: any;
+            let updatedFarm__: any;
+            let unval; // dirty workaround
+            let unval_; // dirty workaround... again!
             let hasFailed: boolean = false;
+            let hasFailed__: boolean = false;
+
+            console.log(farmId)
 
             // fetch old farm data
-            Farm.findById(farmId, (error: any, farm_: any) => {
-                if (error) throw new Error(error);
-
-                oldFarm = farm_;
-            });
-
-            console.log(oldFarm);
-
-            Farm.findByIdAndUpdate(farmId, {
-                title: args.title ? args.title : oldFarm.title ,
-                location: args.location ? args.location : args.location,
-                fertilizer: args.fertilizer ? args.fertilizer : oldFarm.fertilizer,
-                inputSeeds: args.inputSeeds ? args.inputSeeds : oldFarm.inputSeeds,
-                plant: args.plant ? args.plant : oldFarm.plant,
-                category: args.category ? args.category : oldFarm.category
-            }, (error: any, updatedFarm: any) => {
+            unval = await Farm.findById(farmId, (error: any, farm_: any) => {
                 if (error) {
                     hasFailed = true;
-                    return Error(error);
                 }
-
-                return updatedFarm;
+                oldFarm = farm_;
+                // console.log(`Old Farm -> ${oldFarm}`)
             });
 
+            // console.log(oldFarm);
+
             if (!hasFailed) {
-                return {
-                    title: args.title,
-                    location: args.location,
-                    fertilizer: args.fertilizer,
-                    inputSeeds: args.inputSeeds,
-                    plant: args.plant,
-                    category: args.category
+                // if oldFarm was fetched successfully
+                unval_ = await Farm.findByIdAndUpdate(farmId, {
+                title: args.title ? args.title : oldFarm.title ,
+                location: args.location ? args.location : oldFarm.location,
+                category: args.category ? args.category : oldFarm.category,
+                kind: args.kind ? args.kind : oldFarm.kind
+                        }, (error: any, updatedFarm: any) => {
+                            console.log(`Updated farm -> ${updatedFarm}`);
+                        if (error) {
+                            hasFailed__ = true;
+                            return Error(error);
+                        }
+
+                        updatedFarm__ = updatedFarm;
+                        return updatedFarm;
+                    });
+
+                    if (!hasFailed__) {
+                    return updatedFarm__;
                 }
+
             }
+
         },
         createCrop: (parent: any, args: any) => {
             let isError: boolean = false;
@@ -161,11 +166,8 @@ const resolvers = {
             let newCrop = Crop.create({
                 name: args.name,
                 category: args.category,
-                fertilizerQuantity: args.fertilizerQuantity,
-                water: args.water, 
-                cost: args.cost,
+                fertilizer: args.fertilizer,
                 timeStamp: timeStamp,
-                weather: args.weather,
                 farm: args.farm
             }, (error: any, newcrop: any) => {
                 if (error) {
@@ -179,14 +181,71 @@ const resolvers = {
                 return {
                     name: args.name,
                     category: args.category,
-                    fertilizerQuantity: args.fertilizerQuantity,
-                    water: args.water, 
-                    cost: args.cost,
+                    fertilizer: args.fertilizer,
                     timeStamp: timeStamp,
-                    weather: args.weather,
                     farm: args.farm
                 }
             }
+        },
+        createCropData: async (parent: any, args: any) => {
+            let isError: boolean = false;
+            let isError_: boolean = false;
+            let timeStamp: string = new Date().toString();
+
+            let parentCrop: any;
+            let unval: any; // this dirty workaround...
+            const parentCropId: string = args.crop;
+            console.log(parentCropId)
+
+            unval = await Crop.findById(parentCropId, (error: any, parentcrop: any) => {
+                if (error) {
+                    isError = true;
+                }
+                console.log(`Parent Crop -> ${JSON.stringify(parentcrop)}`);
+                parentCrop = parentcrop;
+                console.log(parentcrop);
+
+            });
+
+            if (!isError) {
+                    let newCropData = CropData.create({
+                        name: parentCrop.name,
+                        category: parentCrop.category,
+                        fertilizer: args.fertilizer ? args.fertilizer : parentCrop.fertilizer,
+                        fertilizerQuantity: args.fertilizerQuantity,
+                        water: args.water,
+                        cost: args.cost,
+                        timeStamp: timeStamp,
+                        weather: "SomeWeatherData",
+                        crop: args.crop
+                    }, (error: any, newcropdata: any) => {
+                        if (error) {
+                            isError_ = true;
+                            console.error(error);
+                        }
+
+                        console.log(newcropdata)
+                        return newcropdata
+                    });
+
+
+                if (!isError_) {
+
+                    return {
+                        name: parentCrop.name,
+                        category: parentCrop.category,
+                        fertilizer: args.fertilizer ? args.fertilizer : parentCrop.fertilizer,
+                        fertilizerQuantity: args.fertilizerQuantity,
+                        water: args.water,
+                        cost: args.cost,
+                        timeStamp: timeStamp,
+                        weather: "SomeWeatherData"
+                    }
+
+                }
+            }
+
+            
         }
     },
 
@@ -221,32 +280,60 @@ const resolvers = {
     // fetching crop within a farm scope
     Farm: {
         crops: async (parent: any, args: any) => {
-        // error checker
-        let isError = false;
-        let crops;
-        let unval;
-        // console.log(parent)
-        let cropsFetch = await Crop.find({ farm: parent._id }, (error: any, crops_: any) => {
-            if (error) {
-                isError = true;
-                return Error(error);
+            // error checker
+            let isError = false;
+            let crops;
+            let unval;
+            // console.log(parent)
+            let cropsFetch = await Crop.find({ farm: parent._id }, (error: any, crops_: any) => {
+                if (error) {
+                    isError = true;
+                    return Error(error);
+                }
+
+                // assign the fetched crops to the array of crops
+                crops = crops_;
+            });
+
+            // wait for the assignment of crops to the array of crops
+            unval = await cropsFetch;
+
+            // check is there was an error
+            if (!isError) {
+                return crops
             }
 
-            // assign the fetched crops to the array of crops
-            crops = crops_;
-        });
+            return "Could not find anything";
 
-        // wait for the assignment of crops to the array of crops
-        unval = await cropsFetch;
-
-        // check is there was an error
-        if (!isError) {
-            return crops
         }
+    },
+    Crop: {
+        cropsData: async (parent: any, args: any) => {
+            let isError: boolean = false; // error checker
+            let cropsData_;
+            let unval; // dirty workaround
 
-        return "Could not find anything";
+            let cropsDataFetch = await CropData.find({crop: parent._id}, (error: any, cropsdata: any) => {
+                if (error) {
+                    isError = true;
+                    return Error(error);
+                }
 
-    }
+                // put the fetched cropsData in cropsData
+                // console.log(`Parent ID -> ${parent._id}`);
+                // console.log(`cropsdata -> ${cropsdata}`)
+                cropsData_ = cropsdata;
+                // console.log(cropsData_);
+            });
+
+            unval = await cropsDataFetch;
+
+            if (!isError) {
+                return cropsData_;
+            }
+
+            return "Could not find anything";
+        }
     }
 }
 

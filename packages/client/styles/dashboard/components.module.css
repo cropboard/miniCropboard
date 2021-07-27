@@ -89,6 +89,26 @@
   border-bottom: solid 2px rgb(61, 202, 61);
 }
 
+.farmCard .title__index {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.farmCard .title__index span {
+  background-color: rgb(61, 202, 61);
+  width: 15px;
+  height: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  padding: 0.2em;
+  color: white;
+}
+
 .farmCard:hover {
   border: solid 1.5px rgb(61, 202, 61);
 }
@@ -130,4 +150,46 @@
   padding: 0.4em;
   box-shadow: 0 0 5px 5px rgba(43, 255, 0, 0.185);
   margin-left: 5px;
+}
+
+.cropCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  background-color: white;
+  min-width: 13em;
+  min-height: 14em;
+  max-width: 13em;
+  max-height: 14em;
+  font-size: 80%;
+  padding: 1em;
+  margin: 1em;
+  border-radius: 4px;
+  border: solid 1.5px transparent;
+  box-shadow: 0 0 3px 2px #b2b2b214;
+  font-family: sans-serif;
+}
+
+.cropCard .cropCardTitle {
+  border-bottom: solid 2px rgb(61, 202, 61);
+}
+
+.cropCard .cropCardFertilizer {
+  border-bottom: solid 2px rgb(61, 202, 61);
+}
+
+.cropCard:hover {
+  border: solid 1.5px rgb(61, 202, 61);
+}
+
+.cropCard .cropCardFruit {
+  background-color: rgb(61, 202, 61);
+  max-width: 30px;
+  padding: 0.2em;
+  color: white;
+}
+
+.cropCard .cropCardClass {
+  border-left: solid 2px rgb(61, 202, 61);
 }
