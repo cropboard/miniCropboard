@@ -224,5 +224,18 @@ async function fetchFarms(authToken: string): Promise<any> {
     }
 }
 
+async function fetchCrops(authToken: string, farmIndex: number): Promise<any> {
+    const queryCrops: string = `{user { name, farms { title, location, category, kind, crops { name, category, fertilizer } }}}`;
 
-export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated };
+    let queryCropsResult: any = await sendGraphQLRequest(authToken, "query", queryCrops);
+
+    if (queryCropsResult?.data?.user?.farms === []) {
+        return [];
+    } else if (queryCropsResult?.data?.user?.farms[farmIndex]?.crops === []) {
+        return [];
+    } else {
+        return queryCropsResult?.data?.user?.farms[farmIndex]?.crops !== null ? queryCropsResult?.data?.user?.farms[farmIndex]?.crops : [];
+    }
+}
+
+export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops };
