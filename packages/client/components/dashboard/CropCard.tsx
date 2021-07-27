@@ -13,7 +13,7 @@ const CropCard: FunctionComponent<CropCardProps> = ({ name, category, fertilizer
         <div className={styles.cropCard}>
             <h2 className={styles.cropCardTitle}> {name} </h2>
             <div>
-                <p className={styles.cropCardFruit}> Fruit </p>
+                <p className={styles.cropCardFruit}> Crop </p>
                 <p className={styles.cropCardClass}> Class :  {category} </p>
             </div>
             <p className={styles.cropCardFertilizer}>Fertilizer : {fertilizer}</p>

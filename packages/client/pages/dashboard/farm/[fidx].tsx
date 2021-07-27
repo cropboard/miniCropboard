@@ -8,7 +8,7 @@ import NewCropCard from "../../../components/dashboard/NewCropCard";
 import Modal from "../../../components/modal";
 
 // import fetcher
-import { fetchCrops } from "../../../utils/fetcher";
+import { fetchCrops, createCrop, fetchFarms } from "../../../utils/fetcher";
 
 import styles from "../../../styles/dashboard/farm.module.css";
 import styles_ from "../../../styles/misc.module.css";
@@ -28,10 +28,22 @@ interface User {
     user: string
 }
 
+interface Farm {
+    title: string
+    location: string
+    category: string
+    kind: string
+    id: string
+}
+
+
 const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex }): JSX.Element => {
 
     // the user credentials
     const [userInfo, setUserInfo] = useState<User>();
+
+    // this farm
+    const [farm, setFarm] = useState<Farm>();
 
     // crops 
     const [crops, setCrops] = useState<Array<Crop>>([]);
@@ -60,9 +72,14 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
             setIsAuth(true);
             setUserInfo({ user: user, userName: userName });
 
-            fetchCrops(user, pageIndex).then(result => {
-                setCrops(result);
-                console.log(result);
+            fetchFarms(user).then(farms_ => {
+                setFarm(farms_[pageIndex]);
+                console.log(farms_[pageIndex]);
+
+                fetchCrops(user, pageIndex).then(result => {
+                    setCrops(result);
+                    console.log(result);
+                });
             });
         }
 
@@ -82,10 +99,25 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
         )
     }
 
+    async function submitCropCreate(event: any) {
+        // event.preventDefault();
+        const createdCropsResponse = await createCrop(userInfo.user, name, category, fertilizer, farm.id);
+        console.log(createdCropsResponse);
+    }
+
     return (
         <div>
-            <DashboardHeader />
-            <h2 className={styles.farm__croplabel}>Crops</h2>
+            <DashboardHeader name={userInfo.userName} />
+            {farm ?
+                <div className={styles.farm__cropslabel}>
+                    <h2>Crops</h2>
+                    <span>
+                        <p> {farm.title} </p>
+                        <p> {farm.location} </p>
+                    </span>
+                </div>
+                :
+                <div></div>}
             <main className={styles.farm__cropsDashboardContainer}>
                 <div>
                     {crops === [] ?
@@ -117,7 +149,7 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
                 <div className={styles.modalsContainer}>
                     <div className={styles_.modalContainer}>
                         <Modal modalState={cropsCreateOpen} closeHandler={() => setCropsCreateOpen(!cropsCreateOpen)}>
-                            <form className={styles.formStyle}>
+                            <form onSubmit={event => submitCropCreate(event)} className={styles.formStyle}>
                                 <input value={name} onChange={event => textFieldChangehandler(event, setName)} type="text" name="name" id="name" placeholder="Crop Name e.g Orange" />
                                 <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Category e.g Fruit" />
                                 <input value={fertilizer} onChange={event => textFieldChangehandler(event, setFertlizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer type e.g NPK" />
@@ -136,7 +168,6 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
 
 export async function getServerSideProps(ctx: any) {
     let pageIndex: number = ctx?.query?.fidx;
-    console.log(pageIndex);
 
     return {
         props: {
