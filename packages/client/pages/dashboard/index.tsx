@@ -144,6 +144,7 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
             <DashboardHeader name={userInfo.userName} />
 
+            <h2 className={styles.dashboardLabel__context}>Farms</h2>
             <div className={styles.mainDashboardContainer}>
 
                 <div className={styles.FarmsShowSomething}>
