@@ -62,7 +62,7 @@ type Query {
 
 type Mutation {
     createFarm(title: String!, location: String!, category: String!, kind: String!): Farm
-    updateFarm(title: String!, location: String!, category: String!, kind: String!): Farm
+    updateFarm(id: String! title: String, location: String, category: String, kind: String): Farm
     createCrop(name: String!, category: String!, fertilizer: Int!, water: Int!, cost: Int!, weather: Weather!, farm: String!): Crop
     createCropData(fertilizer: String!, fertilizerQuantity: String!, water: Int!, cost: Int!): CropData
 }
