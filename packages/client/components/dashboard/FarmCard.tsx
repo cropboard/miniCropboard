@@ -19,7 +19,7 @@ const FarmCard: FunctionComponent<FarmCardProps> = ({ title, location, kind, cat
         <Link href={`/dashboard/farm/${index}`}>
             <div className={styles.farmCard}>
                 <span className={styles.title__index}>
-                    <h2> {title} </h2> <span>{index}</span>
+                    <h2> {title} </h2> <span>{index + 1}</span>
                 </span>
                 <div className={styles.varWidth}>
                     <span className={styles.plant__type}>
