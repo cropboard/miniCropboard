@@ -26,23 +26,33 @@ type Farm {
     title: String!
     owner: String!
     location: String!
-    fertilizer: String!
-    inputSeeds: String!
-    plant: String!
     category: String!
+    kind: String!
     crops: [Crop]
+    timeStamp: String!
     id: ID!
 }
 
 type Crop {
     name: String!
     category: String!
-    fertilizerQuantity: Int!
+    fertilizer: String!
     water: Int!
     cost: Int!
     timeStamp: String!
     weather: Weather!
     farm: String!
+    cropsData: [CropData]
+    id: ID!
+}
+
+type CropData {
+    fertilizer: String!
+    fertilizerQuantity: Int!
+    water: Int!
+    cost: Int!
+    timeStamp: String!
+    weather: Weather!
 }
 
 type Query {
@@ -51,9 +61,10 @@ type Query {
 }
 
 type Mutation {
-    createFarm(title: String!, location: String!, fertilizer: String!, inputSeeds: String!, plant: String!, category: String!): Farm
-    updateFarm(title: String, location: String, fertilizer: String, inputSeeds: String, plant: String, category: String): Farm
-    createCrop(name: String!, category: String!, fertilizerQuantity: Int!, water: Int!, cost: Int!, weather: Weather!, farm: String!): Crop
+    createFarm(title: String!, location: String!, category: String!, kind: String!): Farm
+    updateFarm(title: String!, location: String!, category: String!, kind: String!): Farm
+    createCrop(name: String!, category: String!, fertilizer: Int!, water: Int!, cost: Int!, weather: Weather!, farm: String!): Crop
+    createCropData(fertilizer: String!, fertilizerQuantity: String!, water: Int!, cost: Int!): CropData
 }
 
 `;
