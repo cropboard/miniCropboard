@@ -154,7 +154,7 @@ app.post("/isauthenticated", (req: Request, res: Response) => {
     });
     } catch(err) {
         res.json({
-            message: "Not Authenticated"
+            message: "NotAuthenticated"
         });
     }
     // console.log(typeof tokenData.email);
