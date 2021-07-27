@@ -195,7 +195,8 @@ const resolvers = {
                 water: args.water,
                 cost: args.cost,
                 timeStamp: timeStamp,
-                weather: "SomeWeatherData"
+                weather: "SomeWeatherData",
+                crop: args.crop
             }, (error: any, newcropdata: any) => {
                 if (error) {
                     isError = true;
@@ -252,32 +253,57 @@ const resolvers = {
     // fetching crop within a farm scope
     Farm: {
         crops: async (parent: any, args: any) => {
-        // error checker
-        let isError = false;
-        let crops;
-        let unval;
-        // console.log(parent)
-        let cropsFetch = await Crop.find({ farm: parent._id }, (error: any, crops_: any) => {
-            if (error) {
-                isError = true;
-                return Error(error);
+            // error checker
+            let isError = false;
+            let crops;
+            let unval;
+            // console.log(parent)
+            let cropsFetch = await Crop.find({ farm: parent._id }, (error: any, crops_: any) => {
+                if (error) {
+                    isError = true;
+                    return Error(error);
+                }
+
+                // assign the fetched crops to the array of crops
+                crops = crops_;
+            });
+
+            // wait for the assignment of crops to the array of crops
+            unval = await cropsFetch;
+
+            // check is there was an error
+            if (!isError) {
+                return crops
             }
 
-            // assign the fetched crops to the array of crops
-            crops = crops_;
-        });
+            return "Could not find anything";
 
-        // wait for the assignment of crops to the array of crops
-        unval = await cropsFetch;
-
-        // check is there was an error
-        if (!isError) {
-            return crops
         }
+    },
+    Crop: {
+        cropsData: async (parent: any, args: any) => {
+            let isError: boolean = false; // error checker
+            let cropsData;
+            let unval; // dirty workaround
 
-        return "Could not find anything";
+            let cropsDataFetch = await Crop.find({crop: parent._id}, (error: any, cropsdata: any) => {
+                if (error) {
+                    isError = true;
+                    return Error(error);
+                }
 
-    }
+                // put the fetched cropsData in cropsData
+                cropsData = cropsdata;
+            });
+
+            unval = await cropsDataFetch;
+
+            if (!isError) {
+                return cropsData;
+            }
+
+            return "Could not find anything";
+        }
     }
 }
 
