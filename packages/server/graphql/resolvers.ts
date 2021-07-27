@@ -166,10 +166,7 @@ const resolvers = {
                 name: args.name,
                 category: args.category,
                 fertilizer: args.fertilizer,
-                water: args.water, 
-                cost: args.cost,
                 timeStamp: timeStamp,
-                weather: args.weather,
                 farm: args.farm
             }, (error: any, newcrop: any) => {
                 if (error) {
@@ -183,11 +180,8 @@ const resolvers = {
                 return {
                     name: args.name,
                     category: args.category,
-                    fertilizerQuantity: args.fertilizerQuantity,
-                    water: args.water, 
-                    cost: args.cost,
+                    fertilizer: args.fertilizer,
                     timeStamp: timeStamp,
-                    weather: args.weather,
                     farm: args.farm
                 }
             }
@@ -199,7 +193,7 @@ const resolvers = {
             let newCropData = CropData.create({
                 name: parent.name,
                 category: parent.category,
-                fertilizer: args.fertilizer,
+                fertilizer: args.fertilizer ? args.fertilizer : parent.fertilizer,
                 fertilizerQuantity: args.fertilizerQuantity,
                 water: args.water,
                 cost: args.cost,
@@ -219,7 +213,7 @@ const resolvers = {
                 return {
                     name: parent.name,
                     category: parent.category,
-                    fertilizer: args.fertilizer,
+                    fertilizer: args.fertilizer ? args.fertilizer : parent.fertilizer,
                     fertilizerQuantity: args.fertilizerQuantity,
                     water: args.water,
                     cost: args.cost,
