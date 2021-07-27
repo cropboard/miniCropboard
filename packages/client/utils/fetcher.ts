@@ -69,6 +69,25 @@ async function loginHandler(server: string, email: string, password: string): Pr
     
 }
 
+async function checkIsAuthenticated(authToken: string) {
+
+    // headers
+    const requestHeaders: HeadersInit = {
+        "Content-Type": "application/json",
+    };
+
+    // fetch result
+    let isAuthResult = await fetch(`${SERVER_URI}/isauthenticated`, {
+        method: "POST",
+        headers: requestHeaders,
+        body: JSON.stringify({token: authToken})
+    });
+
+    let isAuthResponse = await isAuthResult.json();
+
+    return isAuthResponse;
+}
+
 
 // function to send GraphQL requests
 // query has to be JSON stringified if JSON object
@@ -197,7 +216,7 @@ async function createCrop(
 }
 
 async function fetchFarms(authToken: string): Promise<any> {
-    const queryFarms: string = `{user {name,farms {title,location,plant,fertilizer,category, id}}}`;
+    const queryFarms: string = `{user {name,farms { title, location, category, kind, id }}}`;
 
 
     let queryFarmsResult: any = await sendGraphQLRequest(authToken, "query", queryFarms);
@@ -210,4 +229,4 @@ async function fetchFarms(authToken: string): Promise<any> {
 }
 
 
-export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms };
+export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated };
