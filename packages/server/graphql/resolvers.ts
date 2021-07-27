@@ -310,23 +310,26 @@ const resolvers = {
     Crop: {
         cropsData: async (parent: any, args: any) => {
             let isError: boolean = false; // error checker
-            let cropsData;
+            let cropsData_;
             let unval; // dirty workaround
 
-            let cropsDataFetch = await Crop.find({crop: parent._id}, (error: any, cropsdata: any) => {
+            let cropsDataFetch = await CropData.find({crop: parent._id}, (error: any, cropsdata: any) => {
                 if (error) {
                     isError = true;
                     return Error(error);
                 }
 
                 // put the fetched cropsData in cropsData
-                cropsData = cropsdata;
+                // console.log(`Parent ID -> ${parent._id}`);
+                // console.log(`cropsdata -> ${cropsdata}`)
+                cropsData_ = cropsdata;
+                // console.log(cropsData_);
             });
 
             unval = await cropsDataFetch;
 
             if (!isError) {
-                return cropsData;
+                return cropsData_;
             }
 
             return "Could not find anything";
