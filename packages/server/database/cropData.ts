@@ -35,7 +35,7 @@ const CropDataSchema = new Schema<CBCropData>({
     water: Number,
     cost: Number,
     timeStamp: String,
-    weather: Object,
+    weather: String,
     crop: String
 });
 
