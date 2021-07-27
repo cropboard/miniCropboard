@@ -18,7 +18,7 @@ import FarmCard from "../../components/dashboard/FarmCard";
 import NewFarmCard from "../../components/dashboard/NewFarmCard";
 
 // import creatFarm handler
-import { createFarm, fetchFarms } from "../../utils/fetcher";
+import { createFarm, fetchFarms, checkIsAuthenticated } from "../../utils/fetcher";
 
 interface userInfo {
     userName: string
@@ -28,13 +28,14 @@ interface userInfo {
 interface Farm {
     title: string
     location: string
-    fertilizer: string
-    plant: string
     category: string
+    kind: string
     id: string
 }
 
 const DashboardIndex: FunctionComponent = (): JSX.Element => {
+
+    const [loading, setLoading] = useState<boolean>(true);
 
     // user information -> name and jwt
     const [userInfo, setUserInfo] = useState<userInfo>();
@@ -76,7 +77,8 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
 
     // we want to check this before the component mounts
-    useEffect(async () => {
+    useEffect(() => {
+        let mounted: boolean = true;
         // get jwt and name from localStorage
         let name: string = localStorage.getItem("userName") ?? undefined;
         let token: string = localStorage.getItem("user") ?? undefined;
@@ -86,18 +88,50 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
         if (name === undefined || token === undefined) {
             return
         } else {
-            setUserInfo({ userName: name, user: token });
-            setIsAuthenticated(true);
+            let isAuth_ = checkIsAuthenticated(token).then(isAuth => {
+                console.log(isAuth);
+                if (isAuth.message === "Authenticated") {
+                    setUserInfo({ userName: name, user: token });
+                    setIsAuthenticated(true);
+                } else {
+                    return;
+                }
 
-            // fetch if authenticated
-            let fetchedFarms: Promise<any> = await fetchFarms(token);
-            setFarms(fetchedFarms);
-            console.log(farms);
+                // if authenticated -> fetch farms
+                if (isAuthenticated) {
+                    // fetch if authenticated
+                    let fetchedFarms_: any = fetchFarms(token).then(fetchedFarms => {
+                        setFarms(fetchedFarms);
+                        console.log(farms);
+                    });
+                } else {
+                    return;
+                }
+
+                console.log(`Mounted : ${mounted}`);
+            });
+        }
+
+        console.log(`Mounted : ${mounted}`);
+
+        return function cleanup() {
+            setLoading(false);
+            mounted = false;
         }
 
     }, [isAuthenticated]);
 
 
+    if (loading) {
+        return (
+            <div>
+                <DashboardHeader />
+                <div>
+                    <h1>Loading...</h1>
+                </div>
+            </div>
+        )
+    }
     if (!isAuthenticated) {
         return (
             <div>
@@ -115,27 +149,33 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
             <div className={styles.mainDashboardContainer}>
 
                 <div className={styles.FarmsShowSomething}>
+
                     {farms === [] ?
                         <div className={styles.FarmsShowerNoFarms}>
                             <NoFarms createFarmAction={() => setFarmCreateOpen(!farmCreateOpen)} />
                         </div>
-                        :
-                        <div className={styles.FarmsShowerFarms}>
-                            {farms.map(({ title, location, category, fertilizer, plant, id }) => {
-                                return (
-                                    <FarmCard
-                                        key={id}
-                                        title={title}
-                                        location={location}
-                                        category={category}
-                                        fertilizer={fertilizer}
-                                        plant={plant}
-                                        id={id}
-                                    />
-                                )
-                            })}
-                            <NewFarmCard action={() => setFarmCreateOpen(!farmCreateOpen)} />
-                        </div>}
+                        : typeof farms === "object"
+                            ?
+                            < div className={styles.FarmsShowerFarms}>
+                                {farms.map(({ title, location, category, kind, id }) => {
+                                    return (
+                                        <FarmCard
+                                            key={id}
+                                            title={title}
+                                            location={location}
+                                            category={category}
+                                            kind={kind}
+                                            id={id}
+                                        />
+                                    )
+                                })}
+                                <NewFarmCard action={() => setFarmCreateOpen(!farmCreateOpen)} />
+                            </div>
+                            :
+                            <div>
+                                <h2>No Data</h2>
+                            </div>
+                    }
                 </div>
 
             </div>
@@ -167,7 +207,7 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                 </div>
             </div>
             {/* Modals Container end */}
-        </div>
+        </div >
     )
 }
 
