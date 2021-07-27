@@ -1,5 +1,5 @@
 
-import { User, Farm, Crop } from "../database/index";
+import { User, Farm, Crop, CropData } from "../database/index";
 import * as dotenv from "dotenv";
 
 // import custom scalar
@@ -53,17 +53,19 @@ const resolvers = {
             // contain farm data
             let farmData: any;
 
+            // timeStamp
+            const timeStamp: string = new Date().toString();
+
             // handle error case
             if (context.message === "AuthError") {
                 return {
                     title: "AuthError",
                     owner:"AuthError",
                     location: "AuthError",
-                    fertilizer: "AuthError",
-                    inputSeeds: "AuthError",
-                    plant: "AuthError",
-                    category:"AuthError",
-                    id: "AuthError"
+                    category: "AuthError",
+                    kind: "AuthError",
+                    id: "AuthError",
+                    timeStamp: timeStamp
                 }
             }
 
@@ -75,10 +77,9 @@ const resolvers = {
                 title: args.title,
                 owner: context.id,
                 location: args.location,
-                fertilizer: args.fertilizer,
-                inputSeeds: args.inputSeeds,
-                plant: args.plant,
-                category: args.category
+                category: args.category,
+                kind: args.kind,
+                timeStamp: timeStamp
             }, (error: any, newfarm: any) => {
                 if (error) {
                     isError = true;
@@ -94,10 +95,9 @@ const resolvers = {
                     title: "NO",
                     owner: "NO",
                     location: "NO",
-                    fertilizer: "NO",
-                    inputSeeds: "NO",
-                    plant: "NO",
-                    category: "NO"
+                    category: "NO",
+                    kind: "NO",
+                    timeStamp: "NO"
                 }
             }
 
@@ -107,10 +107,9 @@ const resolvers = {
                 title: args.title,
                 owner: context.id,
                 location: args.location,
-                fertilizer: args.fertilizer,
-                inputSeeds: args.inputSeeds,
-                plant: args.plant,
-                category: args.category
+                category: args.category,
+                kind: args.kind,
+                timeStamp: timeStamp
             }
         
         },
@@ -131,10 +130,8 @@ const resolvers = {
             Farm.findByIdAndUpdate(farmId, {
                 title: args.title ? args.title : oldFarm.title ,
                 location: args.location ? args.location : args.location,
-                fertilizer: args.fertilizer ? args.fertilizer : oldFarm.fertilizer,
-                inputSeeds: args.inputSeeds ? args.inputSeeds : oldFarm.inputSeeds,
-                plant: args.plant ? args.plant : oldFarm.plant,
-                category: args.category ? args.category : oldFarm.category
+                category: args.category ? args.category : oldFarm.category,
+                kind: args.kind ? args.kind : oldFarm.kind
             }, (error: any, updatedFarm: any) => {
                 if (error) {
                     hasFailed = true;
@@ -148,10 +145,8 @@ const resolvers = {
                 return {
                     title: args.title,
                     location: args.location,
-                    fertilizer: args.fertilizer,
-                    inputSeeds: args.inputSeeds,
-                    plant: args.plant,
-                    category: args.category
+                    category: args.category,
+                    kind: args.kind
                 }
             }
         },
@@ -161,7 +156,7 @@ const resolvers = {
             let newCrop = Crop.create({
                 name: args.name,
                 category: args.category,
-                fertilizerQuantity: args.fertilizerQuantity,
+                fertilizer: args.fertilizer,
                 water: args.water, 
                 cost: args.cost,
                 timeStamp: timeStamp,
@@ -186,6 +181,42 @@ const resolvers = {
                     weather: args.weather,
                     farm: args.farm
                 }
+            }
+        },
+        createCropData: (parent: any, args: any) => {
+            let isError: boolean = false;
+            let timeStamp: string = new Date().toString();
+
+            let newCropData = CropData.create({
+                name: parent.name,
+                category: parent.category,
+                fertilizer: args.fertilizer,
+                fertilizerQuantity: args.fertilizerQuantity,
+                water: args.water,
+                cost: args.cost,
+                timeStamp: timeStamp,
+                weather: "SomeWeatherData"
+            }, (error: any, newcropdata: any) => {
+                if (error) {
+                    isError = true;
+                    console.error(error);
+                }
+
+                return newcropdata
+            });
+
+            if (!isError) {
+                return {
+                    name: parent.name,
+                    category: parent.category,
+                    fertilizer: args.fertilizer,
+                    fertilizerQuantity: args.fertilizerQuantity,
+                    water: args.water,
+                    cost: args.cost,
+                    timeStamp: timeStamp,
+                    weather: "SomeWeatherData"
+                }
+
             }
         }
     },
