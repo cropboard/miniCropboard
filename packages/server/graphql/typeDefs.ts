@@ -52,6 +52,7 @@ type CropData {
     cost: Int!
     timeStamp: String!
     weather: Weather!
+    crop: String!
 }
 
 type Query {
