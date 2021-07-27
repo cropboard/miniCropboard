@@ -24,6 +24,7 @@ interface  CBCropData extends Document {
     cost: number
     timeStamp: string
     weather: WeatherData
+    crop: string
 }
 
 const CropDataSchema = new Schema<CBCropData>({
@@ -34,7 +35,8 @@ const CropDataSchema = new Schema<CBCropData>({
     water: Number,
     cost: Number,
     timeStamp: String,
-    weather: Object
+    weather: Object,
+    crop: String
 });
 
 const CropData = model("CropData", CropDataSchema);
