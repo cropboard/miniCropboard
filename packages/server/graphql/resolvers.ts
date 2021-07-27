@@ -113,42 +113,51 @@ const resolvers = {
             }
         
         },
-        updateFarm: (parent: any, args: any) => {
+        updateFarm: async (parent: any, args: any) => {
             let farmId: string = args.id;
-            let oldFarm: any = {};
+            let oldFarm: any;
+            let updatedFarm__: any;
+            let unval; // dirty workaround
+            let unval_; // dirty workaround... again!
             let hasFailed: boolean = false;
+            let hasFailed__: boolean = false;
+
+            console.log(farmId)
 
             // fetch old farm data
-            Farm.findById(farmId, (error: any, farm_: any) => {
-                if (error) throw new Error(error);
-
+            unval = await Farm.findById(farmId, (error: any, farm_: any) => {
+                if (error) {
+                    hasFailed = true;
+                }
                 oldFarm = farm_;
             });
 
-            console.log(oldFarm);
-
-            Farm.findByIdAndUpdate(farmId, {
-                title: args.title ? args.title : oldFarm.title ,
-                location: args.location ? args.location : args.location,
-                category: args.category ? args.category : oldFarm.category,
-                kind: args.kind ? args.kind : oldFarm.kind
-            }, (error: any, updatedFarm: any) => {
-                if (error) {
-                    hasFailed = true;
-                    return Error(error);
-                }
-
-                return updatedFarm;
-            });
+            // console.log(oldFarm);
 
             if (!hasFailed) {
-                return {
-                    title: args.title,
-                    location: args.location,
-                    category: args.category,
-                    kind: args.kind
+                // if oldFarm was fetched successfully
+                unval_ = await Farm.findByIdAndUpdate(farmId, {
+                title: args.title ? args.title : oldFarm.title ,
+                location: args.location ? args.location : oldFarm.location,
+                category: args.category ? args.category : oldFarm.category,
+                kind: args.kind ? args.kind : oldFarm.kind
+                        }, (error: any, updatedFarm: any) => {
+                            console.log(`Updated farm -> ${updatedFarm}`);
+                        if (error) {
+                            hasFailed__ = true;
+                            return Error(error);
+                        }
+
+                        updatedFarm__ = updatedFarm;
+                        return updatedFarm;
+                    });
+
+                    if (!hasFailed__) {
+                    return updatedFarm__;
                 }
+
             }
+
         },
         createCrop: (parent: any, args: any) => {
             let isError: boolean = false;
