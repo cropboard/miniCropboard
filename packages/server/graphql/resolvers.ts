@@ -130,6 +130,7 @@ const resolvers = {
                     hasFailed = true;
                 }
                 oldFarm = farm_;
+                // console.log(`Old Farm -> ${oldFarm}`)
             });
 
             // console.log(oldFarm);
@@ -186,42 +187,65 @@ const resolvers = {
                 }
             }
         },
-        createCropData: (parent: any, args: any) => {
+        createCropData: async (parent: any, args: any) => {
             let isError: boolean = false;
+            let isError_: boolean = false;
             let timeStamp: string = new Date().toString();
 
-            let newCropData = CropData.create({
-                name: parent.name,
-                category: parent.category,
-                fertilizer: args.fertilizer ? args.fertilizer : parent.fertilizer,
-                fertilizerQuantity: args.fertilizerQuantity,
-                water: args.water,
-                cost: args.cost,
-                timeStamp: timeStamp,
-                weather: "SomeWeatherData",
-                crop: args.crop
-            }, (error: any, newcropdata: any) => {
+            let parentCrop: any;
+            let unval: any; // this dirty workaround...
+            const parentCropId: string = args.crop;
+            console.log(parentCropId)
+
+            unval = await Crop.findById(parentCropId, (error: any, parentcrop: any) => {
                 if (error) {
                     isError = true;
-                    console.error(error);
                 }
+                console.log(`Parent Crop -> ${JSON.stringify(parentcrop)}`);
+                parentCrop = parentcrop;
+                console.log(parentcrop);
 
-                return newcropdata
             });
 
             if (!isError) {
-                return {
-                    name: parent.name,
-                    category: parent.category,
-                    fertilizer: args.fertilizer ? args.fertilizer : parent.fertilizer,
-                    fertilizerQuantity: args.fertilizerQuantity,
-                    water: args.water,
-                    cost: args.cost,
-                    timeStamp: timeStamp,
-                    weather: "SomeWeatherData"
-                }
+                    let newCropData = CropData.create({
+                        name: parentCrop.name,
+                        category: parentCrop.category,
+                        fertilizer: args.fertilizer ? args.fertilizer : parentCrop.fertilizer,
+                        fertilizerQuantity: args.fertilizerQuantity,
+                        water: args.water,
+                        cost: args.cost,
+                        timeStamp: timeStamp,
+                        weather: "SomeWeatherData",
+                        crop: args.crop
+                    }, (error: any, newcropdata: any) => {
+                        if (error) {
+                            isError_ = true;
+                            console.error(error);
+                        }
 
+                        console.log(newcropdata)
+                        return newcropdata
+                    });
+
+
+                if (!isError_) {
+
+                    return {
+                        name: parentCrop.name,
+                        category: parentCrop.category,
+                        fertilizer: args.fertilizer ? args.fertilizer : parentCrop.fertilizer,
+                        fertilizerQuantity: args.fertilizerQuantity,
+                        water: args.water,
+                        cost: args.cost,
+                        timeStamp: timeStamp,
+                        weather: "SomeWeatherData"
+                    }
+
+                }
             }
+
+            
         }
     },
 
