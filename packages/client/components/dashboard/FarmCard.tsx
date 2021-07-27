@@ -11,13 +11,16 @@ interface FarmCardProps {
     category: string
     kind: string
     id: string
+    index: number
 }
 
-const FarmCard: FunctionComponent<FarmCardProps> = ({ title, location, kind, category, id }): JSX.Element => {
+const FarmCard: FunctionComponent<FarmCardProps> = ({ title, location, kind, category, id, index }): JSX.Element => {
     return (
-        <Link href={`/dashboard/farm/${id}`}>
+        <Link href={`/dashboard/farm/${index}`}>
             <div className={styles.farmCard}>
-                <h2> {title} </h2>
+                <span className={styles.title__index}>
+                    <h2> {title} </h2> <span>{index}</span>
+                </span>
                 <div className={styles.varWidth}>
                     <span className={styles.plant__type}>
                         <p> Category :  {category} Crop </p>
