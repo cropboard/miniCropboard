@@ -138,22 +138,18 @@ async function sendGraphQLRequest(authToken: string, action: string, query: stri
 // this is a mutation query
 async function createFarm(
     authToken: string,
-    title: string, 
-    fertilizer: string, 
+    title: string,  
     location: string, 
-    inputSeeds: string, 
-    plant: string, 
-    category: string): Promise<any> {
+    category: string,
+    kind: string, ): Promise<any> {
 
     // the constructed graphql query with vars
-    const createFarmMutationVariablesPlaceholder: string = "($title: String!, $location: String!, $fertilizer: String!, $inputSeeds: String!, $plant: String!, $category: String!)";
-    const createFarmMutation: string = "createFarm(title: $title, fertilizer: $fertilizer, location: $location, inputSeeds: $inputSeeds, plant: $plant, category: $category) {title,fertilizer}";
+    const createFarmMutationVariablesPlaceholder: string = "($title: String!, $location: String!, $category: String!, $kind: String!)";
+    const createFarmMutation: string = "createFarm(title: $title, category: $category, location: $location, kind: $kind) {title,location}";
     const createFarmMutationVariables: object = {
-        title: title,
-        fertilizer,
+        title,
+        kind,
         location,
-        inputSeeds,
-        plant,
         category
     };
 
