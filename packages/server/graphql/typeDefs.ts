@@ -40,7 +40,6 @@ type Crop {
     water: Int!
     cost: Int!
     timeStamp: String!
-    weather: Weather!
     farm: String!
     cropsData: [CropData]
     id: ID!
