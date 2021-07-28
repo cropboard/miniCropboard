@@ -129,10 +129,12 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
                                 Error
                             </div>
                             : <div className={styles.farm__cropsDashboard}>
-                                {crops.map(({ name, category, fertilizer }) => {
+                                {crops.map(({ name, category, fertilizer }, crop_) => {
                                     return (
                                         <CropCard
-                                            key={name}
+                                            page__farmIndex={pageIndex}
+                                            index={crop_}
+                                            key={crop_}
                                             name={name}
                                             category={category}
                                             fertilizer={fertilizer}
