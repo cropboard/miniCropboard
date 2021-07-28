@@ -14,7 +14,7 @@ interface CropCardProps {
 
 const CropCard: FunctionComponent<CropCardProps> = ({ name, category, fertilizer, index, page__farmIndex }): JSX.Element => {
     return (
-        <Link href={`/dashboard/farm/${page__farmIndex}/crop/${index}`}>
+        <Link href={`/dashboard/farm/crops/${page__farmIndex}-${index}`}>
             <div className={styles.cropCard}>
                 <h2 className={styles.cropCardTitle}> {name} </h2>
                 <div>
