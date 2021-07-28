@@ -232,4 +232,12 @@ async function fetchCrops(authToken: string, farmIndex: number): Promise<any> {
     }
 }
 
-export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops };
+async function fetchCropData(authToken: string, farmIndex: number, cropIndex: number): Promise<any> {
+    const queryCropData: string = `{ user { farms { title, location, crops { name, category, cropsData { name, category, fertilizer, fertilizerQuantity, water, cost } } } } }`;
+
+    let queryCropsDataResult: any = await sendGraphQLRequest(authToken, "query", queryCropData);
+    console.log(queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]);
+    return queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData;
+}
+
+export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops, fetchCropData };
