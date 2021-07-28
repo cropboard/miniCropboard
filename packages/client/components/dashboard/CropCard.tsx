@@ -9,12 +9,20 @@ interface CropCardProps {
     category: string
     fertilizer: string
     index: number
+    page__farmIndex: number
 }
 
-const CropCard: FunctionComponent<CropCardProps> = ({ name, category, fertilizer }): JSX.Element => {
+const CropCard: FunctionComponent<CropCardProps> = ({ name, category, fertilizer, index, page__farmIndex }): JSX.Element => {
     return (
-        <Link>
-
+        <Link href={`/dashboard/farm/${page__farmIndex}/crop/${index}`}>
+            <div className={styles.cropCard}>
+                <h2 className={styles.cropCardTitle}> {name} </h2>
+                <div>
+                    <p className={styles.cropCardFruit}> Crop </p>
+                    <p className={styles.cropCardClass}> Class :  {category} </p>
+                </div>
+                <p className={styles.cropCardFertilizer}>Fertilizer : {fertilizer}</p>
+            </div>
         </Link>
     )
 }
