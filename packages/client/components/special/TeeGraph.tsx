@@ -16,9 +16,9 @@ const TeeGraph: FunctionComponent<TeeGraphProps> = ({ data, value, width, thickn
     const chart: tg = new tg({ data: dataValue }, width, thickness);
 
     const result: any = chart.render();
-    console.log(`${result}`)
+    // console.log(`${result}`)
 
-    console.log(`Data Value -> ${dataValue}`)
+    // console.log(`Data Value -> ${dataValue}`)
 
     return (
         <div dangerouslySetInnerHTML={{ __html: result }}>
