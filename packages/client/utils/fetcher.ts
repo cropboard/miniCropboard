@@ -207,9 +207,9 @@ async function createCrop(
 
 async function createCropData(authToken: string, fertilizerQuantity: number, cost: number, water: number, crop: string, fertilizer?: string) {
     const createCropDataMutationVariablesPlaceholder__fertilizer: string = "($fertilizer: String, $fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!)";
-    const createCropDataMutationVariablesPlaceholder_: string = "($fertilizer: String, $fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!)";
-    const createCropMutation__fertilizer: string = "createCropData(fertilizer: $fertilizer, fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop)";
-    const createCropMutation_: string = "createCropData(fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop)";
+    const createCropDataMutationVariablesPlaceholder_: string = "($fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!)";
+    const createCropMutation__fertilizer: string = "createCropData(fertilizer: $fertilizer, fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop) { water, cost }";
+    const createCropMutation_: string = "createCropData(fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop) { water, cost }";
     const createCropMutationVariables__fertilzer: object = {
         fertilizer,
         fertilizerQuantity,
@@ -260,11 +260,11 @@ async function fetchCrops(authToken: string, farmIndex: number): Promise<any> {
 }
 
 async function fetchCropData(authToken: string, farmIndex: number, cropIndex: number): Promise<any> {
-    const queryCropData: string = `{ user { farms { title, location, crops { name, category, cropsData { name, category, fertilizer, fertilizerQuantity, water, cost } } } } }`;
+    const queryCropData: string = `{ user { farms { title, location, crops { name, category, id, cropsData { name, category, fertilizer, fertilizerQuantity, water, cost } } } } }`;
 
     let queryCropsDataResult: any = await sendGraphQLRequest(authToken, "query", queryCropData);
     // console.log(queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]);
-    return queryCropsDataResult?.data?.user?.farms !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops ? queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData : [];
+    return queryCropsDataResult?.data?.user?.farms !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops ? [queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData, queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.id] : [];
 }
 
-export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops, fetchCropData };
+export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops, fetchCropData, createCropData };
