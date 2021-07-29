@@ -8,7 +8,7 @@ import TeeGraph from "../../../../components/special/TeeGraph";
 import Modal from "../../../../components/modal";
 
 // import crop fetcher
-import { fetchCropData } from "../../../../utils/fetcher";
+import { fetchCropData, createCropData } from "../../../../utils/fetcher";
 
 // import tee graph
 // import { TeeGraph } from "../../../../utils/teegraph";
@@ -62,13 +62,34 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     const [cropCreate, setCropCreate] = useState<boolean>();
     // crops 
     const [cropsData, setCropsData] = useState<Array<CropData>>([]);
-    let cropsData_: Array<cropDataStruct> = [];
+    const [cropId, setCropId] = useState<string>("");
 
     // loading state
     const [loading, setLoading] = useState<boolean>(true);
 
     // is authenticated
     const [isAuth, setIsAuth] = useState<boolean>(false);
+
+    /*  */
+    // states for the form
+    const [fertilizer, setFertilizer] = useState<string>();
+    const [fertilizerQuantity, setFertilizerQuantity] = useState<string>();
+    const [water, setWater] = useState<string>();
+    const [cost, setCost] = useState<string>();
+
+    function handleTextFieldChange(event: any, handler): void {
+        handler(event.target.value);
+    }
+
+    function sumbitCropData(event: any): void {
+        event.preventDefault();
+        if (fertilizer === "") {
+            createCropData(userInfo.user, parseInt(fertilizerQuantity), parseInt(cost), parseInt(water), cropId);
+        } else {
+            createCropData(userInfo.user, parseInt(fertilizerQuantity), parseInt(cost), parseInt(water), cropId, fertilizer)
+        }
+    }
+    /*  */
 
     useEffect(() => {
         let userName: string = localStorage.getItem("userName");
@@ -80,11 +101,14 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
 
             fetchCropData(user, farmIndex, cropIndex_).then(result => {
                 console.log(result);
-                setCropsData(result);
-                cropsData_ = result;
+                setCropsData(result[0]);
+                setCropId(result[1]);
             }).catch(error => setCropsData([]));
         }
 
+        return function cleanup() {
+            (() => undefined)();
+        }
 
     }, []);
 
@@ -148,29 +172,29 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
 
                 <main className={styles.mainGraphContainer}>
                     <div>
-                        <div>
+                        <div className={styles.graphCard}>
                             <h2>Cost</h2>
                             <TeeGraph
                                 data={cropsData}
-                                width={300}
+                                width={600}
                                 value="cost"
                                 thickness={40}
                             />
                         </div>
-                        <div>
+                        <div className={styles.graphCard}>
                             <h2>Water</h2>
                             <TeeGraph
                                 data={cropsData}
-                                width={300}
+                                width={600}
                                 value="water"
                                 thickness={40}
                             />
                         </div>
-                        <div>
+                        <div className={styles.graphCard}>
                             <h2>Fertilizer Quantity</h2>
                             <TeeGraph
                                 data={cropsData}
-                                width={300}
+                                width={600}
                                 value="fertilizerQuantity"
                                 thickness={40}
                             />
@@ -181,11 +205,11 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
 
             <div className={styles.modalContainer}>
                 <Modal modalState={cropCreate} closeHandler={() => setCropCreate(false)}>
-                    <form className={styles.formStyle}>
-                        <input type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer(option)" />
-                        <input type="text" name="fertilizerQuantity" id="fertilizerQuantity" placeholder="Fertilizer Quantity" />
-                        <input type="number" name="water" id="water" placeholder="Water in liters" />
-                        <input type="number" name="cost" id="cost" placeholder="Cost in your local currency" />
+                    <form onSubmit={event => sumbitCropData(event)} className={styles.formStyle}>
+                        <input value={fertilizer} onChange={event => handleTextFieldChange(event, setFertilizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer(option)" />
+                        <input value={fertilizerQuantity} onChange={event => handleTextFieldChange(event, setFertilizerQuantity)} type="text" name="fertilizerQuantity" id="fertilizerQuantity" placeholder="Fertilizer Quantity" />
+                        <input value={water} onChange={event => handleTextFieldChange(event, setWater)} type="number" name="water" id="water" placeholder="Water in liters" />
+                        <input value={cost} onChange={event => handleTextFieldChange(event, setCost)} type="number" name="cost" id="cost" placeholder="Cost in your local currency" />
                         <button>
                             Create Record
                         </button>
