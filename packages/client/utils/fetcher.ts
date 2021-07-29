@@ -228,7 +228,7 @@ async function fetchCrops(authToken: string, farmIndex: number): Promise<any> {
     } else if (queryCropsResult?.data?.user?.farms[farmIndex]?.crops === []) {
         return [];
     } else {
-        return queryCropsResult?.data?.user?.farms[farmIndex]?.crops !== null ? queryCropsResult?.data?.user?.farms[farmIndex]?.crops : [];
+        return queryCropsResult?.data?.user !== null &&  queryCropsResult?.data?.user?.farms[farmIndex]?.crops !== null ? queryCropsResult?.data?.user?.farms[farmIndex]?.crops : [];
     }
 }
 
@@ -236,8 +236,8 @@ async function fetchCropData(authToken: string, farmIndex: number, cropIndex: nu
     const queryCropData: string = `{ user { farms { title, location, crops { name, category, cropsData { name, category, fertilizer, fertilizerQuantity, water, cost } } } } }`;
 
     let queryCropsDataResult: any = await sendGraphQLRequest(authToken, "query", queryCropData);
-    console.log(queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]);
-    return queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData;
+    // console.log(queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]);
+    return queryCropsDataResult?.data?.user?.farms !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops ? queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData : [];
 }
 
 export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops, fetchCropData };
