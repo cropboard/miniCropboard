@@ -205,6 +205,33 @@ async function createCrop(
     return query;
 }
 
+async function createCropData(authToken: string, fertilizerQuantity: number, cost: number, water: number, crop: string, fertilizer?: string) {
+    const createCropDataMutationVariablesPlaceholder__fertilizer: string = "($fertilizer: String, $fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!)";
+    const createCropDataMutationVariablesPlaceholder_: string = "($fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!)";
+    const createCropMutation__fertilizer: string = "createCropData(fertilizer: $fertilizer, fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop) { water, cost }";
+    const createCropMutation_: string = "createCropData(fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop) { water, cost }";
+    const createCropMutationVariables__fertilzer: object = {
+        fertilizer,
+        fertilizerQuantity,
+        water,
+        cost
+    };
+    const createCropMutationVariables_: object = {
+        fertilizerQuantity,
+        water,
+        cost,
+        crop
+    }
+
+    if (fertilizer) {
+        const query = await sendGraphQLRequest(authToken, "mutation", createCropMutation__fertilizer, createCropDataMutationVariablesPlaceholder__fertilizer, createCropMutationVariables__fertilzer);
+        return query;
+    } else {
+        const query = await sendGraphQLRequest(authToken, "mutation", createCropMutation_, createCropDataMutationVariablesPlaceholder_, createCropMutationVariables_);
+        return query;
+    }
+}
+
 async function fetchFarms(authToken: string): Promise<any> {
     const queryFarms: string = `{user {name,farms { title, location, category, kind, id }}}`;
 
@@ -228,8 +255,16 @@ async function fetchCrops(authToken: string, farmIndex: number): Promise<any> {
     } else if (queryCropsResult?.data?.user?.farms[farmIndex]?.crops === []) {
         return [];
     } else {
-        return queryCropsResult?.data?.user?.farms[farmIndex]?.crops !== null ? queryCropsResult?.data?.user?.farms[farmIndex]?.crops : [];
+        return queryCropsResult?.data?.user !== null &&  queryCropsResult?.data?.user?.farms[farmIndex]?.crops !== null ? queryCropsResult?.data?.user?.farms[farmIndex]?.crops : [];
     }
 }
 
-export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops };
+async function fetchCropData(authToken: string, farmIndex: number, cropIndex: number): Promise<any> {
+    const queryCropData: string = `{ user { farms { title, location, crops { name, category, id, cropsData { name, category, fertilizer, fertilizerQuantity, water, cost } } } } }`;
+
+    let queryCropsDataResult: any = await sendGraphQLRequest(authToken, "query", queryCropData);
+    // console.log(queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]);
+    return queryCropsDataResult?.data?.user?.farms !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops ? [queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData, queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.id] : [];
+}
+
+export { signupHandler, loginHandler, createFarm, createCrop, updateFarm, fetchFarms, checkIsAuthenticated, fetchCrops, fetchCropData, createCropData };
