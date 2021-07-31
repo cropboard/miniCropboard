@@ -9,7 +9,9 @@ interface CBCrop extends Document {
     category: CropCategory
     fertilizer: string
     timeStamp: string,
-    farm: String
+    farm: string
+    harvested: boolean
+    output: number
 }
 
 const CropSchema = new Schema<CBCrop>({
@@ -17,7 +19,9 @@ const CropSchema = new Schema<CBCrop>({
     category: String,
     fertilizer: String,
     timeStamp: String,
-    farm: String
+    farm: String,
+    harvested: Boolean,
+    output: Number
 });
 
 const Crop = model("Crop", CropSchema);
