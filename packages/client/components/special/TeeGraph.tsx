@@ -7,13 +7,19 @@ interface TeeGraphProps {
     value: string
     width: number
     thickness: number
+    cardWidth: number
 }
 
-const TeeGraph: FunctionComponent<TeeGraphProps> = ({ data, value, width, thickness }) => {
+const TeeGraph: FunctionComponent<TeeGraphProps> = ({ data, value, width, thickness, cardWidth }) => {
     // const color: string = randomColor();
     const dataValue: Array<any> = data.map(d => ({ value: d[value], date: "" }));
 
-    const chart: tg = new tg({ data: dataValue }, width, thickness);
+    let width_: number;
+    useEffect(() => {
+        width_ = window.innerWidth - 100;
+    }, []);
+
+    const chart: tg = new tg({ data: dataValue }, width, thickness * 2);
 
     const result: any = chart.render();
     // console.log(`${result}`)
@@ -21,7 +27,7 @@ const TeeGraph: FunctionComponent<TeeGraphProps> = ({ data, value, width, thickn
     // console.log(`Data Value -> ${dataValue}`)
 
     return (
-        <div dangerouslySetInnerHTML={{ __html: result }}>
+        <div style={{ width: `${width}px` }} dangerouslySetInnerHTML={{ __html: result }}>
 
         </div>
     )

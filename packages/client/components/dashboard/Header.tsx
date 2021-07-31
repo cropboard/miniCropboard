@@ -27,7 +27,7 @@ const DashboardHeader: FunctionComponent<DashboardHeaderProps> = ({ name }): JSX
     return (
         <header className={styles.header}>
             <Logo /> {/* Cropboard logo */}
-            <HeaderAvatar profile="/josias.jpg" name={name} />
+            <HeaderAvatar profile="/person.png" name={name} />
         </header>
     )
 }
