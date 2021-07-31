@@ -8,7 +8,7 @@ import TeeGraph from "../../../../components/special/TeeGraph";
 import Modal from "../../../../components/modal";
 
 // import crop fetcher
-import { fetchCropData, createCropData } from "../../../../utils/fetcher";
+import { fetchCropData, createCropData, harvestCrop } from "../../../../utils/fetcher";
 
 // import tee graph
 // import { TeeGraph } from "../../../../utils/teegraph";
@@ -67,6 +67,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     // crops 
     const [cropsData, setCropsData] = useState<Array<CropData>>([]);
     const [cropId, setCropId] = useState<string>("");
+    const [harvested, setHarvested] = useState<boolean>(false);
 
     // loading state
     const [loading, setLoading] = useState<boolean>(true);
@@ -95,6 +96,18 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     }
     /*  */
 
+    /* */
+    async function harvestCropData(): Promise<any> {
+        const output: number = parseInt(prompt("Enter your output in tonnes"));
+        let result: any = output !== undefined ? await harvestCrop(userInfo.user, cropId, output) : [];
+        if (result === "Harvested") {
+            router.reload();
+        } else {
+            alert("Something wen't wrong");
+        }
+    }
+    /*  */
+
     useEffect(() => {
         let userName: string = localStorage.getItem("userName");
         let user: string = localStorage.getItem("user");
@@ -107,6 +120,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                 console.log(result);
                 setCropsData(result[0]);
                 setCropId(result[1]);
+                setHarvested(result[2]);
             }).catch(error => setCropsData([]));
         }
 
@@ -160,7 +174,12 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     return (
         <div className={styles.cropDashboardPage}>
             <DashboardHeader name={userInfo.userName} />
-            <h2 style={{ fontFamily: "sans-serif" }}>Graphical Overview</h2>
+            <div>
+                <h2 style={{ fontFamily: "sans-serif" }}>Graphical Overview</h2>
+                <button onClick={() => harvestCropData()} className={miscStyles.newRecordButtonData}>
+                    Harvest Crop
+                </button>
+            </div>
             <div className={styles.dashboardSections}>
                 <div className={styles.dashboardContainer}>
                     <div>
@@ -245,6 +264,11 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                 </div>
             </div>
 
+            <div>
+                {harvested ? <div>
+                    <h2 style={{ fontFamily: "sans-serif" }}>Harvested</h2>
+                </div> : ""}
+            </div>
             <div className={styles.modalContainer}>
                 <Modal modalState={cropCreate} closeHandler={() => setCropCreate(false)}>
                     <form onSubmit={event => sumbitCropData(event)} className={styles.formStyle}>

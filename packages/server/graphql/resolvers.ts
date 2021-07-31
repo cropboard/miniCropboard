@@ -167,7 +167,9 @@ const resolvers = {
                 category: args.category,
                 fertilizer: args.fertilizer,
                 timeStamp: timeStamp,
-                farm: args.farm
+                farm: args.farm,
+                harvested: false,
+                output: 0
             }, (error: any, newcrop: any) => {
                 if (error) {
                     isError = true;
@@ -245,6 +247,24 @@ const resolvers = {
             }
 
             
+        },
+        harvestCrop: (parent: any, args: any) => {
+            // get the cropId from the args
+            const cropId: string = args.id;
+            // get output
+            const cropOutput: number = args.output;
+
+            let isError: boolean = false;
+
+            Crop.findByIdAndUpdate(cropId, { harvested: true, output: cropOutput }, (error: any, res: any) => {
+                if (error) {
+                    isError = true;
+                    return "Error";
+                }
+
+            });
+
+            return !isError ? "Harvested" : "Error";
         }
     },
 

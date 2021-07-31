@@ -53,7 +53,7 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
 
     // modal form states
     const [name, setName] = useState<string>("");
-    const [category, setCategory] = useState<string>("");
+    // const [category, setCategory] = useState<string>("");
     const [fertilizer, setFertlizer] = useState<string>("");
 
     // handle input value change
@@ -101,7 +101,10 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
 
     async function submitCropCreate(event: any) {
         // event.preventDefault();
-        const createdCropsResponse = await createCrop(userInfo.user, name, category, fertilizer, farm.id);
+        // console.log(event.target["1"].value)
+        let selection: string = event.target["1"].value;
+        console.log(name.trim(), selection, fertilizer, farm.id);
+        const createdCropsResponse = await createCrop(userInfo.user, name.trim(), selection, fertilizer.trim(), farm.id);
         console.log(createdCropsResponse);
     }
 
@@ -153,7 +156,12 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
                         <Modal modalState={cropsCreateOpen} closeHandler={() => setCropsCreateOpen(!cropsCreateOpen)}>
                             <form onSubmit={event => submitCropCreate(event)} className={styles.formStyle}>
                                 <input value={name} onChange={event => textFieldChangehandler(event, setName)} type="text" name="name" id="name" placeholder="Crop Name e.g Orange" />
-                                <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Category e.g Fruit" />
+                                <select name="category" id="">
+                                    <option value="Fruit">Fruit</option>
+                                    <option value="Legume">Legume</option>
+                                    <option value="Cereal">Cereal</option>
+                                </select>
+                                {/* <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Category e.g Fruit" /> */}
                                 <input value={fertilizer} onChange={event => textFieldChangehandler(event, setFertlizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer type e.g NPK" />
                                 <button>
                                     Create Crop
@@ -164,7 +172,7 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
                 </div>
                 {/* Modals Container end */}
             </div>
-        </div>
+        </div >
     )
 }
 
