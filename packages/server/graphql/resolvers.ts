@@ -26,8 +26,6 @@ const resolvers = {
                     _id: "AuthError",
                     farms: ["AuthError"]
                 }
-            } else {
-                
             }
                 let userData = undefined;
                 let unval; // use to await assignment of the fetched data -> will get assigned no value [undefined]
