@@ -54,8 +54,6 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
     // states for createFarm modal
     const [title, setTitle] = useState<string>("");
     const [location, setLocation] = useState<string>("");
-    const [category, setCategory] = useState<string>("");
-    const [kind, setKind] = useState<string>("");
 
     // farms state
     const [farms, setFarms] = useState<Array<Farm>>([]);
@@ -67,8 +65,11 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
     async function submitCreateFarmForm(event: any): Promise<void> {
         // event.preventDefault();
-        if (title !== "" && kind !== "" && category !== "" && location !== "") {
-            let results = await createFarm(userInfo.user, title, location, category, kind);
+        if (title !== "" && location !== "") {
+            const farmKind: string = event.target["1"].value; // fruits ? cereals ? legumes ?
+            const farmCategory: string = event.target["2"].value;
+            console.table({ farmKind, farmCategory, title, location })
+            let results = await createFarm(userInfo.user, title.trim(), location.trim(), farmCategory, farmKind);
             return console.log(results);
         } else {
             alert("Some fields are empty");
@@ -183,9 +184,16 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                             {/* title */}
                             <input value={title} onChange={event => textFieldChangehandler(event, setTitle)} type="text" name="title" id="title" placeholder="Title of farm" />
                             {/* kind */}
-                            <input value={kind} onChange={event => textFieldChangehandler(event, setKind)} type="text" name="kind" id="kind" placeholder="fruit ? legume ? cereal ?" />
+                            <select name="kind" id="kind">
+                                <option value="Fruit">Fruit</option>
+                                <option value="Legume">Legume</option>
+                                <option value="Cereal">Cereal</option>
+                            </select>
                             {/* category */}
-                            <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Cash or food  ?" />
+                            <select name="category" id="category">
+                                <option value="Cash">Cash Crop</option>
+                                <option value="Food">Food Crop</option>
+                            </select>
                             {/* location */}
                             <input value={location} onChange={event => textFieldChangehandler(event, setLocation)} type="text" name="location" id="location" placeholder="Location of farm" />
 
