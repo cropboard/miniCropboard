@@ -31,17 +31,18 @@ class TeeGraph {
 
 
             const sumOfProportion: number = data.length !== 0 ? data.reduce((total, current) => total + current) : 0;
+
             const percentileData = data.map(unitData => {
-                return Math.floor((unitData/sumOfProportion)*100);
+                return Math.floor((unitData/sumOfData)*100);
             })
 
             console.table([proportionalData, percentileData]);
 
             let ard__: Array<number> = data.map(unitData => {
-                return Math.floor((unitData/sumOfProportion)*sumOfData);
+                return Math.floor((unitData/sumOfData)*sumOfData);
             });
 
-            return [proportionalData, percentileData, ard__];
+            return [proportionalData, percentileData, data];
         }
 
 
@@ -66,13 +67,14 @@ class TeeGraph {
     prepareRects(): string {
         // the rects array
         let rects__: any = [];
-        let dataPercentile = this.reduceData(this.data)[0];
+        let dataPercentile = this.reduceData(this.data)[1];
+        console.log(`Percentile : ${dataPercentile}`)
         for (let d: number = 0; d < this.data.length; d++) {
             let color = this.randomColor();
             let offsetsSum: number = this.offsets.reduce((total, current) => total + current);
-            rects__.push(`<rect x="${this.offsets[this.offsets.length - 1]}" y="0" width="${dataPercentile[d]}%" height="10%" fill="${color}" />\n`);
-            this.offsets.push(dataPercentile[d] + offsetsSum);
-            console.log(this.offsets);
+            rects__.push(`<rect x="${this.offsets[this.offsets.length - 1]+1}" y="0" width="${(dataPercentile[d] / 100)*this.width}px" height="10%" fill="${color}" />\n`);
+            this.offsets.push((dataPercentile[d] / 100)*this.width + this.offsets[this.offsets.length - 1]);
+            console.log(`Offsets -> ${JSON.stringify(this.offsets)} Per -> ${(dataPercentile[d] / 100)*this.width}`);
 
         }
 
