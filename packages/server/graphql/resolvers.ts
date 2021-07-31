@@ -27,6 +27,8 @@ const resolvers = {
                     farms: ["AuthError"]
                 }
             } else {
+                
+            }
                 let userData = undefined;
                 let unval; // use to await assignment of the fetched data -> will get assigned no value [undefined]
                 const user = await User.findById(context.id, (error: any, foundUser: any) => {
@@ -37,7 +39,6 @@ const resolvers = {
                 });
                 unval = await user;
                 return userData;
-            }
             
         },
         hello: (parent: any, args: any, context: any) => {
