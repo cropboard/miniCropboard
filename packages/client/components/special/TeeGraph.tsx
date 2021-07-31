@@ -17,6 +17,10 @@ const TeeGraph: FunctionComponent<TeeGraphProps> = ({ data, value, width, thickn
     let width_: number;
     useEffect(() => {
         width_ = window.innerWidth - 100;
+
+        return function cleanup(): void {
+            return;
+        }
     }, []);
 
     const chart: tg = new tg({ data: dataValue }, width, thickness * 2);
