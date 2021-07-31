@@ -44,7 +44,13 @@ const SignUpPage: FunctionComponent = (): JSX.Element => {
         event.preventDefault();
 
         // registration status
-        let registrationStatus: any = await signupHandler(SERVER_, name, confirmPassword, email, location);
+        let registrationStatus: any;
+
+        if (name !== "" && confirmPassword !== "" && email !== "" && location !== "") {
+            registrationStatus = await signupHandler(SERVER_, name.trim(), confirmPassword.trim(), email.trim(), location.trim());
+        } else {
+            alert("Some fields are empty. Please fill them");
+        }
 
         // handle not registered status
         if (!registrationStatus) {
@@ -75,7 +81,7 @@ const SignUpPage: FunctionComponent = (): JSX.Element => {
                     <input value={password} onChange={event => handleTextFieldChange(event, setPassword)} type="password" placeholder="Password" />
                     <input value={confirmPassword} onChange={event => handleTextFieldChange(event, setConfirmPassword)} type="password" placeholder="Confirm Password" />
                     {chechIsSamePassowrd() ? <p style={{ color: "rgb(118, 252, 118)", fontFamily: "sans-serif" }}>Passwords Match</p> : <p style={{ color: "rgb(255 59 59)", fontFamily: "sans-serif" }}> Passwords do not match </p>}
-                    <input value={location} onChange={event => handleTextFieldChange(event, setLocation)} type="text" placeholder="Location" />
+                    <input value={location} onChange={event => handleTextFieldChange(event, setLocation)} type="text" placeholder="Country" />
                     <button>
                         Register
                     </button>
