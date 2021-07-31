@@ -181,6 +181,7 @@ const server = new ApolloServer({
         // validate the token to get user data
         try {
             const userData: any = validateToken(authToken);
+            // console.log(userData)
             return userData;
         } catch (error: any) {
             return {"message": "AuthError"};
