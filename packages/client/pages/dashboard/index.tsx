@@ -17,6 +17,8 @@ import Modal from "../../components/modal";
 import FarmCard from "../../components/dashboard/FarmCard";
 import NewFarmCard from "../../components/dashboard/NewFarmCard";
 
+import { NextRouter, useRouter } from "next/router";
+
 // import creatFarm handler
 import { createFarm, fetchFarms, checkIsAuthenticated } from "../../utils/fetcher";
 
@@ -35,7 +37,9 @@ interface Farm {
 
 const DashboardIndex: FunctionComponent = (): JSX.Element => {
 
-    const [loading, setLoading] = useState<boolean>(true);
+    // const [loading, setLoading] = useState<boolean>(true);
+
+    const router: NextRouter = useRouter();
 
     // user information -> name and jwt
     const [userInfo, setUserInfo] = useState<userInfo>();
@@ -113,23 +117,12 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
         console.log(`Mounted : ${mounted}`);
 
         return function cleanup() {
-            setLoading(false);
+            // setLoading(false);
             mounted = false;
         }
 
     }, [isAuthenticated]);
 
-
-    if (loading) {
-        return (
-            <div>
-                <DashboardHeader />
-                <div>
-                    <h1>Loading...</h1>
-                </div>
-            </div>
-        )
-    }
     if (!isAuthenticated) {
         return (
             <div>
@@ -174,7 +167,8 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                             </div>
                             :
                             <div>
-                                <h2>No Data</h2>
+                                <h2 style={{ fontFamily: "sans-serif" }}>No Data</h2>
+                                <p style={{ fontFamily: "sans-serif" }}>I am sure there is data... <p onClick={() => router.reload()} style={{ textDecoration: "underline" }}>retry</p> </p>
                             </div>
                     }
                 </div>

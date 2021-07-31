@@ -17,6 +17,8 @@ import { fetchCropData, createCropData } from "../../../../utils/fetcher";
 import miscStyles from "../../../../styles/misc.module.css";
 import styles from "../../../../styles/dashboard/crop.module.css";
 
+import { useRouter, NextRouter } from "next/router";
+
 interface CropPageProps {
     cropIndex: string
 }
@@ -52,6 +54,8 @@ interface User {
 
 const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element => {
 
+    const router: NextRouter = useRouter();
+
     // let page query
     const farmIndex: number = parseInt(cropIndex.split("-")[0]);
     const cropIndex_: number = parseInt(cropIndex.split("-")[1]);
@@ -82,7 +86,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     }
 
     function sumbitCropData(event: any): void {
-        event.preventDefault();
+        // event.preventDefault();
         if (fertilizer === "") {
             createCropData(userInfo.user, parseInt(fertilizerQuantity), parseInt(cost), parseInt(water), cropId);
         } else {
@@ -123,6 +127,36 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
         )
     }
 
+    if (cropsData !== undefined && cropsData.length === 0) {
+        return (
+            <div>
+                <DashboardHeader name={userInfo.userName} />
+                <div className={styles.noCropDataContainerCn}>
+                    <div className={styles.noCropData}>
+                        <h2>No Records</h2>
+                        <button onClick={() => setCropCreate(!cropCreate)} className={miscStyles.newRecordButton}>
+                            <img src="/dashboard/plus-outline.png" alt="new-record-btn" />
+                            New Record
+                        </button>
+                    </div>
+                </div>
+                <div className={styles.modalContainerNoData}>
+                    <Modal modalState={cropCreate} closeHandler={() => setCropCreate(false)}>
+                        <form onSubmit={event => sumbitCropData(event)} className={styles.formStyle}>
+                            <input value={fertilizer} onChange={event => handleTextFieldChange(event, setFertilizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer(optional)" />
+                            <input value={fertilizerQuantity} onChange={event => handleTextFieldChange(event, setFertilizerQuantity)} type="number" name="fertilizerQuantity" id="fertilizerQuantity" placeholder="Fertilizer Quantity" />
+                            <input value={water} onChange={event => handleTextFieldChange(event, setWater)} type="number" name="water" id="water" placeholder="Water in liters" />
+                            <input value={cost} onChange={event => handleTextFieldChange(event, setCost)} type="number" name="cost" id="cost" placeholder="Cost in your local currency" />
+                            <button>
+                                Create Record
+                            </button>
+                        </form>
+                    </Modal>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className={styles.cropDashboardPage}>
             <DashboardHeader name={userInfo.userName} />
@@ -140,8 +174,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                                             </div>
                                             :
                                             <div className={styles.cropDataCardsCn}>
-                                                <button onClick={() => setCropCreate(!cropCreate)} className={miscStyles.newRecordButton}>
-                                                    <img src="/dashboard/plus-outline.png" alt="new-record-btn" />
+                                                <button onClick={() => setCropCreate(!cropCreate)} className={miscStyles.newRecordButtonData}>
                                                     New Record
                                                 </button>
                                                 <div className={styles.cropDataCards}>
@@ -157,57 +190,66 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                                                                 water={water}
                                                             />
                                                         )
-                                                    })}
+                                                    })
+                                                    }
                                                 </div>
                                             </div>
                                     }
                                 </div>
                                 :
                                 <div>
-                                    <h2>Try Again</h2>
+                                    <div>
+                                        <h2 style={{ fontFamily: "sans-serif" }}>No Data</h2>
+                                        <p style={{ fontFamily: "sans-serif" }}>I am sure there is data... <p onClick={() => router.reload()} style={{ textDecoration: "underline" }}>retry</p> </p>
+                                    </div>
                                 </div>
                         }
                     </div>
                 </div>
 
-                <main className={styles.mainGraphContainer}>
-                    <div>
-                        <div className={styles.graphCard}>
-                            <h2>Cost</h2>
-                            <TeeGraph
-                                data={cropsData}
-                                width={600}
-                                value="cost"
-                                thickness={40}
-                            />
+                <div className={styles.mainGraphContainerCn}>
+                    <main className={styles.mainGraphContainer}>
+                        <div className={styles.graphCards}>
+                            <div className={styles.graphCard}>
+                                <h2>Cost</h2>
+                                <TeeGraph
+                                    data={cropsData}
+                                    width={500}
+                                    value="cost"
+                                    thickness={40}
+                                    cardWidth={50}
+                                />
+                            </div>
+                            <div className={styles.graphCard}>
+                                <h2>Water</h2>
+                                <TeeGraph
+                                    data={cropsData}
+                                    width={500}
+                                    value="water"
+                                    thickness={40}
+                                    cardWidth={50}
+                                />
+                            </div>
+                            <div className={styles.graphCard}>
+                                <h2>Fertilizer Quantity</h2>
+                                <TeeGraph
+                                    data={cropsData}
+                                    width={500}
+                                    value="fertilizerQuantity"
+                                    thickness={40}
+                                    cardWidth={50}
+                                />
+                            </div>
                         </div>
-                        <div className={styles.graphCard}>
-                            <h2>Water</h2>
-                            <TeeGraph
-                                data={cropsData}
-                                width={600}
-                                value="water"
-                                thickness={40}
-                            />
-                        </div>
-                        <div className={styles.graphCard}>
-                            <h2>Fertilizer Quantity</h2>
-                            <TeeGraph
-                                data={cropsData}
-                                width={600}
-                                value="fertilizerQuantity"
-                                thickness={40}
-                            />
-                        </div>
-                    </div>
-                </main>
+                    </main>
+                </div>
             </div>
 
             <div className={styles.modalContainer}>
                 <Modal modalState={cropCreate} closeHandler={() => setCropCreate(false)}>
                     <form onSubmit={event => sumbitCropData(event)} className={styles.formStyle}>
-                        <input value={fertilizer} onChange={event => handleTextFieldChange(event, setFertilizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer(option)" />
-                        <input value={fertilizerQuantity} onChange={event => handleTextFieldChange(event, setFertilizerQuantity)} type="text" name="fertilizerQuantity" id="fertilizerQuantity" placeholder="Fertilizer Quantity" />
+                        <input value={fertilizer} onChange={event => handleTextFieldChange(event, setFertilizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer(optional)" />
+                        <input value={fertilizerQuantity} onChange={event => handleTextFieldChange(event, setFertilizerQuantity)} type="number" name="fertilizerQuantity" id="fertilizerQuantity" placeholder="Fertilizer Quantity" />
                         <input value={water} onChange={event => handleTextFieldChange(event, setWater)} type="number" name="water" id="water" placeholder="Water in liters" />
                         <input value={cost} onChange={event => handleTextFieldChange(event, setCost)} type="number" name="cost" id="cost" placeholder="Cost in your local currency" />
                         <button>
@@ -216,7 +258,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                     </form>
                 </Modal>
             </div>
-        </div>
+        </div >
     )
 }
 
