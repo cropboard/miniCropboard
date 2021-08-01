@@ -22,7 +22,6 @@ This tool also serves as a way of collecting farming data from farmer's usage in
     - Apollo Server
     - Dotenv (for environment variables)
     - Mongoose (ODM)
-    - CORS (for CORS issues if any)
 
 More to Come.
 
