@@ -69,6 +69,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     const [cropId, setCropId] = useState<string>("");
     const [harvested, setHarvested] = useState<boolean>(false);
     const [harvestedCropData, setHarvestedCropData] = useState<Array<number>>();
+    const [cropLocation, setCropLocation] = useState<string>("");
 
     // loading state
     const [loading, setLoading] = useState<boolean>(true);
@@ -83,16 +84,17 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     const [water, setWater] = useState<string>();
     const [cost, setCost] = useState<string>();
 
+
     function handleTextFieldChange(event: any, handler): void {
         handler(event.target.value);
     }
 
     function sumbitCropData(event: any): void {
-        // event.preventDefault();
+        event.preventDefault();
         if (fertilizer === "") {
-            createCropData(userInfo.user, parseInt(fertilizerQuantity), parseInt(cost), parseInt(water), cropId);
+            createCropData(userInfo.user, parseInt(fertilizerQuantity), parseInt(cost), parseInt(water), cropId, cropLocation);
         } else {
-            createCropData(userInfo.user, parseInt(fertilizerQuantity), parseInt(cost), parseInt(water), cropId, fertilizer)
+            createCropData(userInfo.user, parseInt(fertilizerQuantity), parseInt(cost), parseInt(water), cropId, cropLocation, fertilizer)
         }
     }
     /*  */
@@ -119,10 +121,11 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
 
             fetchCropData(user, farmIndex, cropIndex_).then(result => {
                 console.log(result);
-                setCropsData(result.cropsData);
-                setCropId(result.id);
-                setHarvested(result.harvested);
-                setHarvestedCropData([result.inputSeeds, result.output]);
+                setCropsData(result[0].cropsData);
+                setCropId(result[0].id);
+                setHarvested(result[0].harvested);
+                setHarvestedCropData([result[0].inputSeeds, result[0].output]);
+                setCropLocation(result[1]);
                 console.log(`Harvested Crop Data -> ${harvestedCropData}`)
             }).catch(error => setCropsData([]));
         }
