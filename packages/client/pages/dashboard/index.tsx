@@ -169,7 +169,8 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                             :
                             <div>
                                 <h2 style={{ fontFamily: "sans-serif" }}>No Data</h2>
-                                <p style={{ fontFamily: "sans-serif" }}>I am sure there is data... <p onClick={() => router.reload()} style={{ textDecoration: "underline" }}>retry</p> </p>
+                                <p style={{ fontFamily: "sans-serif" }}>I am sure there is data...</p> <br />
+                                <p style={{ fontFamily: "sans-serif", textDecoration: "underline" }} onClick={() => router.reload()}>retry</p>
                             </div>
                     }
                 </div>
@@ -195,7 +196,7 @@ const DashboardIndex: FunctionComponent = (): JSX.Element => {
                                 <option value="Food">Food Crop</option>
                             </select>
                             {/* location */}
-                            <input value={location} onChange={event => textFieldChangehandler(event, setLocation)} type="text" name="location" id="location" placeholder="Location of farm" />
+                            <input value={location} onChange={event => textFieldChangehandler(event, setLocation)} type="text" name="location" id="location" placeholder="City of farm" />
 
                             {/* Submit */}
                             <button>

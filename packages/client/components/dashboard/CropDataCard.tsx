@@ -27,7 +27,7 @@ const CropDataCard: FunctionComponent<CropDataProps> = ({ name, category, fertil
                 </div>
                 <span>
                     <p> Water {water}L </p>
-                    <p> Cost {cost} XAF </p>
+                    <p> Cost {cost} Local </p>
                 </span>
             </div>
         </div>

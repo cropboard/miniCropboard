@@ -68,6 +68,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     const [cropsData, setCropsData] = useState<Array<CropData>>([]);
     const [cropId, setCropId] = useState<string>("");
     const [harvested, setHarvested] = useState<boolean>(false);
+    const [harvestedCropData, setHarvestedCropData] = useState<Array<number>>();
 
     // loading state
     const [loading, setLoading] = useState<boolean>(true);
@@ -98,7 +99,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
 
     /* */
     async function harvestCropData(): Promise<any> {
-        const output: number = parseInt(prompt("Enter your output in tonnes"));
+        const output: number = parseInt(prompt("Enter your output in kilograms"));
         let result: any = output !== undefined ? await harvestCrop(userInfo.user, cropId, output) : [];
         if (result === "Harvested") {
             router.reload();
@@ -118,9 +119,11 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
 
             fetchCropData(user, farmIndex, cropIndex_).then(result => {
                 console.log(result);
-                setCropsData(result[0]);
-                setCropId(result[1]);
-                setHarvested(result[2]);
+                setCropsData(result.cropsData);
+                setCropId(result.id);
+                setHarvested(result.harvested);
+                setHarvestedCropData([result.inputSeeds, result.output]);
+                console.log(`Harvested Crop Data -> ${harvestedCropData}`)
             }).catch(error => setCropsData([]));
         }
 
@@ -152,6 +155,8 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                             <img src="/dashboard/plus-outline.png" alt="new-record-btn" />
                             New Record
                         </button>
+                        <p> I am sure there are records...  </p>
+                        <p style={{ textDecoration: "underline" }} onClick={() => router.reload()}>Reload</p>
                     </div>
                 </div>
                 <div className={styles.modalContainerNoData}>
@@ -171,20 +176,24 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
         )
     }
 
+    function reloadPage(): void { router.reload() };
+
     return (
         <div className={styles.cropDashboardPage}>
             <DashboardHeader name={userInfo.userName} />
             <div>
                 <h2 style={{ fontFamily: "sans-serif" }}>Graphical Overview</h2>
-                <button onClick={() => harvestCropData()} className={miscStyles.newRecordButtonData}>
-                    Harvest Crop
-                </button>
+                {!harvested ?
+                    <button onClick={() => harvestCropData()} className={miscStyles.newRecordButtonData}>
+                        Harvest Crop
+                    </button>
+                    : ""}
             </div>
             <div className={styles.dashboardSections}>
                 <div className={styles.dashboardContainer}>
                     <div>
                         {
-                            cropsData !== undefined ?
+                            cropsData !== undefined && cropsData !== null ?
                                 <div>
                                     {
                                         cropsData.length === 0 ?
@@ -219,7 +228,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                                 <div>
                                     <div>
                                         <h2 style={{ fontFamily: "sans-serif" }}>No Data</h2>
-                                        <p style={{ fontFamily: "sans-serif" }}>I am sure there is data... <p onClick={() => router.reload()} style={{ textDecoration: "underline" }}>retry</p> </p>
+                                        <p style={{ fontFamily: "sans-serif" }}>I am sure there are records... Please reload page.</p>
                                     </div>
                                 </div>
                         }
@@ -264,9 +273,14 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                 </div>
             </div>
 
-            <div>
+            <div style={{ marginBottom: "3em", position: "relative", top: "-20px" }}>
                 {harvested ? <div>
-                    <h2 style={{ fontFamily: "sans-serif" }}>Harvested</h2>
+                    <div>
+                        <h2 style={{ fontFamily: "sans-serif" }}>You have marked this crop as Harvested</h2>
+                        <div style={{ fontFamily: "sans-serif" }}>
+                            Productivity ~ {harvestedCropData !== undefined ? Math.floor((harvestedCropData[1] / harvestedCropData[0])) : ""}
+                        </div>
+                    </div>
                 </div> : ""}
             </div>
             <div className={styles.modalContainer}>
