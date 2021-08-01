@@ -88,6 +88,14 @@ async function checkIsAuthenticated(authToken: string) {
     return isAuthResponse;
 }
 
+async function getWeatherData(cityName: string): Promise<string> {
+    const weatherMicroserviceURL: string = "https://weathermicroservice.cropboard.studio";
+
+    const fetchedResult: any = await fetch(`${weatherMicroserviceURL}/${cityName}`);
+    const weatherData: any = await fetchedResult.json()
+    return JSON.stringify(weatherData);
+}
+
 
 // function to send GraphQL requests
 // query has to be JSON stringified if JSON object
@@ -207,22 +215,28 @@ async function createCrop(
     return query;
 }
 
-async function createCropData(authToken: string, fertilizerQuantity: number, cost: number, water: number, crop: string, fertilizer?: string) {
-    const createCropDataMutationVariablesPlaceholder__fertilizer: string = "($fertilizer: String, $fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!)";
-    const createCropDataMutationVariablesPlaceholder_: string = "($fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!)";
-    const createCropMutation__fertilizer: string = "createCropData(fertilizer: $fertilizer, fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop) { water, cost }";
-    const createCropMutation_: string = "createCropData(fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop) { water, cost }";
+async function createCropData(authToken: string, fertilizerQuantity: number, cost: number, water: number, crop: string, location: string, fertilizer?: string) {
+
+    // get weather data
+    const weatherData: Promise<string> = getWeatherData(location);
+
+    const createCropDataMutationVariablesPlaceholder__fertilizer: string = "($fertilizer: String, $fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!, $weather: Weather!)";
+    const createCropDataMutationVariablesPlaceholder_: string = "($fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!, $weather: Weather!)";
+    const createCropMutation__fertilizer: string = "createCropData(fertilizer: $fertilizer, fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop, weather: $weather) { water, cost }";
+    const createCropMutation_: string = "createCropData(fertilizerQuantity: $fertilizerQuantity, water: $water, cost: $cost, crop: $crop, weather: $weather) { water, cost }";
     const createCropMutationVariables__fertilzer: object = {
         fertilizer,
         fertilizerQuantity,
         water,
-        cost
+        cost,
+        weather: weatherData
     };
     const createCropMutationVariables_: object = {
         fertilizerQuantity,
         water,
         cost,
-        crop
+        crop,
+        weather: weatherData
     }
 
     if (fertilizer) {
@@ -266,7 +280,7 @@ async function fetchCropData(authToken: string, farmIndex: number, cropIndex: nu
 
     let queryCropsDataResult: any = await sendGraphQLRequest(authToken, "query", queryCropData);
     // console.log(queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]);
-    return queryCropsDataResult?.data?.user?.farms !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex] !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops ? queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex] : [];
+    return queryCropsDataResult?.data?.user?.farms !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex] !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops ? [queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex], queryCropsDataResult?.data?.user?.farms[farmIndex]?.location] : [];
 }
 
 async function harvestCrop(authToken: string, cropId: string, output: number): Promise<any> {
