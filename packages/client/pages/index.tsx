@@ -1,9 +1,16 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
+
+import { useRouter, NextRouter } from "next/router";
 
 const Index: FunctionComponent = (): JSX.Element => {
+    const router: NextRouter = useRouter();
+    useEffect(() => {
+        setTimeout((() => router.replace("/dashboard")), 1000);
+    });
+
     return (
         <div>
-            <h1>Hello World from miniCropboard client</h1>
+            <h1>Redirecting to dashboard...</h1>
         </div>
     )
 }
