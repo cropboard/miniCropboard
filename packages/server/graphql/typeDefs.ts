@@ -42,6 +42,7 @@ type Crop {
     cropsData: [CropData]
     harvested: Boolean!
     output: Int!
+    inputSeeds: Int!
     id: ID!
 }
 
@@ -65,7 +66,7 @@ type Query {
 type Mutation {
     createFarm(title: String!, location: String!, category: String!, kind: String!): Farm
     updateFarm(id: String! title: String, location: String, category: String, kind: String): Farm
-    createCrop(name: String!, category: String!, fertilizer: String!, farm: String!): Crop
+    createCrop(name: String!, category: String!, fertilizer: String!, inputSeeds: Int!, farm: String!): Crop
     harvestCrop(id: String!, output: Int!): String
     createCropData(fertilizer: String, fertilizerQuantity: Int!, water: Int!, cost: Int!, crop: String!): CropData
 }
