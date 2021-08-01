@@ -9,6 +9,7 @@ async function signupHandler(server: string, name: string, password: string, ema
     // headers
     const requestHeaders: HeadersInit = {
         "Content-Type": "application/json",
+        mode: "no-cors"
     };
 
     // data necessary to register new user
@@ -43,6 +44,7 @@ async function loginHandler(server: string, email: string, password: string): Pr
     // headers
     const requestHeaders: HeadersInit = {
         "Content-Type": "application/json",
+        mode: "no-cors"
     };
 
     // data necessary to register new user
@@ -74,6 +76,7 @@ async function checkIsAuthenticated(authToken: string) {
     // headers
     const requestHeaders: HeadersInit = {
         "Content-Type": "application/json",
+        mode: "no-cors"
     };
 
     // fetch result
@@ -96,7 +99,8 @@ async function sendGraphQLRequest(authToken: string, action: string, query: stri
     // request headers for GraphQL request
     const requestHeaders: HeadersInit = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`
+        Authorization: `Bearer ${authToken}`,
+        mode: "no-cors"
     };
 
     const graphqlActionQuery: object = {
