@@ -9,7 +9,6 @@ async function signupHandler(server: string, name: string, password: string, ema
     // headers
     const requestHeaders: HeadersInit = {
         "Content-Type": "application/json",
-        mode: "no-cors"
     };
 
     // data necessary to register new user
@@ -44,7 +43,6 @@ async function loginHandler(server: string, email: string, password: string): Pr
     // headers
     const requestHeaders: HeadersInit = {
         "Content-Type": "application/json",
-        mode: "no-cors"
     };
 
     // data necessary to register new user
@@ -76,7 +74,6 @@ async function checkIsAuthenticated(authToken: string) {
     // headers
     const requestHeaders: HeadersInit = {
         "Content-Type": "application/json",
-        mode: "no-cors"
     };
 
     // fetch result
