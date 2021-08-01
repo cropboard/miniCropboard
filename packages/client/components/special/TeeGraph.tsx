@@ -12,7 +12,7 @@ interface TeeGraphProps {
 
 const TeeGraph: FunctionComponent<TeeGraphProps> = ({ data, value, width, thickness, cardWidth }) => {
     // const color: string = randomColor();
-    const dataValue: Array<any> = data.map(d => ({ value: d[value], date: "" }));
+    const dataValue: Array<any> = data !== undefined ? data.map(d => ({ value: d[value], date: "" })) : [];
 
     let width_: number;
     useEffect(() => {
