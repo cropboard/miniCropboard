@@ -262,11 +262,11 @@ async function fetchCrops(authToken: string, farmIndex: number): Promise<any> {
 }
 
 async function fetchCropData(authToken: string, farmIndex: number, cropIndex: number): Promise<any> {
-    const queryCropData: string = `{ user { farms { title, location, crops { name, category, id, harvested cropsData { name, category, fertilizer, fertilizerQuantity, water, cost } } } } }`;
+    const queryCropData: string = `{ user { farms { title, location, crops { name, category, id, harvested, inputSeeds, output, cropsData { name, category, fertilizer, fertilizerQuantity, water, cost } } } } }`;
 
     let queryCropsDataResult: any = await sendGraphQLRequest(authToken, "query", queryCropData);
     // console.log(queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]);
-    return queryCropsDataResult?.data?.user?.farms !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops ? [queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.cropsData, queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.id, queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex]?.harvested] : [];
+    return queryCropsDataResult?.data?.user?.farms !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex] !== null && queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops ? queryCropsDataResult?.data?.user?.farms[farmIndex]?.crops[cropIndex] : [];
 }
 
 async function harvestCrop(authToken: string, cropId: string, output: number): Promise<any> {
