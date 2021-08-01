@@ -196,6 +196,7 @@ const resolvers = {
             let timeStamp: string = new Date().toString();
 
             let parentCrop: any;
+            let parentFarm: any;
             let unval: any; // this dirty workaround...
             const parentCropId: string = args.crop;
             console.log(parentCropId)
@@ -204,6 +205,7 @@ const resolvers = {
                 if (error) {
                     isError = true;
                 }
+                let weatherData_: any;
                 console.log(`Parent Crop -> ${JSON.stringify(parentcrop)}`);
                 parentCrop = parentcrop;
                 console.log(parentcrop);
@@ -219,7 +221,7 @@ const resolvers = {
                         water: args.water,
                         cost: args.cost,
                         timeStamp: timeStamp,
-                        weather: "SomeWeatherData",
+                        weather: args.weather,
                         crop: args.crop
                     }, (error: any, newcropdata: any) => {
                         if (error) {
