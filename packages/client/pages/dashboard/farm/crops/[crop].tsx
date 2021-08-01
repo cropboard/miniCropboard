@@ -273,7 +273,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
                 </div>
             </div>
 
-            <div>
+            <div style={{ marginBottom: "3em", position: "relative", top: "-20px" }}>
                 {harvested ? <div>
                     <div>
                         <h2 style={{ fontFamily: "sans-serif" }}>You have marked this crop as Harvested</h2>
