@@ -90,7 +90,7 @@ const CropPage: FunctionComponent<CropPageProps> = ({ cropIndex }): JSX.Element 
     }
 
     function sumbitCropData(event: any): void {
-        // event.preventDefault();
+        event.preventDefault();
         if (fertilizer === "") {
             createCropData(userInfo.user, parseInt(fertilizerQuantity), parseInt(cost), parseInt(water), cropId, cropLocation);
         } else {
