@@ -12,6 +12,7 @@ interface CBCrop extends Document {
     farm: string
     harvested: boolean
     output: number
+    inputSeeds: number
 }
 
 const CropSchema = new Schema<CBCrop>({
@@ -21,7 +22,8 @@ const CropSchema = new Schema<CBCrop>({
     timeStamp: String,
     farm: String,
     harvested: Boolean,
-    output: Number
+    output: Number,
+    inputSeeds: Number
 });
 
 const Crop = model("Crop", CropSchema);
