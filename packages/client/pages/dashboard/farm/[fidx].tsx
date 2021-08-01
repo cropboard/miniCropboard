@@ -21,6 +21,7 @@ interface Crop {
     name: string
     category: string
     fertilizer: string
+    harvested: boolean
 }
 
 interface User {
@@ -53,7 +54,7 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
 
     // modal form states
     const [name, setName] = useState<string>("");
-    // const [category, setCategory] = useState<string>("");
+    const [inputSeeds, setInputSeeds] = useState<number>(0);
     const [fertilizer, setFertlizer] = useState<string>("");
 
     // handle input value change
@@ -104,7 +105,7 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
         // console.log(event.target["1"].value)
         let selection: string = event.target["1"].value;
         console.log(name.trim(), selection, fertilizer, farm.id);
-        const createdCropsResponse = await createCrop(userInfo.user, name.trim(), selection, fertilizer.trim(), farm.id);
+        const createdCropsResponse = await createCrop(userInfo.user, name.trim(), selection, fertilizer.trim(), parseInt(`${inputSeeds}`), farm.id);
         console.log(createdCropsResponse);
     }
 
@@ -114,6 +115,9 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
             {farm ?
                 <div className={styles.farm__cropslabel}>
                     <h2>Crops</h2>
+                    <button>
+                        Measure Productivity
+                    </button>
                     <span>
                         <p> {farm.title} </p>
                         <p> {farm.location} </p>
@@ -132,7 +136,7 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
                                 Error
                             </div>
                             : <div className={styles.farm__cropsDashboard}>
-                                {crops.map(({ name, category, fertilizer }, crop_) => {
+                                {crops.map(({ name, category, fertilizer, harvested }, crop_) => {
                                     return (
                                         <CropCard
                                             page__farmIndex={pageIndex}
@@ -141,6 +145,7 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
                                             name={name}
                                             category={category}
                                             fertilizer={fertilizer}
+                                            harvested={harvested}
                                         />
                                     )
                                 })}
@@ -163,6 +168,10 @@ const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex })
                                 </select>
                                 {/* <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Category e.g Fruit" /> */}
                                 <input value={fertilizer} onChange={event => textFieldChangehandler(event, setFertlizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer type e.g NPK" />
+                                <label htmlFor="Input Seeds">
+                                    <p style={{ fontFamily: "sans-serif", fontSize: "1em" }}>Quantity of seeds in Kilograms</p>
+                                    <input value={inputSeeds} onChange={event => textFieldChangehandler(event, setInputSeeds)} type="number" name="inputSeeds" id="inputSeeds" placeholder="Quantity of seeds used in kg" />
+                                </label>
                                 <button>
                                     Create Crop
                                 </button>
