@@ -10,9 +10,10 @@ interface CropCardProps {
     fertilizer: string
     index: number
     page__farmIndex: number
+    harvested: boolean
 }
 
-const CropCard: FunctionComponent<CropCardProps> = ({ name, category, fertilizer, index, page__farmIndex }): JSX.Element => {
+const CropCard: FunctionComponent<CropCardProps> = ({ name, category, fertilizer, index, page__farmIndex, harvested }): JSX.Element => {
     return (
         <Link href={`/dashboard/farm/crops/${page__farmIndex}-${index}`}>
             <div className={styles.cropCard}>
@@ -22,8 +23,9 @@ const CropCard: FunctionComponent<CropCardProps> = ({ name, category, fertilizer
                     <p className={styles.cropCardClass}> Class :  {category} </p>
                 </div>
                 <p className={styles.cropCardFertilizer}>Fertilizer : {fertilizer}</p>
+                {harvested ? <p style={{ minWidth: "35%" }} className={styles.cropCardFruit}> Harvested </p> : ""}
             </div>
-        </Link>
+        </Link >
     )
 }
 
