@@ -219,7 +219,7 @@ async function createCrop(
 async function createCropData(authToken: string, fertilizerQuantity: number, cost: number, water: number, crop: string, location: string, fertilizer?: string) {
 
     // get weather data
-    const weatherData: Promise<string> = getWeatherData(location);
+    const weatherData: string = await getWeatherData(location);
     console.log(`Weather Data -> ${weatherData}`);
 
     const createCropDataMutationVariablesPlaceholder__fertilizer: string = "($fertilizer: String, $fertilizerQuantity: Int!, $water: Int!, $cost: Int!, $crop: String!, $weather: String!)";
