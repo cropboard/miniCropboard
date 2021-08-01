@@ -189,14 +189,16 @@ async function createCrop(
     name: string, 
     category: string, 
     fertilizer: string, 
+    inputSeeds: number,
     farm: string): Promise<void> {
 
-    const createCropMutationVariablesPlaceholder: string = "($name: String!, $category: String!, $fertilizer: String! $farm: String!)";
-    const createCropMutation: string = `createCrop(name: $name, category: $category, fertilizer: $fertilizer, farm: $farm) {name,fertilizer}`;
+    const createCropMutationVariablesPlaceholder: string = "($name: String!, $category: String!, $fertilizer: String!, $inputSeeds: Int!, $farm: String!)";
+    const createCropMutation: string = `createCrop(name: $name, category: $category, fertilizer: $fertilizer, inputSeeds: $inputSeeds, farm: $farm) {name,fertilizer}`;
     const createCropMutationVariables: object = {
         name,
         category,
         fertilizer,
+        inputSeeds: inputSeeds,
         farm
     };
 
