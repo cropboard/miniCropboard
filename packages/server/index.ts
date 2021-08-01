@@ -30,10 +30,18 @@ app.use(express.json());
 // make use of request logger for express
 app.use(morgan("tiny"));
 
-// use my cors middleware
+/* // use my cors middleware
 import { corsMiddleware } from "./utils/corsMiddleware";
 
-app.use(corsMiddleware);
+app.use(corsMiddleware); */
+
+import cors from "cors";
+
+app.use(cors());
+
+app.get("/", (req: Request, res: Response) => {
+    res.send("Hello World from Cropboard server");
+})
 
 /* Very specific operations -> Authentication handled in REST API */
 app.post("/signup", (req: Request, res: Response) => {
