@@ -169,7 +169,8 @@ const resolvers = {
                 timeStamp: timeStamp,
                 farm: args.farm,
                 harvested: false,
-                output: 0
+                output: 0,
+                inputSeeds: args.inputSeeds
             }, (error: any, newcrop: any) => {
                 if (error) {
                     isError = true;
@@ -184,7 +185,8 @@ const resolvers = {
                     category: args.category,
                     fertilizer: args.fertilizer,
                     timeStamp: timeStamp,
-                    farm: args.farm
+                    farm: args.farm,
+                    inputSeeds: args.inputSeeds
                 }
             }
         },
