@@ -12,17 +12,17 @@ fertilizerQuantity in a physical volume quantity
 cost in an Int in the currency of the farm location
 */
 const typeDefs = gql`
-scalar Weather
+  scalar Weather
 
-type User {
+  type User {
     name: String!
     email: String!
     location: String!
     _id: ID!
     farms: [Farm]
-}
+  }
 
-type Farm {
+  type Farm {
     title: String!
     owner: String!
     location: String!
@@ -31,9 +31,9 @@ type Farm {
     crops: [Crop]
     timeStamp: String!
     id: ID!
-}
+  }
 
-type Crop {
+  type Crop {
     name: String!
     category: String!
     fertilizer: String!
@@ -44,9 +44,9 @@ type Crop {
     output: Int!
     inputSeeds: Int!
     id: ID!
-}
+  }
 
-type CropData {
+  type CropData {
     name: String!
     category: String!
     fertilizer: String!
@@ -56,21 +56,44 @@ type CropData {
     timeStamp: String!
     weather: Weather!
     crop: String!
-}
+  }
 
-type Query {
+  type Query {
     user: User
     hello: String
-}
+  }
 
-type Mutation {
-    createFarm(title: String!, location: String!, category: String!, kind: String!): Farm
-    updateFarm(id: String! title: String, location: String, category: String, kind: String): Farm
-    createCrop(name: String!, category: String!, fertilizer: String!, inputSeeds: Int!, farm: String!): Crop
+  type Mutation {
+    createFarm(
+      title: String!
+      location: String!
+      category: String!
+      kind: String!
+    ): Farm
+    updateFarm(
+      id: String!
+      title: String
+      location: String
+      category: String
+      kind: String
+    ): Farm
+    createCrop(
+      name: String!
+      category: String!
+      fertilizer: String!
+      inputSeeds: Int!
+      farm: String!
+    ): Crop
     harvestCrop(id: String!, output: Int!): String
-    createCropData(fertilizer: String, fertilizerQuantity: Int!, water: Int!, cost: Int!, weather: Weather!, crop: String!): CropData
-}
-
+    createCropData(
+      fertilizer: String
+      fertilizerQuantity: Int!
+      water: Int!
+      cost: Int!
+      weather: Weather!
+      crop: String!
+    ): CropData
+  }
 `;
 
-export { typeDefs }; 
+export { typeDefs };

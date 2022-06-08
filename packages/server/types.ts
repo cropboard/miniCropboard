@@ -1,12 +1,11 @@
-
 interface User {
-    name: string
-    id: number
+  name: string;
+  id: number;
 }
 
 interface Farm {
-    title: string
-    user: number
+  title: string;
+  user: number;
 }
 
 export { User, Farm };

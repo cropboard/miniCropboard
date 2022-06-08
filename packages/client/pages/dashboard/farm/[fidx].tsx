@@ -14,186 +14,224 @@ import styles from "../../../styles/dashboard/farm.module.css";
 import styles_ from "../../../styles/misc.module.css";
 
 interface FarmByDashboard {
-    pageIndex: number
+  pageIndex: number;
 }
 
 interface Crop {
-    name: string
-    category: string
-    fertilizer: string
-    harvested: boolean
+  name: string;
+  category: string;
+  fertilizer: string;
+  harvested: boolean;
 }
 
 interface User {
-    userName: string
-    user: string
+  userName: string;
+  user: string;
 }
 
 interface Farm {
-    title: string
-    location: string
-    category: string
-    kind: string
-    id: string
+  title: string;
+  location: string;
+  category: string;
+  kind: string;
+  id: string;
 }
 
+const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({
+  pageIndex,
+}): JSX.Element => {
+  // the user credentials
+  const [userInfo, setUserInfo] = useState<User>();
 
-const FarmDashboardByIndex: FunctionComponent<FarmByDashboard> = ({ pageIndex }): JSX.Element => {
+  // this farm
+  const [farm, setFarm] = useState<Farm>();
 
-    // the user credentials
-    const [userInfo, setUserInfo] = useState<User>();
+  // crops
+  const [crops, setCrops] = useState<Array<Crop>>([]);
 
-    // this farm
-    const [farm, setFarm] = useState<Farm>();
+  // is authenticated
+  const [isAuth, setIsAuth] = useState<boolean>(false);
 
-    // crops 
-    const [crops, setCrops] = useState<Array<Crop>>([]);
+  // modal form states
+  const [name, setName] = useState<string>("");
+  const [inputSeeds, setInputSeeds] = useState<number>(0);
+  const [fertilizer, setFertlizer] = useState<string>("");
 
-    // is authenticated
-    const [isAuth, setIsAuth] = useState<boolean>(false);
+  // handle input value change
+  function textFieldChangehandler(event: any, handler: Function): void {
+    handler(event.target.value);
+  }
 
-    // modal form states
-    const [name, setName] = useState<string>("");
-    const [inputSeeds, setInputSeeds] = useState<number>(0);
-    const [fertilizer, setFertlizer] = useState<string>("");
+  const [cropsCreateOpen, setCropsCreateOpen] = useState<boolean>(false);
+  useEffect(() => {
+    let userName: string = localStorage.getItem("userName") ?? undefined;
+    let user: string = localStorage.getItem("user") ?? undefined;
 
-    // handle input value change
-    function textFieldChangehandler(event: any, handler: Function): void {
-        handler(event.target.value);
+    if (userName === undefined || user === undefined) {
+      return;
+    } else {
+      setIsAuth(true);
+      setUserInfo({ user: user, userName: userName });
+
+      fetchFarms(user).then((farms_) => {
+        setFarm(farms_[pageIndex]);
+        console.log(farms_[pageIndex]);
+
+        fetchCrops(user, pageIndex).then((result) => {
+          setCrops(result);
+          console.log(result);
+        });
+      });
     }
 
-    const [cropsCreateOpen, setCropsCreateOpen] = useState<boolean>(false);
-    useEffect(() => {
-        let userName: string = localStorage.getItem("userName") ?? undefined;
-        let user: string = localStorage.getItem("user") ?? undefined;
+    return function cleanup() {
+      setTimeout(() => undefined, 2000);
+    };
+  }, [isAuth]);
 
-        if (userName === undefined || user === undefined) {
-            return;
-        } else {
-            setIsAuth(true);
-            setUserInfo({ user: user, userName: userName });
-
-            fetchFarms(user).then(farms_ => {
-                setFarm(farms_[pageIndex]);
-                console.log(farms_[pageIndex]);
-
-                fetchCrops(user, pageIndex).then(result => {
-                    setCrops(result);
-                    console.log(result);
-                });
-            });
-        }
-
-        return function cleanup() {
-            setTimeout((() => undefined), 2000);
-        }
-    }, [isAuth]);
-
-    if (!isAuth) {
-        return (
-            <div>
-                <DashboardHeader />
-                <div>
-                    <NotAuthCard />
-                </div>
-            </div>
-        )
-    }
-
-    async function submitCropCreate(event: any) {
-        // event.preventDefault();
-        // console.log(event.target["1"].value)
-        let selection: string = event.target["1"].value;
-        console.log(name.trim(), selection, fertilizer, farm.id);
-        const createdCropsResponse = await createCrop(userInfo.user, name.trim(), selection, fertilizer.trim(), parseInt(`${inputSeeds}`), farm.id);
-        console.log(createdCropsResponse);
-    }
-
+  if (!isAuth) {
     return (
+      <div>
+        <DashboardHeader />
         <div>
-            <DashboardHeader name={userInfo.userName} />
-            {farm ?
-                <div className={styles.farm__cropslabel}>
-                    <h2>Crops</h2>
-                    <button>
-                        Measure Productivity
-                    </button>
-                    <span>
-                        <p> {farm.title} </p>
-                        <p> {farm.location} </p>
-                    </span>
-                </div>
-                :
-                <div></div>}
-            <main className={styles.farm__cropsDashboardContainer}>
-                <div>
-                    {crops === [] ?
-                        <div className={styles.farm__cropsDashboard}>
-                            <NewCropCard action={() => (() => undefined)} />
-                        </div>
-                        : crops === undefined || crops === null ?
-                            <div className={styles.farm__cropsDashboard}>
-                                Error
-                            </div>
-                            : <div className={styles.farm__cropsDashboard}>
-                                {crops.map(({ name, category, fertilizer, harvested }, crop_) => {
-                                    return (
-                                        <CropCard
-                                            page__farmIndex={pageIndex}
-                                            index={crop_}
-                                            key={crop_}
-                                            name={name}
-                                            category={category}
-                                            fertilizer={fertilizer}
-                                            harvested={harvested}
-                                        />
-                                    )
-                                })}
-                                <NewCropCard action={() => setCropsCreateOpen(!cropsCreateOpen)} />
-                            </div>}
-                </div>
-            </main>
+          <NotAuthCard />
+        </div>
+      </div>
+    );
+  }
 
-            <div>
-                {/* Modals Container */}
-                <div className={styles.modalsContainer}>
-                    <div className={styles_.modalContainer}>
-                        <Modal modalState={cropsCreateOpen} closeHandler={() => setCropsCreateOpen(!cropsCreateOpen)}>
-                            <form onSubmit={event => submitCropCreate(event)} className={styles.formStyle}>
-                                <input value={name} onChange={event => textFieldChangehandler(event, setName)} type="text" name="name" id="name" placeholder="Crop Name e.g Orange" />
-                                <select name="category" id="">
-                                    <option value="Fruit">Fruit</option>
-                                    <option value="Legume">Legume</option>
-                                    <option value="Cereal">Cereal</option>
-                                </select>
-                                {/* <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Category e.g Fruit" /> */}
-                                <input value={fertilizer} onChange={event => textFieldChangehandler(event, setFertlizer)} type="text" name="fertilizer" id="fertilizer" placeholder="Fertilizer type e.g NPK" />
-                                <label htmlFor="Input Seeds">
-                                    <p style={{ fontFamily: "sans-serif", fontSize: "1em" }}>Quantity of seeds in Kilograms</p>
-                                    <input value={inputSeeds} onChange={event => textFieldChangehandler(event, setInputSeeds)} type="number" name="inputSeeds" id="inputSeeds" placeholder="Quantity of seeds used in kg" />
-                                </label>
-                                <button>
-                                    Create Crop
-                                </button>
-                            </form>
-                        </Modal>
-                    </div>
-                </div>
-                {/* Modals Container end */}
+  async function submitCropCreate(event: any) {
+    // event.preventDefault();
+    // console.log(event.target["1"].value)
+    let selection: string = event.target["1"].value;
+    console.log(name.trim(), selection, fertilizer, farm.id);
+    const createdCropsResponse = await createCrop(
+      userInfo.user,
+      name.trim(),
+      selection,
+      fertilizer.trim(),
+      parseInt(`${inputSeeds}`),
+      farm.id
+    );
+    console.log(createdCropsResponse);
+  }
+
+  return (
+    <div>
+      <DashboardHeader name={userInfo.userName} />
+      {farm ? (
+        <div className={styles.farm__cropslabel}>
+          <h2>Crops</h2>
+          <button>Measure Productivity</button>
+          <span>
+            <p> {farm.title} </p>
+            <p> {farm.location} </p>
+          </span>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      <main className={styles.farm__cropsDashboardContainer}>
+        <div>
+          {crops === [] ? (
+            <div className={styles.farm__cropsDashboard}>
+              <NewCropCard action={() => () => undefined} />
             </div>
-        </div >
-    )
-}
+          ) : crops === undefined || crops === null ? (
+            <div className={styles.farm__cropsDashboard}>Error</div>
+          ) : (
+            <div className={styles.farm__cropsDashboard}>
+              {crops.map(({ name, category, fertilizer, harvested }, crop_) => {
+                return (
+                  <CropCard
+                    page__farmIndex={pageIndex}
+                    index={crop_}
+                    key={crop_}
+                    name={name}
+                    category={category}
+                    fertilizer={fertilizer}
+                    harvested={harvested}
+                  />
+                );
+              })}
+              <NewCropCard
+                action={() => setCropsCreateOpen(!cropsCreateOpen)}
+              />
+            </div>
+          )}
+        </div>
+      </main>
+
+      <div>
+        {/* Modals Container */}
+        <div className={styles.modalsContainer}>
+          <div className={styles_.modalContainer}>
+            <Modal
+              modalState={cropsCreateOpen}
+              closeHandler={() => setCropsCreateOpen(!cropsCreateOpen)}
+            >
+              <form
+                onSubmit={(event) => submitCropCreate(event)}
+                className={styles.formStyle}
+              >
+                <input
+                  value={name}
+                  onChange={(event) => textFieldChangehandler(event, setName)}
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Crop Name e.g Orange"
+                />
+                <select name="category" id="">
+                  <option value="Fruit">Fruit</option>
+                  <option value="Legume">Legume</option>
+                  <option value="Cereal">Cereal</option>
+                </select>
+                {/* <input value={category} onChange={event => textFieldChangehandler(event, setCategory)} type="text" name="category" id="category" placeholder="Category e.g Fruit" /> */}
+                <input
+                  value={fertilizer}
+                  onChange={(event) =>
+                    textFieldChangehandler(event, setFertlizer)
+                  }
+                  type="text"
+                  name="fertilizer"
+                  id="fertilizer"
+                  placeholder="Fertilizer type e.g NPK"
+                />
+                <label htmlFor="Input Seeds">
+                  <p style={{ fontFamily: "sans-serif", fontSize: "1em" }}>
+                    Quantity of seeds in Kilograms
+                  </p>
+                  <input
+                    value={inputSeeds}
+                    onChange={(event) =>
+                      textFieldChangehandler(event, setInputSeeds)
+                    }
+                    type="number"
+                    name="inputSeeds"
+                    id="inputSeeds"
+                    placeholder="Quantity of seeds used in kg"
+                  />
+                </label>
+                <button>Create Crop</button>
+              </form>
+            </Modal>
+          </div>
+        </div>
+        {/* Modals Container end */}
+      </div>
+    </div>
+  );
+};
 
 export async function getServerSideProps(ctx: any) {
-    let pageIndex: number = ctx?.query?.fidx;
+  let pageIndex: number = ctx?.query?.fidx;
 
-    return {
-        props: {
-            pageIndex: pageIndex
-        }
-    }
+  return {
+    props: {
+      pageIndex: pageIndex,
+    },
+  };
 }
-
 
 export default FarmDashboardByIndex;

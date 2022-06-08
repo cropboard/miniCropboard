@@ -6,26 +6,31 @@ dotenv.config(); // fetch secrets
 const SECRET_KEY: string | undefined = process.env.SECRET_KEY;
 
 interface userData {
-    email: string
-    id: string
+  email: string;
+  id: string;
 }
 
-function createToken({email, id}: userData): string {
-    let token: string = jwt.sign({email: email, id: id}, SECRET_KEY as string, { expiresIn: "30d", issuer: "miniCropboard" });
-    return token;
+function createToken({ email, id }: userData): string {
+  let token: string = jwt.sign({ email: email, id: id }, SECRET_KEY as string, {
+    expiresIn: "30d",
+    issuer: "miniCropboard",
+  });
+  return token;
 }
 
 function validateToken(token: string): any {
-    try {
-        let result: string | JwtPayload = jwt.verify(token, SECRET_KEY as string, {issuer: "miniCropboard"});
-        return result;
-    } catch (error: any) {
-        if (error.name === "TokenExpiredError") {
-            throw Error("TokenExpired")
-        } else {
-            throw Error("TokenInvalid")
-        }
+  try {
+    let result: string | JwtPayload = jwt.verify(token, SECRET_KEY as string, {
+      issuer: "miniCropboard",
+    });
+    return result;
+  } catch (error: any) {
+    if (error.name === "TokenExpiredError") {
+      throw Error("TokenExpired");
+    } else {
+      throw Error("TokenInvalid");
     }
+  }
 }
 
 /* // testing both functions

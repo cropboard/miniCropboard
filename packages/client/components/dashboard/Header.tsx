@@ -12,24 +12,26 @@ import HeaderAvatar from "./HeaderAvatar";
 import styles from "../../styles/dashboard/header.module.css";
 
 interface DashboardHeaderProps {
-    name?: string
+  name?: string;
 }
 
-const DashboardHeader: FunctionComponent<DashboardHeaderProps> = ({ name }): JSX.Element => {
-    if (!name) {
-        return (
-            <header className={styles.header}>
-                <Logo /> {/* Cropboard logo */}
-            </header>
-        )
-    }
-
+const DashboardHeader: FunctionComponent<DashboardHeaderProps> = ({
+  name,
+}): JSX.Element => {
+  if (!name) {
     return (
-        <header className={styles.header}>
-            <Logo /> {/* Cropboard logo */}
-            <HeaderAvatar profile="/person.png" name={name} />
-        </header>
-    )
-}
+      <header className={styles.header}>
+        <Logo /> {/* Cropboard logo */}
+      </header>
+    );
+  }
+
+  return (
+    <header className={styles.header}>
+      <Logo /> {/* Cropboard logo */}
+      <HeaderAvatar profile="/person.png" name={name} />
+    </header>
+  );
+};
 
 export default DashboardHeader;
